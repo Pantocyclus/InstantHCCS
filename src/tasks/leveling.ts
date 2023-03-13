@@ -49,6 +49,10 @@ import { Quest } from "../engine/task";
 import { burnLibram, mapMonster, tryUse } from "../lib";
 import { innerElfTask } from "./common";
 
+function sendAutumnaton(): void {
+  if (have($item`autumn-aton`)) cliExecute("autumnaton send Shadow Rift");
+}
+
 const lovEquipment: "LOV Eardigan" | "LOV Epaulettes" | "LOV Earring" =
   mainStat === $stat`Muscle`
     ? "LOV Eardigan"
@@ -132,6 +136,7 @@ export const LevelingQuest: Quest = {
           // eslint-disable-next-line libram/verify-constants
           use($item`closed-circuit pay phone`);
         }
+        sendAutumnaton();
       },
       limit: { tries: 12 },
     },
@@ -152,6 +157,10 @@ export const LevelingQuest: Quest = {
       do: $location`The X-32-F Combat Training Snowman`,
       combat: new CombatStrategy().macro(Macro.default()),
       outfit: { familiar: $familiar`Garbage Fire` },
+      post: (): void => {
+        if (have($item`burning newspaper`)) cliExecute("create burning paper crane");
+        sendAutumnaton();
+      },
       limit: { tries: 5 },
     },
     {
@@ -169,6 +178,7 @@ export const LevelingQuest: Quest = {
       post: (): void => {
         if (get("_snojoFreeFights") >= (myClass() === $class`Sauceror` ? 9 : 10))
           cliExecute("hottub"); // Clean -stat effects
+        sendAutumnaton();
       },
       combat: new CombatStrategy().macro(Macro.default()),
       outfit: {
@@ -200,6 +210,7 @@ export const LevelingQuest: Quest = {
       limit: { tries: 1 },
       post: (): void => {
         use(1, $item`LOV Elixir #3`);
+        sendAutumnaton();
       },
     },
     {
@@ -211,6 +222,7 @@ export const LevelingQuest: Quest = {
       do: () => useSkill($skill`Evoke Eldritch Horror`),
       post: (): void => {
         if (have($effect`Beaten Up`)) cliExecute("hottub");
+        sendAutumnaton();
       },
       combat: new CombatStrategy().macro(Macro.default()),
       outfit: {
@@ -235,6 +247,7 @@ export const LevelingQuest: Quest = {
         famequip: $item`dromedary drinking helmet`,
       },
       acquire: [{ item: $item`makeshift garbage shirt` }],
+      post: () => sendAutumnaton(),
       limit: { tries: 3 },
     },
     {
@@ -253,6 +266,7 @@ export const LevelingQuest: Quest = {
         famequip: $item`dromedary drinking helmet`,
       },
       acquire: [{ item: $item`makeshift garbage shirt` }],
+      post: () => sendAutumnaton(),
       limit: { tries: 1 },
     },
     {
@@ -270,6 +284,7 @@ export const LevelingQuest: Quest = {
         famequip: $item`dromedary drinking helmet`,
       },
       acquire: [{ item: $item`makeshift garbage shirt` }],
+      post: () => sendAutumnaton(),
       limit: { tries: 1 },
     },
     {
@@ -288,6 +303,7 @@ export const LevelingQuest: Quest = {
         familiar: $familiar`Shorter-Order Cook`,
       },
       acquire: [{ item: $item`makeshift garbage shirt` }],
+      post: () => sendAutumnaton(),
       limit: { tries: 1 },
     },
     {
@@ -305,6 +321,7 @@ export const LevelingQuest: Quest = {
         familiar: $familiar`God Lobster`,
       },
       acquire: [{ item: $item`makeshift garbage shirt` }],
+      post: () => sendAutumnaton(),
       limit: { tries: 3 },
     },
     {
@@ -325,6 +342,7 @@ export const LevelingQuest: Quest = {
         famequip: $item`dromedary drinking helmet`,
       },
       acquire: [{ item: $item`makeshift garbage shirt` }],
+      post: () => sendAutumnaton(),
       limit: { tries: 11 },
     },
 
@@ -342,6 +360,8 @@ export const LevelingQuest: Quest = {
         familiar: $familiar`Pair of Stomping Boots`,
         modifier: "familiar weight",
       },
+      post: () => sendAutumnaton(),
+      limit: { tries: 10 },
     },
     {
       name: "Free Kills",
@@ -368,6 +388,7 @@ export const LevelingQuest: Quest = {
           .abort()
       ),
       acquire: [{ item: $item`makeshift garbage shirt` }],
+      post: () => sendAutumnaton(),
       limit: { tries: 6 },
     },
     {
@@ -400,11 +421,13 @@ export const LevelingQuest: Quest = {
       },
       acquire: [{ item: $item`makeshift garbage shirt` }],
       limit: { tries: 1 },
-      post: () =>
+      post: (): void => {
         eat(
           itemAmount($item`magical sausage`) + itemAmount($item`magical sausage casing`),
           $item`magical sausage`
-        ),
+        );
+        sendAutumnaton();
+      },
     },
     {
       name: "Oliver's Place Agent with Portscan and Envy",
@@ -424,6 +447,7 @@ export const LevelingQuest: Quest = {
         familiar: $familiar`Melodramedary`,
         famequip: $item`dromedary drinking helmet`,
       },
+      post: () => sendAutumnaton(),
       limit: { tries: 1 },
     },
     {
@@ -439,6 +463,7 @@ export const LevelingQuest: Quest = {
         familiar: $familiar`Melodramedary`,
         famequip: $item`dromedary drinking helmet`,
       },
+      post: () => sendAutumnaton(),
       limit: { tries: 1 },
     },
     {
@@ -449,9 +474,7 @@ export const LevelingQuest: Quest = {
       },
       completed: () => get("_speakeasyFreeFights", 0) >= 3,
       do: $location`An Unusually Quiet Barroom Brawl`,
-      post: (): void => {
-        if (have($item`burning newspaper`)) cliExecute("create burning paper crane");
-      },
+      post: () => sendAutumnaton(),
       combat: new CombatStrategy().macro(Macro.default()),
       outfit: {
         familiar: $familiar`Melodramedary`,
@@ -468,7 +491,10 @@ export const LevelingQuest: Quest = {
         if (have($effect`Spit Upon`)) equip($item`tiny stillsuit`);
       },
       completed: () => have($effect`Everything Looks Yellow`),
-      post: () => set("_CSParkaYRUsed", true),
+      post: (): void => {
+        set("_CSParkaYRUsed", true);
+        sendAutumnaton();
+      },
       // eslint-disable-next-line libram/verify-constants
       do: () => mapMonster($location`An Unusually Quiet Barroom Brawl`, $monster`goblin flapper`),
       combat: new CombatStrategy().macro(Macro.skill($skill`Spit jurassic acid`).abort()),
@@ -507,6 +533,7 @@ export const LevelingQuest: Quest = {
       post: (): void => {
         while (itemAmount($item`BRICKO brick`) >= 8 && have($item`BRICKO eye brick`))
           create($item`BRICKO oyster`);
+        sendAutumnaton();
       },
     },
     {
@@ -515,6 +542,7 @@ export const LevelingQuest: Quest = {
         have($effect`Spit Upon`) || get("camelSpit") >= 100 || !have($item`BRICKO oyster`),
       do: () => $item`BRICKO oyster`,
       combat: new CombatStrategy().macro(Macro.default()),
+      post: () => sendAutumnaton(),
       limit: { tries: 2 },
       outfit: {
         familiar: $familiar`Melodramedary`,
