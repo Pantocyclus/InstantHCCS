@@ -42,7 +42,7 @@ For those who are interested in using `InstantHCCS` as is, the following section
 - astral statuette from Pet Heaven
 - any class
 - the corresponding Knoll moon sign (preferably Wallaby, even if you aren't a myst class)
-- Hardcore (Softcore works too, be nothing will be pulled)
+- Hardcore (Softcore works too, but nothing will be pulled)
 
 ### Required Resources
 

@@ -152,7 +152,7 @@ export const FamiliarWeightQuest: Quest = {
         get("_gingerbreadCityTurns") >= 4 ||
         have($item`gingerbread spice latte`) ||
         have($effect`Whole Latte Love`) ||
-        get("_chestXRayUsed") >= 3 ||
+        (get("_chestXRayUsed") >= 3 && get("_gingerbreadMobHitUsed")) ||
         get("_banderRunaways") >= (familiarWeight(myFamiliar()) + weightAdjustment()) / 5,
       do: $location`Gingerbread Upscale Retail District`,
       outfit: {
@@ -165,9 +165,10 @@ export const FamiliarWeightQuest: Quest = {
       },
       combat: new CombatStrategy().macro(
         Macro.externalIf(
-          itemAmount($item`sprinkles`) < 50 && get("_chestXRayUsed") < 3,
-          Macro.if_($monster`gingerbread finance bro`, Macro.skill($skill`Chest X-Ray`))
-            .if_($monster`gingerbread tech bro`, Macro.skill($skill`Chest X-Ray`))
+          itemAmount($item`sprinkles`) < 50 &&
+            (get("_chestXRayUsed") < 3 || !get("_gingerbreadMobHitUsed")),
+          Macro.trySkill($skill`Chest X-Ray`)
+            .trySkill($skill`Gingerbread Mob Hit`)
             .trySkill($skill`Feel Hatred`)
             .trySkill($skill`Reflex Hammer`)
             .trySkill($skill`Snokebomb`)

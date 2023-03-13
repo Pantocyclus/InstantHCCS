@@ -1,10 +1,7 @@
 import {
-  cliExecute,
   gametimeToInt,
   myAdventures,
   myAscensions,
-  myDaycount,
-  myTurncount,
   print,
   setAutoAttack,
   turnsPlayed,
@@ -70,9 +67,6 @@ export function main(command?: string): void {
   ]);
   const engine = new Engine(tasks);
   setAutoAttack(0);
-  cliExecute("ccs InstantHCCS");
-
-  set("InstantHCCSRunStart", gametimeToInt());
 
   while (!runComplete()) {
     const task = engine.getNextTask();
@@ -84,10 +78,6 @@ export function main(command?: string): void {
     engine.execute(task);
   }
 
-  set("InstantHCCSTurncount", myTurncount());
-  set("InstantHCCSRunEnd", gametimeToInt());
-  set("InstantHCCSDaycount", myDaycount());
-  set("_InstantHCCSClanFortuneAttempts", get("_clanFortuneConsultUses", 0));
   print("Community Service complete!", "purple");
   print(`Adventures used: ${turnsPlayed()}`, "purple");
   print(`Adventures remaining: ${myAdventures()}`, "purple");

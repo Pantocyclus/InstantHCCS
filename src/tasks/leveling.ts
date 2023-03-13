@@ -1,6 +1,7 @@
 import { CombatStrategy } from "grimoire-kolmafia";
 import {
   adv1,
+  availableChoiceOptions,
   cliExecute,
   create,
   drink,
@@ -9,11 +10,13 @@ import {
   familiarWeight,
   getFuel,
   itemAmount,
+  lastChoice,
   myClass,
   myFamiliar,
   myInebriety,
   myLevel,
   runChoice,
+  toItem,
   use,
   useFamiliar,
   useSkill,
@@ -72,24 +75,65 @@ export const LevelingQuest: Quest = {
     },
     { ...innerElfTask },
     {
-      name: "Snojo for Short Pancakes",
+      name: "Get Rufus Quest",
+      completed: () =>
+        // eslint-disable-next-line libram/verify-constants
+        have($item`Rufus's shadow lodestone`) || toItem(get("rufusQuestTarget", "")) !== $item.none,
+      do: () =>
+        // eslint-disable-next-line libram/verify-constants
+        use($item`closed-circuit pay phone`),
+      choices: {
+        1497: 2,
+        1498: 6,
+      },
+      limit: { tries: 1 },
+    },
+    {
+      name: "Shadow Rift",
+      ready: () =>
+        // eslint-disable-next-line libram/verify-constants
+        toItem(get("rufusQuestTarget", "")) !== $item.none,
       prepare: (): void => {
-        if (get("snojoSetting") === null) {
-          visitUrl("place.php?whichplace=snojo&action=snojo_controller");
-          runChoice(1);
-        }
         if (get("umbrellaState") !== "broken") cliExecute("umbrella ml");
         if (get("parkaMode") !== "spikolodon") cliExecute("parka spikolodon");
       },
-      completed: () => get("_snojoFreeFights") >= 5,
-      do: $location`The X-32-F Combat Training Snowman`,
+      completed: () =>
+        // eslint-disable-next-line libram/verify-constants
+        have($item`Rufus's shadow lodestone`) || get("_shadowRiftCombats", 0) >= 12,
+      // eslint-disable-next-line libram/verify-constants
+      do: (): void => {
+        visitUrl("place.php?whichplace=town_right&action=townright_shadowrift");
+        if (lastChoice() === 1499) {
+          let NCChoice = 6;
+          while (NCChoice === 6) {
+            const availableChoices = availableChoiceOptions(true);
+            const currentChoice = [2, 3, 4].filter((choice) =>
+              availableChoices[choice].includes(get("rufusQuestTarget", ""))
+            );
+            if (currentChoice.length > 0) NCChoice = currentChoice[0];
+            else runChoice(5);
+          }
+          runChoice(NCChoice);
+        }
+      },
       combat: new CombatStrategy().macro(
         Macro.trySkill($skill`Giant Growth`)
           .if_($item`blue rocket`, Macro.item($item`blue rocket`))
           .default()
       ),
-      outfit: { familiar: $familiar`Shorter-Order Cook` },
-      limit: { tries: 5 },
+      outfit: {
+        familiar: $familiar`Shorter-Order Cook`,
+      },
+      choices: {
+        1498: 1,
+      },
+      post: (): void => {
+        if (have(toItem(get("rufusQuestTarget", "")))) {
+          // eslint-disable-next-line libram/verify-constants
+          use($item`closed-circuit pay phone`);
+        }
+      },
+      limit: { tries: 12 },
     },
     {
       name: "Snojo for Newspaper",
@@ -104,15 +148,11 @@ export const LevelingQuest: Quest = {
       completed: () =>
         have($item`burning newspaper`) ||
         have($item`burning paper crane`) ||
-        get("_snojoFreeFights") >= 7,
+        get("_snojoFreeFights") >= 5,
       do: $location`The X-32-F Combat Training Snowman`,
-      combat: new CombatStrategy().macro(
-        Macro.trySkill($skill`Giant Growth`)
-          .if_($item`blue rocket`, Macro.item($item`blue rocket`))
-          .default()
-      ),
+      combat: new CombatStrategy().macro(Macro.default()),
       outfit: { familiar: $familiar`Garbage Fire` },
-      limit: { tries: 2 },
+      limit: { tries: 5 },
     },
     {
       name: "Snojo for Spit Upon",
@@ -130,16 +170,12 @@ export const LevelingQuest: Quest = {
         if (get("_snojoFreeFights") >= (myClass() === $class`Sauceror` ? 9 : 10))
           cliExecute("hottub"); // Clean -stat effects
       },
-      combat: new CombatStrategy().macro(
-        Macro.trySkill($skill`Giant Growth`)
-          .if_($item`blue rocket`, Macro.item($item`blue rocket`))
-          .default()
-      ),
+      combat: new CombatStrategy().macro(Macro.default()),
       outfit: {
         familiar: $familiar`Melodramedary`,
         famequip: $item`dromedary drinking helmet`,
       },
-      limit: { tries: 3 },
+      limit: { tries: 5 },
     },
     {
       name: "LOV Tunnel",
@@ -155,7 +191,7 @@ export const LevelingQuest: Quest = {
           .if_($monster`LOV Equivocator`, Macro.default())
       ),
       outfit: {
-        weapon: $item`Fourth of May Cosplay Saber`,
+        weapon: $item`June cleaver`,
         shirt: $item`makeshift garbage shirt`,
         familiar: $familiar`Melodramedary`,
         famequip: $item`dromedary drinking helmet`,
@@ -195,7 +231,8 @@ export const LevelingQuest: Quest = {
       combat: new CombatStrategy().macro(Macro.default()),
       outfit: {
         shirt: $item`makeshift garbage shirt`,
-        familiar: $familiar`Shorter-Order Cook`,
+        familiar: $familiar`Melodramedary`,
+        famequip: $item`dromedary drinking helmet`,
       },
       acquire: [{ item: $item`makeshift garbage shirt` }],
       limit: { tries: 3 },
@@ -212,7 +249,8 @@ export const LevelingQuest: Quest = {
       combat: new CombatStrategy().macro(Macro.default()),
       outfit: {
         shirt: $item`makeshift garbage shirt`,
-        familiar: $familiar`Shorter-Order Cook`,
+        familiar: $familiar`Melodramedary`,
+        famequip: $item`dromedary drinking helmet`,
       },
       acquire: [{ item: $item`makeshift garbage shirt` }],
       limit: { tries: 1 },
@@ -228,6 +266,8 @@ export const LevelingQuest: Quest = {
       outfit: {
         weapon: $item`Fourth of May Cosplay Saber`,
         shirt: $item`makeshift garbage shirt`,
+        familiar: $familiar`Melodramedary`,
+        famequip: $item`dromedary drinking helmet`,
       },
       acquire: [{ item: $item`makeshift garbage shirt` }],
       limit: { tries: 1 },
@@ -305,10 +345,7 @@ export const LevelingQuest: Quest = {
     },
     {
       name: "Free Kills",
-      completed: () =>
-        get("_shatteringPunchUsed") >= 3 &&
-        get("_gingerbreadMobHitUsed") &&
-        get("_missileLauncherUsed"),
+      completed: () => get("_shatteringPunchUsed") >= 3 && get("_missileLauncherUsed"),
       prepare: (): void => {
         if (have($effect`Spit Upon`)) {
           useFamiliar($familiar`Galloping Grill`);
@@ -327,7 +364,6 @@ export const LevelingQuest: Quest = {
           .trySkill($skill`Bowl Sideways`)
           .trySkill($skill`%fn, spit on me!`)
           .trySkill($skill`Shattering Punch`)
-          .trySkill($skill`Gingerbread Mob Hit`)
           .trySkill($skill`Asdon Martin: Missile Launcher`)
           .abort()
       ),
@@ -385,7 +421,8 @@ export const LevelingQuest: Quest = {
           .default()
       ),
       outfit: {
-        familiar: $familiar`Garbage Fire`,
+        familiar: $familiar`Melodramedary`,
+        famequip: $item`dromedary drinking helmet`,
       },
       limit: { tries: 1 },
     },
@@ -399,7 +436,8 @@ export const LevelingQuest: Quest = {
       do: $location`An Unusually Quiet Barroom Brawl`,
       combat: new CombatStrategy().macro(Macro.trySkill($skill`Portscan`).default()),
       outfit: {
-        familiar: $familiar`Garbage Fire`,
+        familiar: $familiar`Melodramedary`,
+        famequip: $item`dromedary drinking helmet`,
       },
       limit: { tries: 1 },
     },
@@ -416,7 +454,8 @@ export const LevelingQuest: Quest = {
       },
       combat: new CombatStrategy().macro(Macro.default()),
       outfit: {
-        familiar: $familiar`Garbage Fire`,
+        familiar: $familiar`Melodramedary`,
+        famequip: $item`dromedary drinking helmet`,
       },
       limit: { tries: 1 },
     },
@@ -472,7 +511,8 @@ export const LevelingQuest: Quest = {
     },
     {
       name: "Bricko Oyster",
-      completed: () => get("camelSpit") >= 100 || !have($item`BRICKO oyster`),
+      completed: () =>
+        have($effect`Spit Upon`) || get("camelSpit") >= 100 || !have($item`BRICKO oyster`),
       do: () => $item`BRICKO oyster`,
       combat: new CombatStrategy().macro(Macro.default()),
       limit: { tries: 2 },

@@ -6,10 +6,11 @@ import {
   myFullness,
   myInebriety,
   mySpleenUse,
+  pvpAttacksLeft,
   spleenLimit,
   turnsPlayed,
 } from "kolmafia";
-import { $effect, $effects, CommunityService, get, have, uneffect } from "libram";
+import { $effect, $effects, CommunityService, get, have, set, uneffect } from "libram";
 import {
   farmingResourcePrefs,
   freeBanishPrefs,
@@ -99,6 +100,15 @@ function logResourceUsage(): void {
 export const DonateQuest: Quest = {
   name: "Donate",
   tasks: [
+    {
+      name: "PvP",
+      completed: () => pvpAttacksLeft() === 0,
+      prepare: () => set("PVP_MAB_use_meteoriteade", false),
+      do: (): void => {
+        cliExecute("PVP_MAB");
+      },
+      post: () => set("PVP_MAB_use_meteoriteade", true),
+    },
     {
       name: "Test",
       completed: () => get("kingLiberated"),
