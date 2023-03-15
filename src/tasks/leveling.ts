@@ -15,6 +15,7 @@ import {
   myFamiliar,
   myInebriety,
   myLevel,
+  print,
   runChoice,
   toItem,
   use,
@@ -80,9 +81,8 @@ export const LevelingQuest: Quest = {
     { ...innerElfTask },
     {
       name: "Get Rufus Quest",
-      completed: () =>
-        // eslint-disable-next-line libram/verify-constants
-        have($item`Rufus's shadow lodestone`) || toItem(get("rufusQuestTarget", "")) !== $item.none,
+      // eslint-disable-next-line libram/verify-constants
+      completed: () => get("_shadowAffinityToday", false),
       do: () =>
         // eslint-disable-next-line libram/verify-constants
         use($item`closed-circuit pay phone`),
@@ -106,15 +106,34 @@ export const LevelingQuest: Quest = {
         have($item`Rufus's shadow lodestone`) || get("_shadowRiftCombats", 0) >= 12,
       // eslint-disable-next-line libram/verify-constants
       do: (): void => {
-        visitUrl("place.php?whichplace=town_right&action=townright_shadowrift");
+        const target = get("rufusQuestTarget", "");
+        // eslint-disable-next-line libram/verify-constants
+        if (have($effect`Shadow Affinity`))
+          visitUrl("place.php?whichplace=town_right&action=townright_shadowrift_free");
+        else visitUrl("place.php?whichplace=town_right&action=townright_shadowrift");
+
         if (lastChoice() === 1499) {
           let NCChoice = 6;
+          let tries = 0;
           while (NCChoice === 6) {
             const availableChoices = availableChoiceOptions(true);
-            const currentChoice = [2, 3, 4].filter((choice) =>
-              availableChoices[choice].includes(get("rufusQuestTarget", ""))
+
+            print(`Try #${tries + 1} - Target = ${target}; Choices available:`, "blue");
+            [2, 3, 4].forEach((choice) =>
+              print(
+                `Choice ${choice}: ${availableChoices[choice]} (${
+                  availableChoices[choice].includes(target) ? "" : "no "
+                }match)`,
+                `${availableChoices[choice].includes(target) ? "green" : "red"}`
+              )
             );
+
+            const currentChoice = [2, 3, 4].filter((choice) =>
+              availableChoices[choice].includes(target)
+            );
+            tries += 1;
             if (currentChoice.length > 0) NCChoice = currentChoice[0];
+            else if (tries >= 10) throw new Error(`Did not find ${target} after 10 tries!`);
             else runChoice(5);
           }
           runChoice(NCChoice);
