@@ -12,12 +12,12 @@ import {
   ensureEffect,
   get,
   have,
-  Macro,
   SongBoom,
 } from "libram";
 import { Quest } from "../engine/task";
 import { burnLibram, CommunityServiceTests, crimboCarols, logTestSetup } from "../lib";
 import { innerElfTask } from "./common";
+import Macro from "../combat";
 
 export const WeaponDamageQuest: Quest = {
   name: "Weapon Damage",
