@@ -228,7 +228,9 @@ function haveCandies(a: Item, b: Item): boolean {
 
 export function getSynthExpBuff(): void {
   const rem = mainStat === $stat`Muscle` ? 2 : mainStat === $stat`Mysticality` ? 3 : 4;
-  const pairs = complexCandies.map((a) => complexCandies.map((b) => [a, b])).flat(1);
+  const pairs = complexCandies
+    .map((a) => complexCandies.map((b) => [a, b]))
+    .reduce((acc, val) => acc.concat(val), []);
   const bestPair = pairs
     .filter(([a, b]) => (toInt(a) + toInt(b)) % 5 === rem && haveCandies(a, b))
     .reduce((left, right) =>
