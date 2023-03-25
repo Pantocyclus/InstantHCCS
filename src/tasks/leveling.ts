@@ -1,7 +1,5 @@
 import { CombatStrategy } from "grimoire-kolmafia";
 import {
-  adv1,
-  availableChoiceOptions,
   cliExecute,
   create,
   drink,
@@ -9,13 +7,16 @@ import {
   equip,
   familiarWeight,
   getFuel,
+  getMonsters,
+  Item,
   itemAmount,
-  lastChoice,
+  itemDrops,
+  Location,
+  mallPrice,
   myClass,
   myFamiliar,
   myInebriety,
   myLevel,
-  print,
   runChoice,
   toItem,
   use,
@@ -40,11 +41,18 @@ import {
   getKramcoWandererChance,
   have,
   set,
+  sum,
   TunnelOfLove,
   uneffect,
   Witchess,
+  withChoice,
 } from "libram";
 import { fillTo } from "libram/dist/resources/2017/AsdonMartin";
+import {
+  chooseQuest,
+  chooseRift,
+  rufusTarget,
+} from "libram/dist/resources/2023/ClosedCircuitPayphone";
 import Macro, { mainStat } from "../combat";
 import { Quest } from "../engine/task";
 import { burnLibram, mapMonster, tryUse } from "../lib";
@@ -52,6 +60,26 @@ import { innerElfTask } from "./common";
 
 function sendAutumnaton(): void {
   if (have($item`autumn-aton`)) cliExecute("autumnaton send Shadow Rift");
+}
+
+let _bestShadowRift: Location | null = null;
+export function bestShadowRift(): Location {
+  if (!_bestShadowRift) {
+    _bestShadowRift =
+      chooseRift({
+        canAdventure: true,
+        sortBy: (l: Location) => {
+          const drops = getMonsters(l)
+            .map((m) => Object.keys(itemDrops(m)).map((s) => toItem(s)))
+            .reduce((acc, val) => acc.concat(val), []);
+          return sum(drops, mallPrice);
+        },
+      }) ?? $location.none;
+    if (_bestShadowRift === $location.none) {
+      throw new Error("Failed to find a suitable Shadow Rift to adventure in");
+    }
+  }
+  return _bestShadowRift;
 }
 
 const lovEquipment: "LOV Eardigan" | "LOV Epaulettes" | "LOV Earring" =
@@ -81,64 +109,20 @@ export const LevelingQuest: Quest = {
     { ...innerElfTask },
     {
       name: "Get Rufus Quest",
-      // eslint-disable-next-line libram/verify-constants
-      completed: () => get("_shadowAffinityToday", false),
-      do: () =>
-        // eslint-disable-next-line libram/verify-constants
-        use($item`closed-circuit pay phone`),
-      choices: {
-        1497: 2,
-        1498: 6,
-      },
+      completed: () => get("_shadowAffinityToday") || !have($item`closed-circuit pay phone`),
+      do: () => chooseQuest(() => 2),
       limit: { tries: 1 },
     },
     {
       name: "Shadow Rift",
-      ready: () =>
-        // eslint-disable-next-line libram/verify-constants
-        toItem(get("rufusQuestTarget", "")) !== $item.none,
       prepare: (): void => {
         if (get("umbrellaState") !== "broken") cliExecute("umbrella ml");
         if (get("parkaMode") !== "spikolodon") cliExecute("parka spikolodon");
       },
       completed: () =>
-        // eslint-disable-next-line libram/verify-constants
-        have($item`Rufus's shadow lodestone`) || get("_shadowRiftCombats", 0) >= 12,
-      // eslint-disable-next-line libram/verify-constants
-      do: (): void => {
-        const target = get("rufusQuestTarget", "");
-        // eslint-disable-next-line libram/verify-constants
-        if (have($effect`Shadow Affinity`))
-          visitUrl("place.php?whichplace=town_right&action=townright_shadowrift_free");
-        else visitUrl("place.php?whichplace=town_right&action=townright_shadowrift");
-
-        if (lastChoice() === 1499) {
-          let NCChoice = 6;
-          let tries = 0;
-          while (NCChoice === 6) {
-            const availableChoices = availableChoiceOptions(true);
-
-            print(`Try #${tries + 1} - Target = ${target}; Choices available:`, "blue");
-            [2, 3, 4].forEach((choice) =>
-              print(
-                `Choice ${choice}: ${availableChoices[choice]} (${
-                  availableChoices[choice].includes(target) ? "" : "no "
-                }match)`,
-                `${availableChoices[choice].includes(target) ? "green" : "red"}`
-              )
-            );
-
-            const currentChoice = [2, 3, 4].filter((choice) =>
-              availableChoices[choice].includes(target)
-            );
-            tries += 1;
-            if (currentChoice.length > 0) NCChoice = currentChoice[0];
-            else if (tries >= 10) throw new Error(`Did not find ${target} after 10 tries!`);
-            else runChoice(5);
-          }
-          runChoice(NCChoice);
-        }
-      },
+        have($item`Rufus's shadow lodestone`) ||
+        (!have($effect`Shadow Affinity`) && get("encountersUntilSRChoice") !== 0),
+      do: bestShadowRift(),
       combat: new CombatStrategy().macro(
         Macro.trySkill($skill`Giant Growth`)
           .if_($item`blue rocket`, Macro.item($item`blue rocket`))
@@ -147,13 +131,9 @@ export const LevelingQuest: Quest = {
       outfit: {
         familiar: $familiar`Shorter-Order Cook`,
       },
-      choices: {
-        1498: 1,
-      },
       post: (): void => {
-        if (have(toItem(get("rufusQuestTarget", "")))) {
-          // eslint-disable-next-line libram/verify-constants
-          use($item`closed-circuit pay phone`);
+        if (have(rufusTarget() as Item)) {
+          withChoice(1498, 1, () => use($item`closed-circuit pay phone`));
         }
         sendAutumnaton();
       },
@@ -528,15 +508,10 @@ export const LevelingQuest: Quest = {
       name: "DMT",
       prepare: (): void => {
         if (get("umbrellaState") !== "broken") cliExecute("umbrella ml");
+        burnLibram(300, true);
       },
       completed: () => get("_machineTunnelsAdv") >= 5,
-      do: (): void => {
-        burnLibram(300, true);
-        adv1($location`The Deep Machine Tunnels`, -1);
-        const lastIngredient = get("latteUnlocks").includes("carrot") ? "carrot" : "pumpkin";
-        if (get("_latteRefillsUsed") < 3)
-          cliExecute(`latte refill cinnamon vanilla ${lastIngredient}`);
-      },
+      do: $location`The Deep Machine Tunnels`,
       combat: new CombatStrategy().macro(
         Macro.trySkill($skill`Gulp Latte`)
           .if_($monster`Government agent`, Macro.trySkill($skill`Feel Envy`).default())
@@ -550,6 +525,9 @@ export const LevelingQuest: Quest = {
       acquire: [{ item: $item`makeshift garbage shirt` }],
       limit: { tries: 5 },
       post: (): void => {
+        const lastIngredient = get("latteUnlocks").includes("carrot") ? "carrot" : "pumpkin";
+        if (get("_latteRefillsUsed") < 3)
+          cliExecute(`latte refill cinnamon vanilla ${lastIngredient}`);
         while (itemAmount($item`BRICKO brick`) >= 8 && have($item`BRICKO eye brick`))
           create($item`BRICKO oyster`);
         sendAutumnaton();
