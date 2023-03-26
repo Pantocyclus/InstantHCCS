@@ -22,7 +22,7 @@ For those who are interested in using `InstantHCCS` as is, the following section
 - All 11 beach heads unlocked for the [Beach Comb](https://kol.coldfront.net/thekolwiki/index.php/Beach_Comb)
 - [Chateau Mantegna](https://kol.coldfront.net/thekolwiki/index.php/Chateau_Mantegna) containing:
   - ceiling fan
-  - foreign language tapes
+  - the stat-relevant nightstand
   - continental juice bar
 - [Gold detective badge](https://kol.coldfront.net/thekolwiki/index.php/Gold_detective_badge) purchased from the [11th Precinct](https://kol.coldfront.net/thekolwiki/index.php/The_Precinct)
 - [Your cowboy boots](https://kol.coldfront.net/thekolwiki/index.php/Your_cowboy_boots) modified with [nicksilver spurs](https://kol.coldfront.net/thekolwiki/index.php/Nicksilver_spurs) and [grizzled bearskin](https://kol.coldfront.net/thekolwiki/index.php/Grizzled_bearskin) (item drops and muscle)
@@ -112,6 +112,7 @@ IoTMs used are listed sequentially by age. Skills listed at the end of the table
 | [MayDay™ supply package](https://kol.coldfront.net/thekolwiki/index.php/MayDay%E2%84%A2_supply_package)                       | Item        |
 | [Jurassic Parka](https://kol.coldfront.net/thekolwiki/index.php/Jurassic_Parka)                                               | Shirt       |
 | [autumn-aton](https://kol.coldfront.net/thekolwiki/index.php/Autumn-aton)                                                     | Item        |
+| [closed-circuit pay phone](https://kol.coldfront.net/thekolwiki/index.php/Closed-circuit_pay_phone)                           | Item        |
 | [Horsery contract](https://kol.coldfront.net/thekolwiki/index.php/Horsery_contract)                                           | Zone        |
 | [Oliver's Place](https://kol.coldfront.net/thekolwiki/index.php/Deed_to_Oliver%27s_Place)                                     | Zone        |
 | [Grim Brother](https://kol.coldfront.net/thekolwiki/index.php/Grim_Brother)                                                   | Familiar    |
@@ -146,12 +147,13 @@ IoTMs used are listed sequentially by age. Skills listed at the end of the table
 ### Summary of Farming Resource/Skill Usage
 
 A summary of key farming resources used is listed below. The same summary is generated at the end of each run, with a list of unique tasks that utilized each resource. <br />
-<sub><sup>Note 1: Some of these are subject to variance, including but not limited to Free Banishes (due to Holiday Wanderers and unluckily missing our high sprinkle Gingerbread targets in 3 free banishes), the Gingerbread City Noon NC (due to the same aforementioned Gingerbread luck) and Peppermint Sprouts (depending on our luck in Summoning Candy Hearts).</sup></sub> <br />
-<sub><sup>Note 2: It should achieve a 1/103-110 HCCS depending on your class and your luck (in Gingerbread / libram summons). Organ usage is always fixed at 0/4/1.</sup></sub>
+<sub><sup>Note 1: Some of these are subject to variance, including but not limited to Free Banishes (due to Holiday Wanderers) and Peppermint Sprouts (depending on our luck in Summoning Candy Hearts).</sup></sub> <br />
+<sub><sup>Note 2: It should achieve a 1/103-110 HCCS depending on your class and your luck (in libram summons). Organ usage is always fixed at 0/4/1.</sup></sub>
+<sub><sup>Note 3: The following shows a typical resource usage summary for a Seal Clubber.</sup></sub>
 
 | Free Banishes Used | Usage |
 | ------------------ | ----- |
-| Feel Hatred        | 3/3   |
+| Feel Hatred        | 0/3   |
 | Reflex Hammer      | 2/3   |
 | Latte Refills      | 3/3   |
 | KGB Tranquilizers  | 3/3   |
@@ -171,11 +173,13 @@ A summary of key farming resources used is listed below. The same summary is gen
 | Monsters Mapped     | 3/3   |
 | Feel Envy           | 2/3   |
 | Digitize            | 0/3   |
-| Portscan            | 1/3   |
+| Portscan            | 3/3   |
+| Enhance             | 0/3   |
 | Duplicate           | 0/1   |
 
 | Free Fights Used  | Usage |
 | ----------------- | ----- |
+| Shadow Rift       | 11/11 |
 | Snojo             | 10/10 |
 | NEP               | 10/10 |
 | Witchess          | 5/5   |
@@ -190,7 +194,7 @@ A summary of key farming resources used is listed below. The same summary is gen
 | Potentially Free Fights Used | Usage |
 | ---------------------------- | ----- |
 | Backup Camera                | 0/11  |
-| Locket Reminisces            | 1/3   |
+| Locket Reminisces            | 2/3   |
 | Fax Machine                  | 1/1   |
 | Chateau Painting             | 0/1   |
 
@@ -201,7 +205,6 @@ A summary of key farming resources used is listed below. The same summary is gen
 | Deck Draws                | 15/15  |
 | Macrometeorites           | 0/10   |
 | Batteries (AAA)           | 0/7    |
-| CMC Consults              | 0/5    |
 | Tome Summons              | 3/3    |
 | Peppermint Sprouts        | 2/3    |
 | Genie Wishes              | 0/3    |
@@ -221,4 +224,4 @@ A summary of key farming resources used is listed below. The same summary is gen
 | Liver       | 4/15  |
 | Spleen      | 1/15  |
 
-Adventures Used : 103
+Adventures Used : 105

@@ -22,7 +22,7 @@ export const freeBanishPrefs: trackedPref[] = [
   new trackedPref("_reflexHammerUsed", "Reflex Hammer", 3),
   new trackedPref("_latteRefillsUsed", "Latte Refills", 3),
   new trackedPref("_kgbTranquilizerDartUses", "KGB Tranquilizers", 3),
-  new trackedPref("_snokebombUsed", "Snokebomb", 1),
+  new trackedPref("_snokebombUsed", "Snokebomb", 3),
 ];
 
 export const freeKillPrefs: trackedPref[] = [
@@ -39,8 +39,8 @@ export const notableSkillPrefs: trackedPref[] = [
   new trackedPref("_feelEnvyUsed", "Feel Envy", 3),
   new trackedPref("_sourceTerminalDigitizeUses", "Digitize", 3),
   new trackedPref("_sourceTerminalPortscanUses", "Portscan", 3),
-  new trackedPref("_sourceTerminalDuplicateUses", "Duplicate", 3),
-  new trackedPref("_sourceTerminalEnhanceUses", "Source Terminal Enhances", 1),
+  new trackedPref("_sourceTerminalEnhanceUses", "Source Terminal Enhances", 3),
+  new trackedPref("_sourceTerminalDuplicateUses", "Duplicate", 1),
 ];
 
 export const freeFightPrefs: trackedPref[] = [
@@ -70,7 +70,6 @@ export const farmingResourcePrefs: trackedPref[] = [
   new trackedPref("_deckCardsDrawn", "Deck Draws", 15),
   new trackedPref("_macrometeoriteUses", "Macrometeorites", 10),
   new trackedPref("_AAABatteriesUsed", "Batteries (AAA)", 7),
-  new trackedPref("_coldMedicineConsults", "CMC Consults", 5),
   new trackedPref("tomeSummons", "Tome Summons", 3),
   new trackedPref("_sproutsUsed", "Peppermint Sprouts", 3), // Assumes garden is peppermint
   new trackedPref("_genieWishesUsed", "Genie Wishes", 3),
