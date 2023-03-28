@@ -11,7 +11,7 @@ import {
   inebrietyLimit,
   Item,
   itemAmount,
-  itemDrops,
+  itemDropsArray,
   Location,
   mallPrice,
   myClass,
@@ -21,7 +21,6 @@ import {
   numericModifier,
   runChoice,
   setLocation,
-  toItem,
   use,
   useFamiliar,
   useSkill,
@@ -47,7 +46,6 @@ import {
   have,
   set,
   sum,
-  sumNumbers,
   TunnelOfLove,
   uneffect,
   Witchess,
@@ -70,13 +68,13 @@ export function bestShadowRift(): Location {
       canAdventure: true,
       sortBy: (l: Location) => {
         setLocation(l);
+        // We probably aren't capping item drops with the penalty
+        // so we don't really need to compute the actual outfit (or the dropModifier for that matter actually)
         const dropModifier = 1 + numericModifier("Item Drop") / 100;
         return sum(getMonsters(l), (m) => {
-          const monsterDrops = itemDrops(m);
-          const items = Object.keys(monsterDrops).map(toItem);
-          const rates = Object.values(monsterDrops);
-          return sumNumbers(
-            items.map((item, idx) => mallPrice(item) * clamp(rates[idx] * dropModifier, 0, 1))
+          return sum(
+            itemDropsArray(m),
+            ({ drop, rate }) => mallPrice(drop) * clamp((rate * dropModifier) / 100, 0, 1)
           );
         });
       },
