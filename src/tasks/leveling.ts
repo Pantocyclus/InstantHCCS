@@ -8,6 +8,7 @@ import {
   familiarWeight,
   getFuel,
   getMonsters,
+  inebrietyLimit,
   Item,
   itemAmount,
   itemDrops,
@@ -17,7 +18,9 @@ import {
   myFamiliar,
   myInebriety,
   myLevel,
+  numericModifier,
   runChoice,
+  setLocation,
   toItem,
   use,
   useFamiliar,
@@ -36,23 +39,21 @@ import {
   $monster,
   $skill,
   $stat,
+  clamp,
+  ClosedCircuitPayphone,
   CombatLoversLocket,
   get,
   getKramcoWandererChance,
   have,
   set,
   sum,
+  sumNumbers,
   TunnelOfLove,
   uneffect,
   Witchess,
   withChoice,
 } from "libram";
 import { fillTo } from "libram/dist/resources/2017/AsdonMartin";
-import {
-  chooseQuest,
-  chooseRift,
-  rufusTarget,
-} from "libram/dist/resources/2023/ClosedCircuitPayphone";
 import Macro, { mainStat } from "../combat";
 import { Quest } from "../engine/task";
 import { burnLibram, mapMonster, tryUse } from "../lib";
@@ -65,21 +66,27 @@ function sendAutumnaton(): void {
 let _bestShadowRift: Location | null = null;
 export function bestShadowRift(): Location {
   if (!_bestShadowRift) {
-    _bestShadowRift =
-      chooseRift({
-        canAdventure: true,
-        sortBy: (l: Location) => {
-          const drops = getMonsters(l)
-            .map((m) => Object.keys(itemDrops(m)).map((s) => toItem(s)))
-            .reduce((acc, val) => acc.concat(val), []);
-          return sum(drops, mallPrice);
-        },
-      }) ?? $location.none;
-    if (_bestShadowRift === $location.none) {
+    _bestShadowRift = ClosedCircuitPayphone.chooseRift({
+      canAdventure: true,
+      sortBy: (l: Location) => {
+        setLocation(l);
+        const dropModifier = 1 + numericModifier("Item Drop") / 100;
+        return sum(getMonsters(l), (m) => {
+          const monsterDrops = itemDrops(m);
+          const items = Object.keys(monsterDrops).map(toItem);
+          const rates = Object.values(monsterDrops);
+          return sumNumbers(
+            items.map((item, idx) => mallPrice(item) * clamp(rates[idx] * dropModifier, 0, 1))
+          );
+        });
+      },
+    });
+    if (!_bestShadowRift) {
       throw new Error("Failed to find a suitable Shadow Rift to adventure in");
     }
   }
-  return _bestShadowRift;
+  // Mafia bug disallows adv1($location`Shadow Rift (<exact location>)`, -1, "") when overdrunk
+  return myInebriety() > inebrietyLimit() ? $location`Shadow Rift` : _bestShadowRift;
 }
 
 const lovEquipment: "LOV Eardigan" | "LOV Epaulettes" | "LOV Earring" =
@@ -110,7 +117,7 @@ export const LevelingQuest: Quest = {
     {
       name: "Get Rufus Quest",
       completed: () => get("_shadowAffinityToday") || !have($item`closed-circuit pay phone`),
-      do: () => chooseQuest(() => 2),
+      do: () => ClosedCircuitPayphone.chooseQuest(() => 2),
       limit: { tries: 1 },
     },
     {
@@ -132,7 +139,7 @@ export const LevelingQuest: Quest = {
         familiar: $familiar`Shorter-Order Cook`,
       },
       post: (): void => {
-        if (have(rufusTarget() as Item)) {
+        if (have(ClosedCircuitPayphone.rufusTarget() as Item)) {
           withChoice(1498, 1, () => use($item`closed-circuit pay phone`));
         }
         sendAutumnaton();
