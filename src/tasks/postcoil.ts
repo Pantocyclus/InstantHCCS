@@ -51,7 +51,7 @@ import { holidayRunawayTask } from "./common";
 const statGainBuffs =
   mainStat === $stat`Muscle`
     ? [$effect`Muscle Unbound`]
-    : mainStat === $stat`Mysticailty`
+    : mainStat === $stat`Mysticality`
     ? [$effect`Inscrutable Gaze`, $effect`Thaumodynamic`]
     : [$effect`So Fresh and So Clean`];
 
