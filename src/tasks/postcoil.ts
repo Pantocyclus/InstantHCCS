@@ -45,8 +45,9 @@ import {
 import { fillTo } from "libram/dist/resources/2017/AsdonMartin";
 import Macro, { mainStat } from "../combat";
 import { Quest } from "../engine/task";
-import { burnLibram, complexCandies, getSynthExpBuff, mapMonster } from "../lib";
+import { burnLibram, complexCandies, getSynthExpBuff } from "../lib";
 import { holidayRunawayTask } from "./common";
+import { mapMonster } from "libram/dist/resources/2020/Cartography";
 
 const statGainBuffs =
   mainStat === $stat`Muscle`

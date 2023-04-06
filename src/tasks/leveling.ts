@@ -54,8 +54,9 @@ import {
 import { fillTo } from "libram/dist/resources/2017/AsdonMartin";
 import Macro, { mainStat } from "../combat";
 import { Quest } from "../engine/task";
-import { burnLibram, mapMonster, tryUse } from "../lib";
+import { burnLibram } from "../lib";
 import { innerElfTask } from "./common";
+import { mapMonster } from "libram/dist/resources/2020/Cartography";
 
 function sendAutumnaton(): void {
   if (have($item`autumn-aton`)) cliExecute("autumnaton send Shadow Rift");
@@ -102,7 +103,7 @@ export const LevelingQuest: Quest = {
       name: "Pilsners",
       ready: () => myLevel() >= 11,
       prepare: (): void => {
-        tryUse($item`astral six-pack`);
+        if (have($item`astral six-pack`)) use($item`astral six-pack`);
         uneffect($effect`Aloysius' Antiphon of Aptitude`);
       },
       completed: () => myInebriety() >= 4,

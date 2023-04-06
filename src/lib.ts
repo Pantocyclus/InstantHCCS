@@ -2,8 +2,6 @@ import {
   haveEffect,
   Item,
   itemAmount,
-  Location,
-  Monster,
   mpCost,
   myBasestat,
   myBuffedstat,
@@ -12,15 +10,11 @@ import {
   print,
   retrieveItem,
   retrievePrice,
-  runChoice,
   Skill,
   sweetSynthesis,
   toInt,
   toStat,
-  toUrl,
-  use,
   useSkill,
-  visitUrl,
 } from "kolmafia";
 import {
   $effect,
@@ -30,7 +24,6 @@ import {
   $skill,
   $stat,
   CommunityService,
-  get,
   have,
   set,
 } from "libram";
@@ -63,22 +56,6 @@ export function convertMilliseconds(milliseconds: number): string {
     (minutesLeft !== 0 ? `${minutesLeft} minutes, ` : "") +
     (secondsLeft !== 0 ? `${secondsLeft} seconds` : "")
   );
-}
-
-// From phccs
-export function mapMonster(location: Location, monster: Monster): void {
-  useSkill($skill`Map the Monsters`);
-  if (!get("mappingMonsters")) throw new Error(`I am not actually mapping anything. Weird!`);
-  else {
-    while (get("mappingMonsters")) {
-      visitUrl(toUrl(location));
-      runChoice(1, `heyscriptswhatsupwinkwink=${monster.id}`);
-    }
-  }
-}
-
-export function tryUse(item: Item): void {
-  if (have(item)) use(item);
 }
 
 export const crimboCarols = $effects`Do You Crush What I Crush?, Holiday Yoked, Let It Snow/Boil/Stink/Frighten/Grease, All I Want For Crimbo Is Stuff, Crimbo Wrapping`;
