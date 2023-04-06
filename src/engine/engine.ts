@@ -1,8 +1,7 @@
 import { Task } from "./task";
 import { Engine as BaseEngine, Outfit } from "grimoire-kolmafia";
 import { $effect, $skill, get, have, PropertiesManager, set, uneffect } from "libram";
-import { debug } from "../lib";
-import { myHp, myMaxhp, useSkill } from "kolmafia";
+import { myHp, myMaxhp, print, useSkill } from "kolmafia";
 import { equipDefaults } from "./outfit";
 
 export class trackedPref {
@@ -116,9 +115,9 @@ export class Engine extends BaseEngine {
       }
     });
     if (task.completed()) {
-      debug(`${task.name} completed!`, "blue");
+      print(`${task.name} completed!`, "blue");
     } else {
-      debug(`${task.name} not completed!`, "blue");
+      print(`${task.name} not completed!`, "blue");
     }
   }
 

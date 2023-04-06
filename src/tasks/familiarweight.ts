@@ -30,7 +30,7 @@ import {
 import { fillTo } from "libram/dist/resources/2017/AsdonMartin";
 import Macro from "../combat";
 import { Quest } from "../engine/task";
-import { burnLibram, CommunityServiceTests, logTestSetup } from "../lib";
+import { burnLibram, logTestSetup } from "../lib";
 import { meteorShowerTask } from "./common";
 
 export const FamiliarWeightQuest: Quest = {
@@ -228,7 +228,10 @@ export const FamiliarWeightQuest: Quest = {
       name: "Test",
       completed: () => CommunityService.FamiliarWeight.isDone(),
       do: () =>
-        CommunityService.FamiliarWeight.run(() => logTestSetup(CommunityServiceTests.FAMTEST), 25),
+        CommunityService.FamiliarWeight.run(
+          () => logTestSetup(CommunityService.FamiliarWeight),
+          25
+        ),
       outfit: { modifier: "familiar weight", familiar: $familiar`Mini-Trainbot` },
       limit: { tries: 1 },
     },

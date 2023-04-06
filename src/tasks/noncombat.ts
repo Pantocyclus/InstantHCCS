@@ -2,7 +2,7 @@ import { cliExecute, getFuel } from "kolmafia";
 import { $effect, $familiar, CommunityService, get, have, uneffect } from "libram";
 import { fillTo } from "libram/dist/resources/2017/AsdonMartin";
 import { Quest } from "../engine/task";
-import { burnLibram, CommunityServiceTests, logTestSetup } from "../lib";
+import { burnLibram, logTestSetup } from "../lib";
 
 export const NoncombatQuest: Quest = {
   name: "Noncombat",
@@ -23,8 +23,7 @@ export const NoncombatQuest: Quest = {
         if (get("parkaMode") !== "pterodactyl") cliExecute("parka pterodactyl");
         cliExecute("maximize -combat");
       },
-      do: () =>
-        CommunityService.Noncombat.run(() => logTestSetup(CommunityServiceTests.COMTEST), 1),
+      do: () => CommunityService.Noncombat.run(() => logTestSetup(CommunityService.Noncombat), 1),
       outfit: {
         familiar: $familiar`Disgeist`,
         modifier: "-combat",

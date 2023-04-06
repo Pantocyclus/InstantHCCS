@@ -13,7 +13,7 @@ import {
 } from "libram";
 import Macro from "../combat";
 import { Quest } from "../engine/task";
-import { CommunityServiceTests, logTestSetup } from "../lib";
+import { logTestSetup } from "../lib";
 
 export const HotResQuest: Quest = {
   name: "Hot Res",
@@ -59,7 +59,7 @@ export const HotResQuest: Quest = {
         if (get("parkaMode") !== "pterodactyl") cliExecute("parka pterodactyl");
       },
       completed: () => CommunityService.HotRes.isDone(),
-      do: () => CommunityService.HotRes.run(() => logTestSetup(CommunityServiceTests.HOTTEST), 1),
+      do: () => CommunityService.HotRes.run(() => logTestSetup(CommunityService.HotRes), 1),
       outfit: {
         modifier: "hot res",
         familiar: $familiar`Exotic Parrot`,

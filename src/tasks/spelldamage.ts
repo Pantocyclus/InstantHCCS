@@ -19,7 +19,7 @@ import {
   have,
 } from "libram";
 import { Quest } from "../engine/task";
-import { burnLibram, CommunityServiceTests, logTestSetup } from "../lib";
+import { burnLibram, logTestSetup } from "../lib";
 import { innerElfTask, meteorShowerTask } from "./common";
 import { bloodSugarSauceMagic } from "./postcoil";
 
@@ -71,7 +71,7 @@ export const SpellDamageQuest: Quest = {
       },
       completed: () => CommunityService.SpellDamage.isDone(),
       do: () =>
-        CommunityService.SpellDamage.run(() => logTestSetup(CommunityServiceTests.SPELLTEST), 24),
+        CommunityService.SpellDamage.run(() => logTestSetup(CommunityService.SpellDamage), 24),
       outfit: {
         modifier: "spell dmg",
         familiar: have($item`Abracandalabra`)

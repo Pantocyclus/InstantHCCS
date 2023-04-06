@@ -10,7 +10,7 @@ import {
   uneffect,
 } from "libram";
 import { Quest } from "../engine/task";
-import { burnLibram, CommunityServiceTests, logTestSetup } from "../lib";
+import { burnLibram, logTestSetup } from "../lib";
 import { bloodSugarSauceMagic } from "./postcoil";
 
 export const HPQuest: Quest = {
@@ -23,7 +23,7 @@ export const HPQuest: Quest = {
         if (get("parkaMode") !== "kachungasaur") cliExecute("parka kachungasaur");
       },
       completed: () => CommunityService.HP.isDone(),
-      do: () => CommunityService.HP.run(() => logTestSetup(CommunityServiceTests.HPTEST), 1),
+      do: () => CommunityService.HP.run(() => logTestSetup(CommunityService.HP), 1),
       outfit: { modifier: "HP", familiar: $familiar`Disembodied Hand` },
       effects: [
         $effect`A Few Extra Pounds`,
@@ -55,7 +55,7 @@ export const MuscleQuest: Quest = {
         if (!have($effect`Spit Upon`)) ensureEffect($effect`Triple-Sized`);
       },
       completed: () => CommunityService.Muscle.isDone(),
-      do: () => CommunityService.Muscle.run(() => logTestSetup(CommunityServiceTests.MUSTEST), 1),
+      do: () => CommunityService.Muscle.run(() => logTestSetup(CommunityService.Muscle), 1),
       outfit: { modifier: "Muscle", familiar: $familiar`Disembodied Hand` },
       effects: [
         $effect`Go Get 'Em, Tiger!`,
@@ -80,7 +80,7 @@ export const MysticalityQuest: Quest = {
       name: "Test",
       completed: () => CommunityService.Mysticality.isDone(),
       do: () =>
-        CommunityService.Mysticality.run(() => logTestSetup(CommunityServiceTests.MYSTTEST), 1),
+        CommunityService.Mysticality.run(() => logTestSetup(CommunityService.Mysticality), 1),
       outfit: { modifier: "Mysticality", familiar: $familiar`Disembodied Hand` },
       effects: [
         $effect`Glittering Eyelashes`,
@@ -103,7 +103,7 @@ export const MoxieQuest: Quest = {
     {
       name: "Test",
       completed: () => CommunityService.Moxie.isDone(),
-      do: () => CommunityService.Moxie.run(() => logTestSetup(CommunityServiceTests.MOXTEST), 1),
+      do: () => CommunityService.Moxie.run(() => logTestSetup(CommunityService.Moxie), 1),
       outfit: { modifier: "Moxie", familiar: $familiar`Disembodied Hand` },
       effects: [
         $effect`Amazing`,

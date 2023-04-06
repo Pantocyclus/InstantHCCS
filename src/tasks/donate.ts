@@ -6,11 +6,12 @@ import {
   myFullness,
   myInebriety,
   mySpleenUse,
+  print,
   pvpAttacksLeft,
   spleenLimit,
   turnsPlayed,
 } from "kolmafia";
-import { $effect, $effects, CommunityService, get, have, set, uneffect } from "libram";
+import { $effect, $effects, CommunityService, get, have, set, sumNumbers, uneffect } from "libram";
 import {
   farmingResourcePrefs,
   freeBanishPrefs,
@@ -21,7 +22,7 @@ import {
   trackedPref,
 } from "../engine/engine";
 import { Quest } from "../engine/task";
-import { CommunityServiceTests, debug, testNames } from "../lib";
+import { testModifiers } from "../lib";
 
 function logPrefUsage(tPref: trackedPref): void {
   const pref = tPref.pref;
@@ -33,26 +34,26 @@ function logPrefUsage(tPref: trackedPref): void {
   const prefValueLength = prefValue.toString() !== "" ? prefValue.toString().split(",").length : 0;
 
   if (typeof prefValue === "boolean" || prefValue === "true" || prefValue === "false")
-    debug(
+    print(
       `${name}: ${prefValue || prefValue === "true" ? n ?? 1 : 0}/${n ?? "?"} ${localPrefValue}`
     );
   else if (
     typeof prefValue === "string" &&
     (isNaN(parseInt(prefValue)) || prefValue.includes(",") || parseInt(prefValue) > (n ?? 1))
   )
-    debug(
+    print(
       `${name}: ${prefValueLength > (n ?? 1) ? n ?? 1 : prefValueLength}/${
         n ?? "?"
       } ${localPrefValue}`
     );
-  else debug(`${name}: ${prefValue}/${n ?? "?"} ${localPrefValue}`);
+  else print(`${name}: ${prefValue}/${n ?? "?"} ${localPrefValue}`);
 }
 
 function logResourceUsage(): void {
   // Track resources used
   // Banishes
-  debug("");
-  debug("Resource Tracking", "blue");
+  print("");
+  print("Resource Tracking", "blue");
   [
     { header: "Banishes Used:", prefArr: freeBanishPrefs },
     { header: "Free Kills Used:", prefArr: freeKillPrefs },
@@ -61,40 +62,36 @@ function logResourceUsage(): void {
     { header: "Potentially Free Fights Used:", prefArr: potentiallyFreeFightPrefs },
     { header: "Farming Resources:", prefArr: farmingResourcePrefs },
   ].map(({ header, prefArr }) => {
-    debug(header);
+    print(header);
     prefArr.map(logPrefUsage);
-    debug("");
+    print("");
   });
 
   // Organs Used
-  debug("Organs Used:");
-  debug(`Stomach: ${myFullness()}/${fullnessLimit()}`);
-  debug(`Liver: ${myInebriety()}/${inebrietyLimit()}`);
-  debug(`Spleen: ${mySpleenUse()}/${spleenLimit()}`);
-  debug(
+  print("Organs Used:");
+  print(`Stomach: ${myFullness()}/${fullnessLimit()}`);
+  print(`Liver: ${myInebriety()}/${inebrietyLimit()}`);
+  print(`Spleen: ${mySpleenUse()}/${spleenLimit()}`);
+  print(
     `Sweat Remaining: ${get("sweat")}/100, Sweat Out Some Booze: ${get("_sweatOutSomeBoozeUsed")}/3`
   );
 
   // Adventures Used
-  debug("");
-  debug("Test Summary:");
-  for (const test of Array<number>(
-    CommunityServiceTests.COILTEST,
-    CommunityServiceTests.HOTTEST,
-    CommunityServiceTests.HPTEST,
-    CommunityServiceTests.MUSTEST,
-    CommunityServiceTests.MYSTTEST,
-    CommunityServiceTests.MOXTEST,
-    CommunityServiceTests.COMTEST,
-    CommunityServiceTests.WPNTEST,
-    CommunityServiceTests.SPELLTEST,
-    CommunityServiceTests.FAMTEST,
-    CommunityServiceTests.ITEMTEST
-  ))
-    debug(`${testNames.get(test) ?? "Unknown Test"}: ${get(`_CSTest${test}`, "?")}`);
-  debug(`Adventures used: ${turnsPlayed()}`);
+  print("");
+  print("Test Summary:");
 
-  debug("");
+  const tests = Array.from(testModifiers.keys());
+  tests.forEach((whichTest) =>
+    print(`${whichTest.statName}: ${get(`_CSTest${whichTest.id}`, "?")}`)
+  );
+  print(
+    `Leveling: ${
+      turnsPlayed() - sumNumbers(tests.map((whichTest) => get(`_CSTest${whichTest.id}`, 0)))
+    }`
+  );
+  print(`Adventures used: ${turnsPlayed()}`);
+
+  print("");
 }
 
 export const DonateQuest: Quest = {
@@ -120,8 +117,8 @@ export const DonateQuest: Quest = {
       completed: () => get("lastEmptiedStorage") === myAscensions(),
       do: (): void => {
         logResourceUsage();
-        debug("Emptying Hagnks!", "purple");
-        debug("Please wait for up to 1 minute...", "blue");
+        print("Emptying Hagnks!", "purple");
+        print("Please wait for up to 1 minute...", "blue");
         cliExecute("hagnk all");
       },
       limit: { tries: 1 },
