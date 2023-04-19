@@ -80,7 +80,7 @@ export const FamiliarWeightQuest: Quest = {
         familiar: $familiar`Galloping Grill`,
       },
       acquire: [{ item: $item`makeshift garbage shirt` }],
-      limit: { tries: 1 },
+      limit: { tries: 2 },
       post: (): void => {
         eat(
           itemAmount($item`magical sausage`) + itemAmount($item`magical sausage casing`),
