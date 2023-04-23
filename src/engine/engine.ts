@@ -121,6 +121,7 @@ export class Engine extends BaseEngine {
       if (organUse !== originalOrgans[idx]) {
         const s = `_instant_${["fullness", "inebriety", "spleenUse"][idx]}`;
         const arr = get(s, "").split(",");
+        arr.push(task.name);
         set(s, arr.filter((v, i, a) => v.length > 0 && a.indexOf(v) === i).join(","));
       }
     });
