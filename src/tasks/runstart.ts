@@ -3,7 +3,7 @@ import {
   cliExecute,
   getCampground,
   retrieveItem,
-  reverseNumberology,
+  // reverseNumberology,
   runChoice,
   use,
   useSkill,
@@ -56,6 +56,7 @@ export const RunStartQuest: Quest = {
       },
       limit: { tries: 1 },
     },
+    /*
     {
       name: "Numberology",
       ready: () => Object.keys(reverseNumberology()).includes("69"),
@@ -64,6 +65,7 @@ export const RunStartQuest: Quest = {
       do: () => cliExecute("numberology 69"),
       limit: { tries: 3 },
     },
+    */
     {
       name: "Borrowed Time",
       completed: () => get("_borrowedTimeUsed"),
