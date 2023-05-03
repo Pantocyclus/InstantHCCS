@@ -362,7 +362,7 @@ export const PostCoilQuest: Quest = {
         create(1, $item`box of Familiar Jacks`);
         use(1, $item`box of Familiar Jacks`);
       },
-      outfit: { familiar: $familiar`Mini-Trainbot` },
+      outfit: { familiar: $familiar`Homemade Robot` },
       limit: { tries: 1 },
     },
     {

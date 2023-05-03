@@ -9,6 +9,7 @@ import {
   itemAmount,
   myFamiliar,
   mySign,
+  toInt,
   use,
   visitUrl,
   weightAdjustment,
@@ -225,6 +226,15 @@ export const FamiliarWeightQuest: Quest = {
     },
     { ...meteorShowerTask },
     {
+      name: "Feed Chameleon",
+      completed: () => get("commaFamiliar") === $familiar`Homemade Robot`,
+      do: () =>
+        visitUrl(
+          `inv_equip.php?which=2&action=equip&whichitem=${toInt($item`homemade robot gear`)}&pwd`
+        ),
+      outfit: { familiar: $familiar`Comma Chameleon` },
+    },
+    {
       name: "Test",
       completed: () => CommunityService.FamiliarWeight.isDone(),
       do: () =>
@@ -232,7 +242,7 @@ export const FamiliarWeightQuest: Quest = {
           () => logTestSetup(CommunityService.FamiliarWeight),
           25
         ),
-      outfit: { modifier: "familiar weight", familiar: $familiar`Mini-Trainbot` },
+      outfit: { modifier: "familiar weight", familiar: $familiar`Comma Chameleon` },
       limit: { tries: 1 },
     },
   ],
