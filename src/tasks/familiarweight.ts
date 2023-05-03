@@ -228,10 +228,12 @@ export const FamiliarWeightQuest: Quest = {
     {
       name: "Feed Chameleon",
       completed: () => get("commaFamiliar") === $familiar`Homemade Robot`,
-      do: () =>
+      do: (): void => {
         visitUrl(
           `inv_equip.php?which=2&action=equip&whichitem=${toInt($item`homemade robot gear`)}&pwd`
-        ),
+        );
+        visitUrl("charpane.php");
+      },
       outfit: { familiar: $familiar`Comma Chameleon` },
     },
     {
