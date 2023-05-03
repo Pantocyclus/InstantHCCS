@@ -17,7 +17,6 @@ import {
   restoreMp,
   retrieveItem,
   toInt,
-  totalFreeRests,
   use,
   useFamiliar,
   useSkill,
@@ -45,7 +44,7 @@ import {
 import { fillTo } from "libram/dist/resources/2017/AsdonMartin";
 import Macro, { mainStat } from "../combat";
 import { Quest } from "../engine/task";
-import { burnLibram, complexCandies, getSynthExpBuff } from "../lib";
+import { complexCandies, getSynthExpBuff } from "../lib";
 import { holidayRunawayTask } from "./common";
 import { mapMonster } from "libram/dist/resources/2020/Cartography";
 
@@ -517,6 +516,7 @@ export const PostCoilQuest: Quest = {
       },
       limit: { tries: 1 },
     },
+    /*
     {
       name: "Chateau",
       completed: () => get("timesRested") >= totalFreeRests(),
@@ -527,6 +527,7 @@ export const PostCoilQuest: Quest = {
       outfit: { offhand: $item`familiar scrapbook` },
       limit: { tries: 40 },
     },
+    */
     {
       name: "Mini-Sauceror Buff",
       ready: () =>
