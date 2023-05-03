@@ -1,7 +1,16 @@
 import { Task } from "./task";
 import { Engine as BaseEngine, Outfit } from "grimoire-kolmafia";
 import { $effect, $skill, get, have, PropertiesManager, set, uneffect } from "libram";
-import { myFullness, myHp, myInebriety, myMaxhp, mySpleenUse, print, useSkill } from "kolmafia";
+import {
+  myFullness,
+  myHp,
+  myInebriety,
+  myMaxhp,
+  mySpleenUse,
+  print,
+  totalFreeRests,
+  useSkill,
+} from "kolmafia";
 import { equipDefaults } from "./outfit";
 
 export class trackedPref {
@@ -65,7 +74,9 @@ export const potentiallyFreeFightPrefs: trackedPref[] = [
 
 export const farmingResourcePrefs: trackedPref[] = [
   new trackedPref("_powerfulGloveBatteryPowerUsed", "Powerful Glove Charges", 100),
+  new trackedPref("_cinchUsed", "Cinch", 100),
   new trackedPref("_kgbClicksUsed", "KGB Clicks", 22),
+  new trackedPref("timesRested", "Free Rests", totalFreeRests()),
   new trackedPref("_deckCardsDrawn", "Deck Draws", 15),
   new trackedPref("_macrometeoriteUses", "Macrometeorites", 10),
   new trackedPref("_AAABatteriesUsed", "Batteries (AAA)", 7),
