@@ -381,11 +381,13 @@ export const LevelingQuest: Quest = {
       do: $location`Uncle Gator's Country Fun-Time Liquid Waste Sluice`,
       outfit: {
         shirt: $item`makeshift garbage shirt`,
+        acc3: $item`Cincho de Mayo`,
         familiar: $familiar`Melodramedary`,
         famequip: $item`dromedary drinking helmet`,
       },
       combat: new CombatStrategy().macro(
         Macro.trySkill($skill`Feel Pride`)
+          .trySkill($skill`Cincho: Fiesta Exit`)
           .trySkill($skill`Bowl Sideways`)
           .trySkill($skill`%fn, spit on me!`)
           .trySkill($skill`Shattering Punch`)
@@ -520,12 +522,14 @@ export const LevelingQuest: Quest = {
       do: $location`The Deep Machine Tunnels`,
       combat: new CombatStrategy().macro(
         Macro.trySkill($skill`Gulp Latte`)
+          .trySkill($skill`Cincho: Fiesta Exit`)
           .if_($monster`Government agent`, Macro.trySkill($skill`Feel Envy`).default())
           .default()
       ),
       outfit: {
         shirt: $item`makeshift garbage shirt`,
         offhand: $item`latte lovers member's mug`,
+        acc3: $item`Cincho de Mayo`,
         familiar: $familiar`Machine Elf`,
       },
       acquire: [{ item: $item`makeshift garbage shirt` }],
