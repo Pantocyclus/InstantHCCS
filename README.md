@@ -34,6 +34,7 @@ For those who are interested in using `InstantHCCS` as is, the following section
 - A [Witchess Knight](https://kol.coldfront.net/thekolwiki/index.php/Witchess_Knight) in your [combat lover's locket](https://kol.coldfront.net/thekolwiki/index.php/Combat_lover%27s_locket), a [Hobelf (WC)](<https://kol.coldfront.net/thekolwiki/index.php/Hobelf_(WC)>) if you're a moxie class without a [Stocking Mimic](https://kol.coldfront.net/thekolwiki/index.php/Stocking_Mimic), and a [Black Crayon Elemental](https://kol.coldfront.net/thekolwiki/index.php/Black_Crayon_Elemental) if you aren't a myst class.
 - A fully maxed-out [Guzzlr tablet](https://kol.coldfront.net/thekolwiki/index.php/Guzzlr_tablet)
 - Unlock the [Gingerbread Sewers](https://kol.coldfront.net/thekolwiki/index.php/Gingerbread_Sewers) and relocate both the Gingerbread rat and pigeon there
+- Have used 9 [pile of useless robot parts](https://kol.coldfront.net/thekolwiki/index.php/Pile_of_useless_robot_parts) on your [Homemade Robot](https://kol.coldfront.net/thekolwiki/index.php/Homemade_Robot)
 - Have literally every possible [mus](https://kol.coldfront.net/thekolwiki/index.php/Muscle_Modifiers), [myst](https://kol.coldfront.net/thekolwiki/index.php/Mysticality_Modifiers), [mox](https://kol.coldfront.net/thekolwiki/index.php/Moxie_Modifiers), [hp](https://kol.coldfront.net/thekolwiki/index.php/HP_Modifiers), [exp](https://kol.coldfront.net/thekolwiki/index.php/Stat_gain_multipliers), [hot resist](https://kol.coldfront.net/thekolwiki/index.php/Elemental_Resistance), [-combat rate](https://kol.coldfront.net/thekolwiki/index.php/Combat_Frequency), [weapon dmg](https://kol.coldfront.net/thekolwiki/index.php/Bonus_Weapon_Damage), [spell damage](https://kol.coldfront.net/thekolwiki/index.php/Bonus_Spell_Damage), [familiar weight](https://kol.coldfront.net/thekolwiki/index.php/Familiar_Weight), [item and booze drop](https://kol.coldfront.net/thekolwiki/index.php/Items_from_Monsters) skill HC-permed (tests are extremely marginal to achieve maximal profits)
 
 ### In Valhalla
@@ -50,6 +51,7 @@ IoTMs used are listed sequentially by age. Skills listed at the end of the table
 
 | IoTMs/IoTYs/DLCs                                                                                                              | Type        |
 | ----------------------------------------------------------------------------------------------------------------------------- | ----------- |
+| [Comma Chameleon](https://kol.coldfront.net/thekolwiki/index.php/Comma_Chameleon)                                             | Familiar    |
 | [Summon Candy Heart](https://kol.coldfront.net/thekolwiki/index.php/Summon_Candy_Heart)                                       | Skill       |
 | [Disembodied Hand](https://kol.coldfront.net/thekolwiki/index.php/Disembodied_Hand)                                           | Familiar    |
 | [Summon Love Song](https://kol.coldfront.net/thekolwiki/index.php/Summon_Love_Song)                                           | Skill       |
@@ -148,7 +150,7 @@ IoTMs used are listed sequentially by age. Skills listed at the end of the table
 
 A summary of key farming resources used is listed below. The same summary is generated at the end of each run, with a list of unique tasks that utilized each resource. <br />
 <sub><sup>Note 1: Some of these are subject to variance, including but not limited to Free Banishes (due to Holiday Wanderers) and Peppermint Sprouts (depending on our luck in Summoning Candy Hearts).</sup></sub> <br />
-<sub><sup>Note 2: It should achieve a 1/103-110 HCCS depending on your class and your luck (in libram summons). Organ usage is always fixed at 0/4/1.</sup></sub>
+<sub><sup>Note 2: It should achieve a 1/87-94 HCCS depending on your class and your luck (in libram summons). Organ usage is always fixed at 0/4/1.</sup></sub>
 <sub><sup>Note 3: The following shows a typical resource usage summary for a Seal Clubber.</sup></sub>
 
 | Free Banishes Used | Usage |
@@ -201,12 +203,14 @@ A summary of key farming resources used is listed below. The same summary is gen
 | Farming Resources Used    | Usage  |
 | ------------------------- | ------ |
 | Powerful Glove Charges    | 10/100 |
+| Cinch                     | 45/100 |
 | KGB Clicks                | 0/22   |
+| Free Rests                | 0/21   |
 | Deck Draws                | 15/15  |
 | Macrometeorites           | 0/10   |
 | Batteries (AAA)           | 0/7    |
 | Tome Summons              | 3/3    |
-| Peppermint Sprouts        | 2/3    |
+| Peppermint Sprouts        | 0/3    |
 | Genie Wishes              | 0/3    |
 | Tea Tree                  | 0/1    |
 | Favorite Bird             | 0/1    |
@@ -224,4 +228,4 @@ A summary of key farming resources used is listed below. The same summary is gen
 | Liver       | 4/15  |
 | Spleen      | 1/15  |
 
-Adventures Used : 105
+Adventures Used : 91
