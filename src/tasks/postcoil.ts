@@ -254,9 +254,9 @@ export const PostCoilQuest: Quest = {
     },
     {
       name: "Cloud-Talk",
-      completed: () => have($effect`That's Just Cloud-Talk, Man`),
+      completed: () => get("_campAwaySmileBuffs") >= 2,
       do: () => visitUrl("place.php?whichplace=campaway&action=campaway_sky"),
-      limit: { tries: 1 },
+      limit: { tries: 3 },
     },
     {
       name: "Crimbo Candy",
