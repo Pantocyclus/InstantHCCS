@@ -111,7 +111,7 @@ export const BoozeDropQuest: Quest = {
       completed: () => CommunityService.BoozeDrop.isDone(),
       do: () => CommunityService.BoozeDrop.run(() => logTestSetup(CommunityService.BoozeDrop), 3),
       outfit: {
-        modifier: "Item Drop, -equip broken champagne bottle",
+        modifier: "1 Item Drop, 2 Booze Drop, -equip broken champagne bottle",
         familiar: $familiar`Trick-or-Treating Tot`,
       },
       effects: [
