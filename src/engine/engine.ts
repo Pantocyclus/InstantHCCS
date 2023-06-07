@@ -1,6 +1,6 @@
 import { Task } from "./task";
 import { Engine as BaseEngine, Outfit } from "grimoire-kolmafia";
-import { $effect, $skill, get, have, PropertiesManager, set, uneffect } from "libram";
+import { $effect, $item, $skill, get, have, PropertiesManager, set, uneffect } from "libram";
 import {
   Item,
   itemAmount,
@@ -86,7 +86,7 @@ export const farmingResourceResources: trackedResource[] = [
   new trackedResource("_AAABatteriesUsed", "Batteries (AAA)", 7),
   new trackedResource("_monkeyPawWishesUsed", "Monkey Paw Wishes", 5),
   new trackedResource("tomeSummons", "Tome Summons", 3),
-  new trackedResource("_sproutsUsed", "Peppermint Sprouts", 3), // Assumes garden is peppermint
+  new trackedResource($item`peppermint sprout`, "Peppermint Sprouts", 3), // Assumes garden is peppermint
   new trackedResource("_genieWishesUsed", "Genie Wishes", 3),
   new trackedResource("_pottedTeaTreeUsed", "Tea Tree", 3),
   new trackedResource("_favoriteBirdVisited", "Favorite Bird", 1),
@@ -130,7 +130,7 @@ export class Engine extends BaseEngine {
     }
     originalValues.forEach(([resource, val]) => {
       if (
-        get(resource, "").length > 0
+        get(resource, "").toString().length > 0
           ? val !== get(resource).toString()
           : itemAmount(toItem(resource)) < toInt(val)
       ) {
