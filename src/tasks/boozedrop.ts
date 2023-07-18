@@ -1,4 +1,13 @@
-import { buy, cliExecute, effectModifier, myClass, myThrall, useSkill, visitUrl } from "kolmafia";
+import {
+  buy,
+  cliExecute,
+  effectModifier,
+  myClass,
+  myThrall,
+  toSkill,
+  useSkill,
+  visitUrl,
+} from "kolmafia";
 import {
   $class,
   $effect,
@@ -6,10 +15,8 @@ import {
   $item,
   $items,
   $location,
-  $monster,
   $skill,
   $thrall,
-  CombatLoversLocket,
   CommunityService,
   ensureEffect,
   have,
@@ -53,42 +60,19 @@ export const BoozeDropQuest: Quest = {
     },
     {
       name: "Vampyric Cape + Bowling Ball + DSH Buffs (Sauceror)",
-      completed: () => have($effect`Bat-Adjacent Form`) || myClass() !== $class`Sauceror`,
+      completed: () => have($effect`Bat-Adjacent Form`),
       do: $location`The X-32-F Combat Training Snowman`,
       combat: new CombatStrategy().macro(
         Macro.skill($skill`Become a Bat`)
           .skill($skill`Bowl Straight Up`)
+          .skill(toSkill(`%fn, let's pledge allegiance to a Zone`))
           .default()
       ),
       outfit: {
         hat: $item`Daylight Shavings Helmet`,
         back: $item`vampyric cloake`,
         pants: $item`designer sweatpants`,
-        familiar: $familiar`Melodramedary`,
-      },
-      limit: { tries: 1 },
-      post: (): void => {
-        cliExecute("hottub");
-      },
-    },
-    {
-      name: "Vampyric Cape + Bowling Ball + DSH Buffs (Non-Sauceror)",
-      completed: () =>
-        CombatLoversLocket.monstersReminisced().includes($monster`Black Crayon Elemental`) ||
-        have($effect`Bat-Adjacent Form`) ||
-        myClass() === $class`Sauceror`,
-      do: () => CombatLoversLocket.reminisce($monster`Black Crayon Elemental`),
-      combat: new CombatStrategy().macro(
-        Macro.skill($skill`Become a Bat`)
-          .skill($skill`Bowl Straight Up`)
-          .default()
-      ),
-      outfit: {
-        hat: $item`Daylight Shavings Helmet`,
-        back: $item`vampyric cloake`,
-        pants: $item`designer sweatpants`,
-        familiar: $familiar`Ghost of Crimbo Carols`,
-        famequip: $item`none`,
+        familiar: $familiar`Patriotic Eagle`,
       },
       limit: { tries: 1 },
       post: (): void => {

@@ -14,7 +14,6 @@ import {
   itemDropsArray,
   Location,
   mallPrice,
-  myClass,
   myFamiliar,
   myInebriety,
   myLevel,
@@ -28,7 +27,6 @@ import {
   weightAdjustment,
 } from "kolmafia";
 import {
-  $class,
   $effect,
   $effects,
   $familiar,
@@ -178,11 +176,10 @@ export const LevelingQuest: Quest = {
         if (get("umbrellaState") !== "broken") cliExecute("umbrella ml");
         if (get("parkaMode") !== "spikolodon") cliExecute("parka spikolodon");
       },
-      completed: () => get("_snojoFreeFights") >= (myClass() === $class`Sauceror` ? 9 : 10),
+      completed: () => get("_snojoFreeFights") >= 9,
       do: $location`The X-32-F Combat Training Snowman`,
       post: (): void => {
-        if (get("_snojoFreeFights") >= (myClass() === $class`Sauceror` ? 9 : 10))
-          cliExecute("hottub"); // Clean -stat effects
+        if (get("_snojoFreeFights") >= 9) cliExecute("hottub"); // Clean -stat effects
         sendAutumnaton();
       },
       combat: new CombatStrategy().macro(Macro.default()),
