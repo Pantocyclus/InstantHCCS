@@ -1,6 +1,7 @@
 import {
   effectModifier,
   elementalResistance,
+  equip,
   myHp,
   myMaxhp,
   retrieveItem,
@@ -94,6 +95,7 @@ export const SpellDamageQuest: Quest = {
       post: (): void => {
         burnLibram(300);
         useSkill($skill`Spirit of Nothing`);
+        equip($familiar`Left-Hand Man`, $item.none);
       },
       limit: { tries: 1 },
     },
