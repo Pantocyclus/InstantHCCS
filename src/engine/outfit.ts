@@ -7,7 +7,7 @@ export function equipDefaults(outfit: Outfit): void {
   outfit.equip($items`weeping willow wand, Fourth of May Cosplay Saber`, $slot`weapon`);
   outfit.equip($item`unbreakable umbrella`, $slot`off-hand`);
   outfit.equip($item`designer sweatpants`, $slot`pants`);
-  outfit.equip($item`Kremlin's Greatest Briefcase`, $slot`acc1`);
+  outfit.equip($item`Cincho de Mayo`, $slot`acc1`);
   outfit.equip($item`Eight Days a Week Pill Keeper`, $slot`acc2`);
   outfit.equip($item`backup camera`, $slot`acc3`);
 

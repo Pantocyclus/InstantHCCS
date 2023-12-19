@@ -23,6 +23,14 @@ export default class Macro extends StrictMacro {
     return new Macro().sing();
   }
 
+  confetti(): Macro {
+    return this.trySkill($skill`Cincho: Confetti Extravaganza`);
+  }
+
+  static confetti(): Macro {
+    return new Macro().confetti();
+  }
+
   kill(): Macro {
     if (mainStat === $stat`muscle`) {
       return this.while_(
@@ -43,7 +51,7 @@ export default class Macro extends StrictMacro {
   }
 
   default(): Macro {
-    return this.delevel().sing().kill();
+    return this.delevel().sing().confetti().kill();
   }
 
   static default(): Macro {
