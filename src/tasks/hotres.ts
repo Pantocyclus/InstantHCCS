@@ -14,6 +14,7 @@ import {
 import Macro from "../combat";
 import { Quest } from "../engine/task";
 import { logTestSetup } from "../lib";
+import { baseOutfit } from "../engine/outfit";
 
 export const HotResQuest: Quest = {
   name: "Hot Res",
@@ -44,12 +45,12 @@ export const HotResQuest: Quest = {
           .skill($skill`Use the Force`)
       ),
       choices: { 1387: 3 },
-      outfit: {
+      outfit: () => ({
+        ...baseOutfit(),
         weapon: $item`Fourth of May Cosplay Saber`,
         back: $item`vampyric cloake`,
         offhand: $item`industrial fire extinguisher`,
-        familiar: $familiar`Melodramedary`,
-      },
+      }),
       limit: { tries: 1 },
     },
     {

@@ -18,6 +18,7 @@ import { Quest } from "../engine/task";
 import { burnLibram, crimboCarols, logTestSetup } from "../lib";
 import { innerElfTask } from "./common";
 import Macro from "../combat";
+import { baseOutfit } from "../engine/outfit";
 
 export const WeaponDamageQuest: Quest = {
   name: "Weapon Damage",
@@ -29,12 +30,12 @@ export const WeaponDamageQuest: Quest = {
       completed: () => have($effect`Do You Crush What I Crush?`),
       do: $location`The Dire Warren`,
       combat: new CombatStrategy().macro(Macro.skill($skill`Reflex Hammer`)),
-      outfit: {
-        pants: $item`designer sweatpants`,
+      outfit: () => ({
+        ...baseOutfit(),
         acc1: $item`Lil' Doctor™ bag`,
         familiar: $familiar`Ghost of Crimbo Carols`,
         famequip: $item`none`,
-      },
+      }),
       limit: { tries: 1 },
     },
     { ...innerElfTask },
@@ -53,11 +54,13 @@ export const WeaponDamageQuest: Quest = {
         Macro.skill($skill`Meteor Shower`).skill($skill`Use the Force`)
       ),
       choices: { 1387: 3 },
-      outfit: {
+      outfit: () => ({
+        ...baseOutfit(),
         weapon: $item`none`,
         offhand: $item`none`,
+        familiar: $familiar`Disembodied Hand`,
         famequip: $item`Fourth of May Cosplay Saber`,
-      },
+      }),
       limit: { tries: 1 },
     },
     {

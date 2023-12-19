@@ -47,6 +47,7 @@ import { Quest } from "../engine/task";
 import { complexCandies, getSynthExpBuff } from "../lib";
 import { holidayRunawayTask } from "./common";
 import { mapMonster } from "libram/dist/resources/2020/Cartography";
+import { baseOutfit } from "../engine/outfit";
 
 const statGainBuffs =
   mainStat === $stat`Muscle`
@@ -249,7 +250,7 @@ export const PostCoilQuest: Quest = {
         buy(1, $item`detuned radio`);
         changeMcd(10);
       },
-      outfit: { pants: $item`designer sweatpants` },
+      outfit: baseOutfit,
       limit: { tries: 1 },
     },
     {
@@ -285,12 +286,11 @@ export const PostCoilQuest: Quest = {
           .abort()
       ),
       choices: { 1387: 3 },
-      outfit: {
+      outfit: () => ({
+        ...baseOutfit(),
         weapon: $item`Fourth of May Cosplay Saber`,
-        pants: $item`designer sweatpants`,
         acc3: $item`Lil' Doctor™ bag`,
-        familiar: $familiar`Melodramedary`,
-      },
+      }),
       limit: { tries: 1 },
     },
     {
@@ -303,11 +303,11 @@ export const PostCoilQuest: Quest = {
       name: "Remaining Stat Gain Multipliers",
       completed: () => statGainBuffs.every((ef) => have(ef)),
       do: () => statGainBuffs.forEach((ef) => ensureEffect(ef)),
-      outfit: {
+      outfit: () => ({
         pants: $item`designer sweatpants`,
         acc1: $item`Powerful Glove`,
         modifier: "mp",
-      },
+      }),
       limit: { tries: 1 },
     },
     {
@@ -399,15 +399,11 @@ export const PostCoilQuest: Quest = {
           .if_($monster`amateur ninja`, Macro.skill($skill`Chest X-Ray`))
           .abort()
       ),
-      outfit: {
-        hat: $item`Daylight Shavings Helmet`,
+      outfit: () => ({
+        ...baseOutfit(),
         back: $item`protonic accelerator pack`,
-        offhand: $item`weeping willow wand`,
-        pants: $item`designer sweatpants`,
         acc1: $item`Lil' Doctor™ bag`,
-        familiar: $familiar`Melodramedary`,
-        famequip: $item`dromedary drinking helmet`,
-      },
+      }),
       limit: { tries: 2 },
     },
     {
@@ -427,12 +423,12 @@ export const PostCoilQuest: Quest = {
           .skill($skill`Shoot Ghost`)
           .skill($skill`Trap Ghost`)
       ),
-      outfit: {
+      outfit: () => ({
+        ...baseOutfit(),
         back: $item`protonic accelerator pack`,
-        offhand: $item`weeping willow wand`,
-        pants: $item`designer sweatpants`,
         familiar: $familiar`Nanorhino`,
-      },
+        famequip: $item`tiny stillsuit`,
+      }),
       limit: { tries: 1 },
     },
     {
@@ -458,13 +454,10 @@ export const PostCoilQuest: Quest = {
           .skill($skill`Feel Envy`)
           .skill($skill`Chest X-Ray`)
       ),
-      outfit: {
-        shirt: $item`Jurassic Parka`,
-        pants: $item`designer sweatpants`,
+      outfit: () => ({
+        ...baseOutfit(),
         acc3: $item`Lil' Doctor™ bag`,
-        familiar: $familiar`Melodramedary`,
-        famequip: $item`dromedary drinking helmet`,
-      },
+      }),
       limit: { tries: 1 },
     },
     {
@@ -481,13 +474,10 @@ export const PostCoilQuest: Quest = {
           .skill($skill`Feel Envy`)
           .skill($skill`Chest X-Ray`)
       ),
-      outfit: {
-        shirt: $item`Jurassic Parka`,
-        pants: $item`designer sweatpants`,
+      outfit: () => ({
+        ...baseOutfit(),
         acc3: $item`Lil' Doctor™ bag`,
-        familiar: $familiar`Melodramedary`,
-        famequip: $item`dromedary drinking helmet`,
-      },
+      }),
       limit: { tries: 1 },
     },
     {
@@ -538,11 +528,12 @@ export const PostCoilQuest: Quest = {
         $effects`Elbow Sauce, Saucefingers`.some((e) => have(e)) ||
         !(myClass() === $class`Seal Clubber` || myClass() === $class`Pastamancer`),
       do: $location`The Dire Warren`,
-      outfit: {
-        pants: $item`designer sweatpants`,
+      outfit: () => ({
+        ...baseOutfit(),
         acc3: $item`Lil' Doctor™ bag`,
         familiar: $familiar`Mini-Adventurer`,
-      },
+        famequip: $item`tiny stillsuit`,
+      }),
       combat: new CombatStrategy().macro(
         Macro.trySkill($skill`Reflex Hammer`)
           .trySkill($skill`Feel Hatred`)

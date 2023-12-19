@@ -1,6 +1,17 @@
 import { Task } from "./task";
-import { Engine as BaseEngine, Outfit } from "grimoire-kolmafia";
-import { $effect, $item, $skill, get, have, PropertiesManager, set, uneffect } from "libram";
+import { Engine as BaseEngine, Outfit, outfitSlots } from "grimoire-kolmafia";
+import {
+  $effect,
+  $familiar,
+  $item,
+  $skill,
+  get,
+  have,
+  PropertiesManager,
+  set,
+  undelay,
+  uneffect,
+} from "libram";
 import {
   Item,
   itemAmount,
@@ -15,7 +26,6 @@ import {
   totalFreeRests,
   useSkill,
 } from "kolmafia";
-import { equipDefaults } from "./outfit";
 
 export class trackedResource {
   resource: string | Item;
@@ -155,8 +165,55 @@ export class Engine extends BaseEngine {
     }
   }
 
+  createOutfit(task: Task): Outfit {
+    // Handle unequippables in outfit here
+    const spec = undelay(task.outfit);
+    if (spec === undefined) {
+      return new Outfit();
+    }
+
+    if (spec.familiar && !have(spec.familiar)) {
+      print(`Ignoring using a familiar because we don't have ${spec.familiar}`, "red");
+      spec.familiar = $familiar.none;
+    }
+
+    if (spec instanceof Outfit) {
+      const badSlots = Array.from(spec.equips.entries())
+        .filter(([, it]) => !have(it) && it !== $item.none)
+        .map(([s]) => s);
+      badSlots.forEach((s) => {
+        print(`Ignoring slot ${s} because we don't have ${spec.equips.get(s) ?? ""}`, "red");
+        spec.equips.delete(s);
+      });
+      return spec.clone();
+    }
+
+    // spec is an OutfitSpec
+    for (const slotName of outfitSlots) {
+      const itemOrItems = spec[slotName];
+      if (itemOrItems) {
+        if (itemOrItems instanceof Item) {
+          if (!have(itemOrItems) && itemOrItems !== null) {
+            print(`Ignoring slot ${slotName} because we don't have ${itemOrItems}`, "red");
+            spec[slotName] = undefined;
+          }
+        } else {
+          if (!itemOrItems.some((it) => have(it) && it !== null)) {
+            print(
+              `Ignoring slot ${slotName} because we don't have ${itemOrItems
+                .map((it) => it.name)
+                .join(", ")}`,
+              "red"
+            );
+            spec[slotName] = undefined;
+          }
+        }
+      }
+    }
+    return Outfit.from(spec, new Error("Failed to equip outfit"));
+  }
+
   dress(task: Task, outfit: Outfit): void {
-    if (task.combat !== undefined && !outfit.skipDefaults) equipDefaults(outfit);
     super.dress(task, outfit);
   }
 
@@ -171,6 +228,8 @@ export class Engine extends BaseEngine {
       hpAutoRecovery: -0.05,
       mpAutoRecovery: -0.05,
       maximizerCombinationLimit: 0,
+      shadowLabyrinthGoal: "effects",
+      requireBoxServants: false,
     });
   }
 }

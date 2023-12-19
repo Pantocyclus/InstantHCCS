@@ -56,6 +56,7 @@ import { Quest } from "../engine/task";
 import { burnLibram } from "../lib";
 import { innerElfTask } from "./common";
 import { mapMonster } from "libram/dist/resources/2020/Cartography";
+import { baseOutfit } from "../engine/outfit";
 
 function sendAutumnaton(): void {
   if (have($item`autumn-aton`)) cliExecute("autumnaton send Shadow Rift");
@@ -140,9 +141,11 @@ export const LevelingQuest: Quest = {
           .if_($item`blue rocket`, Macro.item($item`blue rocket`))
           .default()
       ),
-      outfit: {
+      outfit: () => ({
+        ...baseOutfit(),
         familiar: $familiar`Shorter-Order Cook`,
-      },
+        famequip: $item`tiny stillsuit`,
+      }),
       post: (): void => {
         if (have(ClosedCircuitPayphone.rufusTarget() as Item)) {
           withChoice(1498, 1, () => use($item`closed-circuit pay phone`));
@@ -167,7 +170,11 @@ export const LevelingQuest: Quest = {
         get("_snojoFreeFights") >= 5,
       do: $location`The X-32-F Combat Training Snowman`,
       combat: new CombatStrategy().macro(Macro.default()),
-      outfit: { familiar: $familiar`Garbage Fire` },
+      outfit: () => ({
+        ...baseOutfit(),
+        familiar: $familiar`Garbage Fire`,
+        famequip: $item`tiny stillsuit`,
+      }),
       post: (): void => {
         if (have($item`burning newspaper`)) cliExecute("create burning paper crane");
         sendAutumnaton();
@@ -191,10 +198,7 @@ export const LevelingQuest: Quest = {
         sendAutumnaton();
       },
       combat: new CombatStrategy().macro(Macro.default()),
-      outfit: {
-        familiar: $familiar`Melodramedary`,
-        famequip: $item`dromedary drinking helmet`,
-      },
+      outfit: baseOutfit,
       limit: { tries: 5 },
     },
     {
@@ -210,12 +214,11 @@ export const LevelingQuest: Quest = {
           .if_($monster`LOV Engineer`, Macro.skill($skill`Toynado`).repeat())
           .if_($monster`LOV Equivocator`, Macro.default())
       ),
-      outfit: {
+      outfit: () => ({
+        ...baseOutfit(),
         weapon: $item`June cleaver`,
         shirt: $item`makeshift garbage shirt`,
-        familiar: $familiar`Melodramedary`,
-        famequip: $item`dromedary drinking helmet`,
-      },
+      }),
       acquire: [{ item: $item`makeshift garbage shirt` }],
       limit: { tries: 1 },
       post: (): void => {
@@ -235,11 +238,10 @@ export const LevelingQuest: Quest = {
         sendAutumnaton();
       },
       combat: new CombatStrategy().macro(Macro.default()),
-      outfit: {
+      outfit: () => ({
+        ...baseOutfit(),
         shirt: $item`makeshift garbage shirt`,
-        familiar: $familiar`Melodramedary`,
-        famequip: $item`dromedary drinking helmet`,
-      },
+      }),
       acquire: [{ item: $item`makeshift garbage shirt` }],
       limit: { tries: 1 },
     },
@@ -251,11 +253,10 @@ export const LevelingQuest: Quest = {
       completed: () => get("_witchessFights") >= 3,
       do: () => Witchess.fightPiece($monster`Witchess Knight`),
       combat: new CombatStrategy().macro(Macro.default()),
-      outfit: {
+      outfit: () => ({
+        ...baseOutfit(),
         shirt: $item`makeshift garbage shirt`,
-        familiar: $familiar`Melodramedary`,
-        famequip: $item`dromedary drinking helmet`,
-      },
+      }),
       acquire: [{ item: $item`makeshift garbage shirt` }],
       post: () => sendAutumnaton(),
       limit: { tries: 3 },
@@ -270,11 +271,10 @@ export const LevelingQuest: Quest = {
         CombatLoversLocket.monstersReminisced().includes($monster`Witchess Knight`),
       do: () => CombatLoversLocket.reminisce($monster`Witchess Knight`),
       combat: new CombatStrategy().macro(Macro.default()),
-      outfit: {
+      outfit: () => ({
+        ...baseOutfit(),
         shirt: $item`makeshift garbage shirt`,
-        familiar: $familiar`Melodramedary`,
-        famequip: $item`dromedary drinking helmet`,
-      },
+      }),
       acquire: [{ item: $item`makeshift garbage shirt` }],
       post: () => sendAutumnaton(),
       limit: { tries: 1 },
@@ -287,12 +287,11 @@ export const LevelingQuest: Quest = {
       completed: () => have($item`dented scepter`),
       do: () => Witchess.fightPiece($monster`Witchess King`),
       combat: new CombatStrategy().macro(Macro.delevel().attack().repeat()),
-      outfit: {
+      outfit: () => ({
+        ...baseOutfit(),
         weapon: $item`Fourth of May Cosplay Saber`,
         shirt: $item`makeshift garbage shirt`,
-        familiar: $familiar`Melodramedary`,
-        famequip: $item`dromedary drinking helmet`,
-      },
+      }),
       acquire: [{ item: $item`makeshift garbage shirt` }],
       post: () => sendAutumnaton(),
       limit: { tries: 1 },
@@ -306,12 +305,14 @@ export const LevelingQuest: Quest = {
           .attack()
           .repeat()
       ),
-      outfit: {
+      outfit: () => ({
+        ...baseOutfit(),
         weapon: $item`Fourth of May Cosplay Saber`,
         offhand: $item`dented scepter`,
         shirt: $item`makeshift garbage shirt`,
         familiar: $familiar`Shorter-Order Cook`,
-      },
+        famequip: $item`tiny stillsuit`,
+      }),
       acquire: [{ item: $item`makeshift garbage shirt` }],
       post: () => sendAutumnaton(),
       limit: { tries: 1 },
@@ -325,11 +326,12 @@ export const LevelingQuest: Quest = {
       do: () => visitUrl("main.php?fightgodlobster=1"),
       combat: new CombatStrategy().macro(Macro.default()),
       choices: { 1310: () => (have($item`God Lobster's Ring`) ? 2 : 1) }, // Get -combat on last fight
-      outfit: {
+      outfit: () => ({
+        ...baseOutfit(),
         shirt: $item`makeshift garbage shirt`,
         famequip: $items`God Lobster's Ring, God Lobster's Scepter, none`,
         familiar: $familiar`God Lobster`,
-      },
+      }),
       acquire: [{ item: $item`makeshift garbage shirt` }],
       post: () => sendAutumnaton(),
       limit: { tries: 3 },
@@ -346,11 +348,10 @@ export const LevelingQuest: Quest = {
         1324: 5,
       },
       combat: new CombatStrategy().macro(Macro.trySkill($skill`Bowl Sideways`).default()),
-      outfit: {
+      outfit: () => ({
+        ...baseOutfit(),
         shirt: $item`makeshift garbage shirt`,
-        familiar: $familiar`Melodramedary`,
-        famequip: $item`dromedary drinking helmet`,
-      },
+      }),
       acquire: [{ item: $item`makeshift garbage shirt` }],
       post: () => sendAutumnaton(),
       limit: { tries: 11 },
@@ -365,11 +366,13 @@ export const LevelingQuest: Quest = {
         get("_feelPrideUsed") > 0,
       do: $location`The Dire Warren`,
       combat: new CombatStrategy().macro(Macro.runaway()),
-      outfit: {
+      outfit: () => ({
+        ...baseOutfit(),
         offhand: $item`latte lovers member's mug`,
         familiar: $familiar`Pair of Stomping Boots`,
+        famequip: $item`tiny stillsuit`,
         modifier: "familiar weight",
-      },
+      }),
       post: () => sendAutumnaton(),
       limit: { tries: 10 },
     },
@@ -384,11 +387,10 @@ export const LevelingQuest: Quest = {
         if (getFuel() < 100 && !get("_missileLauncherUsed")) fillTo(100);
       },
       do: $location`Uncle Gator's Country Fun-Time Liquid Waste Sluice`,
-      outfit: {
+      outfit: () => ({
+        ...baseOutfit(),
         shirt: $item`makeshift garbage shirt`,
-        familiar: $familiar`Melodramedary`,
-        famequip: $item`dromedary drinking helmet`,
-      },
+      }),
       combat: new CombatStrategy().macro(
         Macro.trySkill($skill`Feel Pride`)
           .trySkill($skill`Cincho: Confetti Extravaganza`)
@@ -424,12 +426,11 @@ export const LevelingQuest: Quest = {
             .default()
         ).abort()
       ),
-      outfit: {
+      outfit: () => ({
+        ...baseOutfit(),
         offhand: $item`Kramco Sausage-o-Matic™`,
         shirt: $item`makeshift garbage shirt`,
-        familiar: $familiar`Melodramedary`,
-        famequip: $item`dromedary drinking helmet`,
-      },
+      }),
       acquire: [{ item: $item`makeshift garbage shirt` }],
       limit: { tries: 1 },
       post: (): void => {
@@ -454,10 +455,7 @@ export const LevelingQuest: Quest = {
           .trySkill($skill`Portscan`)
           .default()
       ),
-      outfit: {
-        familiar: $familiar`Melodramedary`,
-        famequip: $item`dromedary drinking helmet`,
-      },
+      outfit: baseOutfit,
       post: () => sendAutumnaton(),
       limit: { tries: 1 },
     },
@@ -470,10 +468,7 @@ export const LevelingQuest: Quest = {
       completed: () => get("_speakeasyFreeFights", 0) >= 2,
       do: $location`An Unusually Quiet Barroom Brawl`,
       combat: new CombatStrategy().macro(Macro.trySkill($skill`Portscan`).default()),
-      outfit: {
-        familiar: $familiar`Melodramedary`,
-        famequip: $item`dromedary drinking helmet`,
-      },
+      outfit: baseOutfit,
       post: () => sendAutumnaton(),
       limit: { tries: 1 },
     },
@@ -487,10 +482,7 @@ export const LevelingQuest: Quest = {
       do: $location`An Unusually Quiet Barroom Brawl`,
       post: () => sendAutumnaton(),
       combat: new CombatStrategy().macro(Macro.default()),
-      outfit: {
-        familiar: $familiar`Melodramedary`,
-        famequip: $item`dromedary drinking helmet`,
-      },
+      outfit: baseOutfit,
       limit: { tries: 1 },
     },
     {
@@ -509,12 +501,10 @@ export const LevelingQuest: Quest = {
       // eslint-disable-next-line libram/verify-constants
       do: () => mapMonster($location`An Unusually Quiet Barroom Brawl`, $monster`goblin flapper`),
       combat: new CombatStrategy().macro(Macro.skill($skill`Spit jurassic acid`).abort()),
-      outfit: {
-        shirt: $item`Jurassic Parka`,
+      outfit: () => ({
+        ...baseOutfit(),
         offhand: $item`latte lovers member's mug`,
-        familiar: $familiar`Melodramedary`,
-        famequip: $item`dromedary drinking helmet`,
-      },
+      }),
     },
     {
       name: "DMT",
@@ -529,11 +519,13 @@ export const LevelingQuest: Quest = {
           .if_($monster`Government agent`, Macro.trySkill($skill`Feel Envy`).default())
           .default()
       ),
-      outfit: {
+      outfit: () => ({
+        ...baseOutfit(),
         shirt: $item`makeshift garbage shirt`,
         offhand: $item`latte lovers member's mug`,
         familiar: $familiar`Machine Elf`,
-      },
+        famequip: $item`tiny stillsuit`,
+      }),
       acquire: [{ item: $item`makeshift garbage shirt` }],
       limit: { tries: 5 },
       post: (): void => {
@@ -553,10 +545,7 @@ export const LevelingQuest: Quest = {
       combat: new CombatStrategy().macro(Macro.default()),
       post: () => sendAutumnaton(),
       limit: { tries: 2 },
-      outfit: {
-        familiar: $familiar`Melodramedary`,
-        famequip: $item`dromedary drinking helmet`,
-      },
+      outfit: baseOutfit,
     },
   ],
 };

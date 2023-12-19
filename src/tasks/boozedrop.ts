@@ -25,6 +25,7 @@ import Macro from "../combat";
 import { Quest } from "../engine/task";
 import { CombatStrategy } from "grimoire-kolmafia";
 import { logTestSetup } from "../lib";
+import { baseOutfit } from "../engine/outfit";
 
 export const BoozeDropQuest: Quest = {
   name: "Booze Drop",
@@ -37,7 +38,7 @@ export const BoozeDropQuest: Quest = {
       do: (): void => {
         if (!have($item`oversized sparkler`)) buy(1, $item`oversized sparkler`);
       },
-      outfit: { pants: $item`designer sweatpants` },
+      outfit: baseOutfit,
       limit: { tries: 1 },
     },
     {
@@ -45,11 +46,12 @@ export const BoozeDropQuest: Quest = {
       ready: () => have($familiar`Mini-Adventurer`) && myClass() === $class`Accordion Thief`,
       completed: () => have($effect`Bailando, Fernando`) || myClass() !== $class`Accordion Thief`,
       do: $location`The Dire Warren`,
-      outfit: {
-        pants: $item`designer sweatpants`,
+      outfit: () => ({
+        ...baseOutfit(),
         acc3: $item`Lil' Doctor™ bag`,
         familiar: $familiar`Mini-Adventurer`,
-      },
+        famequp: $item`tiny stillsuit`,
+      }),
       combat: new CombatStrategy().macro(
         Macro.trySkill($skill`Reflex Hammer`)
           .trySkill($skill`Snokebomb`)
@@ -68,12 +70,13 @@ export const BoozeDropQuest: Quest = {
           .skill(toSkill(`%fn, let's pledge allegiance to a Zone`))
           .default()
       ),
-      outfit: {
-        hat: $item`Daylight Shavings Helmet`,
+      outfit: () => ({
+        ...baseOutfit(),
         back: $item`vampyric cloake`,
         pants: $item`designer sweatpants`,
         familiar: $familiar`Patriotic Eagle`,
-      },
+        famequp: $item`tiny stillsuit`,
+      }),
       limit: { tries: 1 },
       post: (): void => {
         cliExecute("hottub");

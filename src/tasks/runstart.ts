@@ -10,9 +10,10 @@ import {
   useSkill,
   visitUrl,
 } from "kolmafia";
-import { $effect, $familiar, $item, $skill, $stat, get, have, SongBoom } from "libram";
+import { $effect, $item, $skill, $stat, get, have, SongBoom } from "libram";
 import { mainStat } from "../combat";
 import { Quest } from "../engine/task";
+import { baseOutfit } from "../engine/outfit";
 
 export const RunStartQuest: Quest = {
   name: "Run Start",
@@ -130,7 +131,7 @@ export const RunStartQuest: Quest = {
             mainStat === $stat`Muscle` ? "mus" : mainStat === $stat`Mysticality` ? "myst" : "mox"
           }`
         ),
-      outfit: { familiar: $familiar`Melodramedary` },
+      outfit: baseOutfit,
       limit: { tries: 1 },
     },
     {

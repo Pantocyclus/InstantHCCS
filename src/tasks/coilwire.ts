@@ -16,6 +16,7 @@ import Macro, { mainStat } from "../combat";
 import { Quest } from "../engine/task";
 import { logTestSetup } from "../lib";
 import { holidayRunawayTask } from "./common";
+import { baseOutfit } from "../engine/outfit";
 
 export const CoilWireQuest: Quest = {
   name: "Coil Wire",
@@ -38,13 +39,13 @@ export const CoilWireQuest: Quest = {
           .attack()
           .repeat()
       ),
-      outfit: {
-        hat: $item`Daylight Shavings Helmet`,
+      outfit: () => ({
+        ...baseOutfit(),
         back: $item`protonic accelerator pack`,
         offhand: $item`Kramco Sausage-o-Matic™`,
-        pants: $item`designer sweatpants`,
         familiar: $familiar`Crimbo Shrub`,
-      },
+        famequp: $item`tiny stillsuit`,
+      }),
       post: () => useSkill(Math.floor(mySoulsauce() / 5), $skill`Soul Food`),
       limit: { tries: 1 },
     },

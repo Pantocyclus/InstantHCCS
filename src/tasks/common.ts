@@ -15,6 +15,7 @@ import {
 } from "libram";
 import Macro from "../combat";
 import { Task } from "../engine/task";
+import { baseOutfit } from "../engine/outfit";
 
 const MOTHERSLIME_CLAN = "The Genius Clan";
 const VIP_CLAN = "Bonus Adventures from Hell";
@@ -44,12 +45,14 @@ export const innerElfTask: Task = {
   combat: new CombatStrategy().macro(Macro.skill($skill`KGB tranquilizer dart`)),
   choices: { 326: 1 },
   effects: [$effect`Blood Bubble`],
-  outfit: {
+  outfit: () => ({
+    ...baseOutfit(),
     acc1: $item`Kremlin's Greatest Briefcase`,
     acc2: $item`Eight Days a Week Pill Keeper`,
     pants: $item`designer sweatpants`,
     familiar: $familiar`Machine Elf`,
-  },
+    famequip: $item`tiny stillsuit`,
+  }),
   limit: { tries: 1 },
 };
 
@@ -62,9 +65,9 @@ export const meteorShowerTask: Task = {
     Macro.skill($skill`Meteor Shower`).skill($skill`Use the Force`)
   ),
   choices: { 1387: 3 },
-  outfit: {
+  outfit: () => ({
+    ...baseOutfit(),
     weapon: $item`Fourth of May Cosplay Saber`,
-    familiar: $familiar`Melodramedary`,
-  },
+  }),
   limit: { tries: 1 },
 };

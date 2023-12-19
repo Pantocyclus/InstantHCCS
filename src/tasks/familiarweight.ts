@@ -33,6 +33,7 @@ import Macro from "../combat";
 import { Quest } from "../engine/task";
 import { burnLibram, logTestSetup } from "../lib";
 import { meteorShowerTask } from "./common";
+import { baseOutfit } from "../engine/outfit";
 
 export const FamiliarWeightQuest: Quest = {
   name: "Familiar Weight",
@@ -57,7 +58,7 @@ export const FamiliarWeightQuest: Quest = {
       do: (): void => {
         if (!have($item`sombrero-mounted sparkler`)) buy(1, $item`sombrero-mounted sparkler`);
       },
-      outfit: { pants: $item`designer sweatpants` },
+      outfit: baseOutfit,
       limit: { tries: 1 },
     },
     {
@@ -71,15 +72,15 @@ export const FamiliarWeightQuest: Quest = {
           .if_($monster`sausage goblin`, Macro.default())
           .abort()
       ),
-      outfit: {
-        hat: $item`Daylight Shavings Helmet`,
+      outfit: () => ({
+        ...baseOutfit(),
         offhand: $item`Kramco Sausage-o-Matic™`,
         shirt: $item`makeshift garbage shirt`,
-        pants: $item`designer sweatpants`,
         acc1: $item`Kremlin's Greatest Briefcase`,
         acc3: $item`Lil' Doctor™ bag`,
         familiar: $familiar`Galloping Grill`,
-      },
+        famequp: $item`tiny stillsuit`,
+      }),
       acquire: [{ item: $item`makeshift garbage shirt` }],
       limit: { tries: 2 },
       post: (): void => {
@@ -132,17 +133,17 @@ export const FamiliarWeightQuest: Quest = {
       name: "Set Gingerbread Clock",
       completed: () => get("_gingerbreadCityTurns") > 0,
       do: $location`Gingerbread Civic Center`,
-      outfit: {
-        hat: $item`Daylight Shavings Helmet`,
+      outfit: () => ({
+        ...baseOutfit(),
         offhand: $item`familiar scrapbook`,
-        pants: $item`designer sweatpants`,
         acc1: $item`Kremlin's Greatest Briefcase`,
         acc3: $item`Lil' Doctor™ bag`,
         familiar:
           itemAmount($item`sprinkles`) >= 50
             ? $familiar`Pair of Stomping Boots`
             : $familiar`Chocolate Lab`,
-      },
+        famequip: $item`tiny stillsuit`,
+      }),
       choices: { 1215: 1 },
       limit: { tries: 1 },
     },
@@ -156,14 +157,14 @@ export const FamiliarWeightQuest: Quest = {
         (get("_chestXRayUsed") >= 3 && get("_gingerbreadMobHitUsed")) ||
         get("_banderRunaways") >= (familiarWeight(myFamiliar()) + weightAdjustment()) / 5,
       do: $location`Gingerbread Upscale Retail District`,
-      outfit: {
-        hat: $item`Daylight Shavings Helmet`,
+      outfit: () => ({
+        ...baseOutfit(),
         offhand: $item`familiar scrapbook`,
-        pants: $item`designer sweatpants`,
         acc1: $item`Kremlin's Greatest Briefcase`,
         acc3: $item`Lil' Doctor™ bag`,
         familiar: $familiar`Chocolate Lab`,
-      },
+        famequip: $item`tiny stillsuit`,
+      }),
       combat: new CombatStrategy().macro(
         Macro.externalIf(
           itemAmount($item`sprinkles`) < 50 &&
@@ -189,14 +190,14 @@ export const FamiliarWeightQuest: Quest = {
         have($item`gingerbread spice latte`) ||
         have($effect`Whole Latte Love`),
       do: $location`Gingerbread Upscale Retail District`,
-      outfit: {
-        hat: $item`Daylight Shavings Helmet`,
+      outfit: () => ({
+        ...baseOutfit(),
         offhand: $item`familiar scrapbook`,
-        pants: $item`designer sweatpants`,
         acc1: $item`Kremlin's Greatest Briefcase`,
         acc3: $item`Lil' Doctor™ bag`,
         familiar: $familiar`Pair of Stomping Boots`,
-      },
+        famequip: $item`tiny stillsuit`,
+      }),
       combat: new CombatStrategy().macro(Macro.runaway()),
       choices: {
         1208: 3,
@@ -214,14 +215,12 @@ export const FamiliarWeightQuest: Quest = {
       completed: () => get("_chestXRayUsed") >= 3 || have($effect`Toiletbrush Moustache`),
       do: $location`The Dire Warren`,
       combat: new CombatStrategy().macro(Macro.trySkill($skill`Chest X-Ray`).abort()),
-      outfit: {
-        hat: $item`Daylight Shavings Helmet`,
+      outfit: () => ({
+        ...baseOutfit(),
         offhand: $item`familiar scrapbook`,
-        pants: $item`designer sweatpants`,
         acc1: $item`Kremlin's Greatest Briefcase`,
         acc3: $item`Lil' Doctor™ bag`,
-        familiar: $familiar`Melodramedary`,
-      },
+      }),
       limit: { tries: 1 },
     },
     { ...meteorShowerTask },
