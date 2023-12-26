@@ -18,6 +18,7 @@ import {
   myInebriety,
   myLevel,
   numericModifier,
+  restoreMp,
   runChoice,
   setLocation,
   totalFreeRests,
@@ -131,6 +132,7 @@ export const LevelingQuest: Quest = {
       prepare: (): void => {
         if (get("umbrellaState") !== "broken") cliExecute("umbrella ml");
         if (get("parkaMode") !== "spikolodon") cliExecute("parka spikolodon");
+        restoreMp(50);
       },
       completed: () =>
         have($item`Rufus's shadow lodestone`) ||
@@ -546,6 +548,14 @@ export const LevelingQuest: Quest = {
       post: () => sendAutumnaton(),
       limit: { tries: 2 },
       outfit: baseOutfit,
+    },
+    {
+      name: "Open wardrobe-o-matic", // Assume we won't be leveling any more, even in aftercore, for the rest of the day
+      completed: () =>
+        !have($item`wardrobe-o-matic`) ||
+        $items`futuristic shirt, futuristic hat, futuristic collar`.some((it) => have(it)),
+      do: () => use($item`wardrobe-o-matic`),
+      limit: { tries: 1 },
     },
   ],
 };

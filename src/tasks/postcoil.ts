@@ -334,6 +334,7 @@ export const PostCoilQuest: Quest = {
     },
     {
       name: "Buffs",
+      prepare: () => fillTo(37),
       completed: () =>
         myMeat() <= 1000 || levelingBuffs.every((ef) => have(ef)) || get("_feelPrideUsed") > 0,
       do: () =>

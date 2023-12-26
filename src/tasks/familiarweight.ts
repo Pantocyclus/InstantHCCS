@@ -75,13 +75,11 @@ export const FamiliarWeightQuest: Quest = {
       outfit: () => ({
         ...baseOutfit(),
         offhand: $item`Kramco Sausage-o-Matic™`,
-        shirt: $item`makeshift garbage shirt`,
         acc1: $item`Kremlin's Greatest Briefcase`,
         acc3: $item`Lil' Doctor™ bag`,
         familiar: $familiar`Galloping Grill`,
-        famequp: $item`tiny stillsuit`,
+        famequip: $item`tiny stillsuit`,
       }),
-      acquire: [{ item: $item`makeshift garbage shirt` }],
       limit: { tries: 2 },
       post: (): void => {
         eat(

@@ -50,7 +50,7 @@ export const BoozeDropQuest: Quest = {
         ...baseOutfit(),
         acc3: $item`Lil' Doctor™ bag`,
         familiar: $familiar`Mini-Adventurer`,
-        famequp: $item`tiny stillsuit`,
+        famequip: $item`tiny stillsuit`,
       }),
       combat: new CombatStrategy().macro(
         Macro.trySkill($skill`Reflex Hammer`)
@@ -75,7 +75,7 @@ export const BoozeDropQuest: Quest = {
         back: $item`vampyric cloake`,
         pants: $item`designer sweatpants`,
         familiar: $familiar`Patriotic Eagle`,
-        famequp: $item`tiny stillsuit`,
+        famequip: $item`tiny stillsuit`,
       }),
       limit: { tries: 1 },
       post: (): void => {

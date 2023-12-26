@@ -44,7 +44,7 @@ export const CoilWireQuest: Quest = {
         back: $item`protonic accelerator pack`,
         offhand: $item`Kramco Sausage-o-Matic™`,
         familiar: $familiar`Crimbo Shrub`,
-        famequp: $item`tiny stillsuit`,
+        famequip: $item`tiny stillsuit`,
       }),
       post: () => useSkill(Math.floor(mySoulsauce() / 5), $skill`Soul Food`),
       limit: { tries: 1 },

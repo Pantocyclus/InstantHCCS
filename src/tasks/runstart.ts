@@ -2,7 +2,6 @@ import {
   availableAmount,
   cliExecute,
   getCampground,
-  getWorkshed,
   retrieveItem,
   // reverseNumberology,
   runChoice,
@@ -207,12 +206,6 @@ export const RunStartQuest: Quest = {
         have($item`autumn leaf`) ||
         have($effect`Crunching Leaves`),
       do: () => cliExecute("autumnaton send The Sleazy Back Alley"),
-      limit: { tries: 1 },
-    },
-    {
-      name: "Workshed",
-      completed: () => getWorkshed() === $item`Asdon Martin keyfob`,
-      do: () => use($item`Asdon Martin keyfob`),
       limit: { tries: 1 },
     },
   ],

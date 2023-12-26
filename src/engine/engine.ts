@@ -224,10 +224,30 @@ export class Engine extends BaseEngine {
 
   initPropertiesManager(manager: PropertiesManager): void {
     super.initPropertiesManager(manager);
+    const bannedAutoRestorers = [
+      "sleep on your clan sofa",
+      "rest in your campaway tent",
+      "rest at the chateau",
+      "rest at your campground",
+      "free rest",
+    ];
+    const bannedAutoHpRestorers = [...bannedAutoRestorers];
+    const bannedAutoMpRestorers = [...bannedAutoRestorers];
+    const hpItems = get("hpAutoRecoveryItems")
+      .split(";")
+      .filter((s) => !bannedAutoHpRestorers.includes(s))
+      .join(";");
+    const mpItems = Array.from(
+      new Set([...get("mpAutoRecoveryItems").split(";"), "doc galaktik's invigorating tonic"])
+    )
+      .filter((s) => !bannedAutoMpRestorers.includes(s))
+      .join(";");
     manager.set({
       hpAutoRecovery: -0.05,
       mpAutoRecovery: -0.05,
-      maximizerCombinationLimit: 0,
+      maximizerCombinationLimit: 100000,
+      hpAutoRecoveryItems: hpItems,
+      mpAutoRecoveryItems: mpItems,
       shadowLabyrinthGoal: "effects",
       requireBoxServants: false,
     });
