@@ -1,5 +1,5 @@
 import { CombatStrategy } from "grimoire-kolmafia";
-import { cliExecute, effectModifier, use, useFamiliar } from "kolmafia";
+import { cliExecute, effectModifier, useFamiliar } from "kolmafia";
 import {
   $effect,
   $familiar,
@@ -8,6 +8,7 @@ import {
   $location,
   $monster,
   $skill,
+  CombatLoversLocket,
   CommunityService,
   ensureEffect,
   get,
@@ -41,15 +42,12 @@ export const WeaponDamageQuest: Quest = {
     { ...innerElfTask },
     {
       name: "Ungulith",
-      ready: () =>
-        get("photocopyMonster") === $monster`ungulith` &&
-        get("_meteorShowerUses") < 5 &&
-        get("_saberForceUses") < 5,
+      ready: () => get("_meteorShowerUses") < 5 && get("_saberForceUses") < 5,
       prepare: () => useFamiliar($familiar`Disembodied Hand`),
       completed: () =>
         have($effect`Meteor Showered`) &&
         (have($item`corrupted marrow`) || have($effect`Cowrruption`)),
-      do: () => use($item`photocopied monster`),
+      do: () => CombatLoversLocket.reminisce($monster`ungulith`),
       combat: new CombatStrategy().macro(
         Macro.skill($skill`Meteor Shower`).skill($skill`Use the Force`)
       ),

@@ -1,5 +1,5 @@
 import { CombatStrategy } from "grimoire-kolmafia";
-import { cliExecute, myLevel } from "kolmafia";
+import { myLevel } from "kolmafia";
 import {
   $effect,
   $familiar,
@@ -37,7 +37,7 @@ export const innerElfTask: Task = {
   ready: () => myLevel() >= 13 && get("_kgbTranquilizerDartUses") < 3,
   prepare: (): void => {
     Clan.join(MOTHERSLIME_CLAN);
-    if (!get("_photocopyUsed") && !have($item`photocopied monster`)) cliExecute("fax receive");
+    // if (!get("_photocopyUsed") && !have($item`photocopied monster`)) cliExecute("fax receive");
   },
   completed: () => have($effect`Inner Elf`),
   do: $location`The Slime Tube`,

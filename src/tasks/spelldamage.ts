@@ -59,6 +59,7 @@ export const SpellDamageQuest: Quest = {
       outfit: { modifier: "HP 500max, Spooky Resistance", familiar: $familiar`Exotic Parrot` },
       effects: $effects`Astral Shell, Elemental Saucesphere`,
       post: (): void => {
+        // eslint-disable-next-line libram/verify-constants
         if (!have($effect`[1458]Blood Sugar Sauce Magic`))
           useSkill($skill`Blood Sugar Sauce Magic`);
       },
