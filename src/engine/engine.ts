@@ -81,6 +81,7 @@ export const freeFightResources: trackedResource[] = [
 
 export const potentiallyFreeFightResources: trackedResource[] = [
   new trackedResource("_backUpUses", "Backup Camera", 11),
+  new trackedResource("_leafMonstersFought", "Flaming Leaflets", 5),
   new trackedResource("_locketMonstersFought", "Locket Reminisces", 3),
   new trackedResource("_photocopyUsed", "Fax Machine", 1),
   new trackedResource("_chateauMonsterFought", "Chateau Painting", 1),
@@ -94,11 +95,13 @@ export const farmingResourceResources: trackedResource[] = [
   new trackedResource("_deckCardsDrawn", "Deck Draws", 15),
   new trackedResource("_macrometeoriteUses", "Macrometeorites", 10),
   new trackedResource("_AAABatteriesUsed", "Batteries (AAA)", 7),
+  new trackedResource("_augSkillsCasts", "August Scepter Charges", 5),
   new trackedResource("_monkeyPawWishesUsed", "Monkey Paw Wishes", 5),
   new trackedResource("tomeSummons", "Tome Summons", 3),
   new trackedResource($item`peppermint sprout`, "Peppermint Sprouts", 3), // Assumes garden is peppermint
   new trackedResource("_genieWishesUsed", "Genie Wishes", 3),
   new trackedResource("_pottedTeaTreeUsed", "Tea Tree", 3),
+  new trackedResource("_monsterHabitatsRecalled", "Monster Habitats", 3),
   new trackedResource("_favoriteBirdVisited", "Favorite Bird", 1),
   new trackedResource("_clanFortuneBuffUsed", "Zatara Consult", 1),
   new trackedResource("_floundryItemCreated", "Clan Floundry", 1),
