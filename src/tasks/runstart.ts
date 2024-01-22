@@ -18,6 +18,7 @@ import { baseOutfit } from "../engine/outfit";
 
 export const RunStartQuest: Quest = {
   name: "Run Start",
+  completed: () => get("kingLiberated"),
   tasks: [
     {
       name: "Council",
