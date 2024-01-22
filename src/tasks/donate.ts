@@ -1,4 +1,5 @@
 import {
+  buy,
   cliExecute,
   fullnessLimit,
   inebrietyLimit,
@@ -12,7 +13,17 @@ import {
   spleenLimit,
   turnsPlayed,
 } from "kolmafia";
-import { $effect, $effects, CommunityService, get, have, set, sumNumbers, uneffect } from "libram";
+import {
+  $effect,
+  $effects,
+  $item,
+  CommunityService,
+  get,
+  have,
+  set,
+  sumNumbers,
+  uneffect,
+} from "libram";
 import {
   farmingResourceResources,
   freeBanishResources,
@@ -146,6 +157,8 @@ export const DonateQuest: Quest = {
       completed: () => !have($effect`Feeling Lost`) && !have($effect`Cowrruption`),
       do: (): void => {
         for (const ef of $effects`Feeling Lost, Cowrruption, Cold Hearted, Citizen of a Zone`) {
+          if (!have($item`soft green echo eyedrop antidote`))
+            buy(1, $item`soft green echo eyedrop antidote`, 5000);
           if (have(ef)) uneffect(ef);
         }
       },
