@@ -85,7 +85,7 @@ const synthExpBuff =
     : $effect`Synthesis: Style`;
 const juiceBarBuffs =
   myClass() === $class`Seal Clubber`
-    ? $effects`Over the Ocean`
+    ? [] //$effects`Over the Ocean`
     : myClass() === $class`Turtle Tamer`
     ? $effects`Newt Gets In Your Eyes, Baconstoned`
     : myClass() === $class`Pastamancer`
