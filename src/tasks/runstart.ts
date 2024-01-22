@@ -1,15 +1,17 @@
 import {
   availableAmount,
+  canInteract,
   cliExecute,
   getCampground,
   retrieveItem,
   // reverseNumberology,
   runChoice,
+  takeStorage,
   use,
   useSkill,
   visitUrl,
 } from "kolmafia";
-import { $effect, $item, $skill, $stat, get, have, SongBoom } from "libram";
+import { $effect, $item, $items, $skill, $stat, get, have, SongBoom } from "libram";
 import { mainStat } from "../combat";
 import { Quest } from "../engine/task";
 import { baseOutfit } from "../engine/outfit";
@@ -67,6 +69,18 @@ export const RunStartQuest: Quest = {
       limit: { tries: 3 },
     },
     */
+    {
+      name: "Softcore Pulls",
+      completed: () => !canInteract() || get("_roninStoragePulls").split(",").length >= 5,
+      do: (): void => {
+        $items`meteorite necklace, Stick-Knife of Loathing, Staff of the Roaring Hearth, norwhal helmet, witch's bra`.forEach(
+          (it) => {
+            if (!have(it)) takeStorage(it, 1);
+          }
+        );
+      },
+      limit: { tries: 1 },
+    },
     {
       name: "Borrowed Time",
       completed: () => get("_borrowedTimeUsed"),
