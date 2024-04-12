@@ -223,5 +223,11 @@ export const RunStartQuest: Quest = {
       do: () => cliExecute("autumnaton send The Sleazy Back Alley"),
       limit: { tries: 1 },
     },
+    {
+      name: "Set Apriling Band Helmet (NC)",
+      completed: () => get("nextAprilBandTurn") > 0,
+      do: () => cliExecute("aprilband effect nc"),
+      limit: { tries: 1 },
+    },
   ],
 };

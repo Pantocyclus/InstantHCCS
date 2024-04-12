@@ -19,6 +19,7 @@ import {
   $thrall,
   CommunityService,
   ensureEffect,
+  get,
   have,
 } from "libram";
 import Macro from "../combat";
@@ -31,6 +32,12 @@ export const BoozeDropQuest: Quest = {
   name: "Booze Drop",
   completed: () => CommunityService.BoozeDrop.isDone(),
   tasks: [
+    {
+      name: "Set Apriling Band Helmet (Booze)",
+      completed: () => get("nextAprilBandTurn") > 0,
+      do: () => cliExecute("aprilband effect drop"),
+      limit: { tries: 1 },
+    },
     {
       name: "Underground Fireworks Shop",
       prepare: () => visitUrl("clan_viplounge.php?action=fwshop&whichfloor=2", false),
