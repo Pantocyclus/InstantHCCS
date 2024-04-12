@@ -49,7 +49,7 @@ export const WeaponDamageQuest: Quest = {
         (have($item`corrupted marrow`) || have($effect`Cowrruption`)),
       do: () => CombatLoversLocket.reminisce($monster`ungulith`),
       combat: new CombatStrategy().macro(
-        Macro.skill($skill`Meteor Shower`).skill($skill`Use the Force`)
+        Macro.skill($skill`Meteor Shower`).skill($skill`Use the Force`),
       ),
       choices: { 1387: 3 },
       outfit: () => ({

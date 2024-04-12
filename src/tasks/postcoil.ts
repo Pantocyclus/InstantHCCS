@@ -53,8 +53,8 @@ const statGainBuffs =
   mainStat === $stat`Muscle`
     ? [$effect`Muscle Unbound`]
     : mainStat === $stat`Mysticality`
-    ? [$effect`Inscrutable Gaze`, $effect`Thaumodynamic`]
-    : [$effect`So Fresh and So Clean`];
+      ? [$effect`Inscrutable Gaze`, $effect`Thaumodynamic`]
+      : [$effect`So Fresh and So Clean`];
 
 export const bloodSugarSauceMagic = $effect`[${
   myClass() === $class`Sauceror` ? "1458" : "1457"
@@ -63,38 +63,38 @@ const combStatBuff =
   mainStat === $stat`Muscle`
     ? $effect`Lack of Body-Building`
     : mainStat === $stat`Mysticality`
-    ? $effect`We're All Made of Starfish`
-    : $effect`Pomp & Circumsands`;
+      ? $effect`We're All Made of Starfish`
+      : $effect`Pomp & Circumsands`;
 const generalStorePotion =
   mainStat === $stat`Muscle`
     ? $effect`Go Get 'Em, Tiger!`
     : mainStat === $stat`Mysticality`
-    ? $effect`Glittering Eyelashes`
-    : $effect`Butt-Rock Hair`;
+      ? $effect`Glittering Eyelashes`
+      : $effect`Butt-Rock Hair`;
 const barrelBuff =
   myClass() === $class`Seal Clubber`
     ? $effect`Barrel Chested`
     : myClass() === $class`Sauceror`
-    ? $effect`Warlock, Warstock, and Warbarrel`
-    : $effect.none;
+      ? $effect`Warlock, Warstock, and Warbarrel`
+      : $effect.none;
 const synthExpBuff =
   mainStat === $stat`Muscle`
     ? $effect`Synthesis: Movement`
     : mainStat === $stat`Mysticality`
-    ? $effect`Synthesis: Learning`
-    : $effect`Synthesis: Style`;
+      ? $effect`Synthesis: Learning`
+      : $effect`Synthesis: Style`;
 const juiceBarBuffs =
   myClass() === $class`Seal Clubber`
     ? [] //$effects`Over the Ocean`
     : myClass() === $class`Turtle Tamer`
-    ? $effects`Newt Gets In Your Eyes, Baconstoned`
-    : myClass() === $class`Pastamancer`
-    ? $effects`Baconstoned, Ham-Fisted`
-    : myClass() === $class`Sauceror`
-    ? $effects`Comic Violence`
-    : myClass() === $class`Disco Bandit`
-    ? $effects`Gr8ness, Perspicacious Pressure, Crusty Head`
-    : $effects`Proficient Pressure, Eau D'enmity`;
+      ? $effects`Newt Gets In Your Eyes, Baconstoned`
+      : myClass() === $class`Pastamancer`
+        ? $effects`Baconstoned, Ham-Fisted`
+        : myClass() === $class`Sauceror`
+          ? $effects`Comic Violence`
+          : myClass() === $class`Disco Bandit`
+            ? $effects`Gr8ness, Perspicacious Pressure, Crusty Head`
+            : $effects`Proficient Pressure, Eau D'enmity`;
 
 const levelingBuffs = [
   // Skill
@@ -175,9 +175,9 @@ export const PostCoilQuest: Quest = {
     },
     {
       name: "Install Workshed",
-      completed: () => getWorkshed() === $item`Asdon Martin keyfob`,
+      completed: () => getWorkshed() === $item`Asdon Martin keyfob (on ring)`,
       do: (): void => {
-        use($item`Asdon Martin keyfob`);
+        use($item`Asdon Martin keyfob (on ring)`);
         fillTo(37);
       },
       limit: { tries: 1 },
@@ -283,7 +283,7 @@ export const PostCoilQuest: Quest = {
           .trySkill($skill`Reflex Hammer`)
           .trySkill($skill`Feel Hatred`)
           .trySkill($skill`Snokebomb`)
-          .abort()
+          .abort(),
       ),
       choices: { 1387: 3 },
       outfit: () => ({
@@ -398,7 +398,7 @@ export const PostCoilQuest: Quest = {
       combat: new CombatStrategy().macro(
         Macro.ifHolidayWanderer(Macro.skill($skill`Feel Hatred`).abort())
           .if_($monster`amateur ninja`, Macro.skill($skill`Chest X-Ray`))
-          .abort()
+          .abort(),
       ),
       outfit: () => ({
         ...baseOutfit(),
@@ -422,7 +422,7 @@ export const PostCoilQuest: Quest = {
           .skill($skill`Shoot Ghost`)
           .skill($skill`Shoot Ghost`)
           .skill($skill`Shoot Ghost`)
-          .skill($skill`Trap Ghost`)
+          .skill($skill`Trap Ghost`),
       ),
       outfit: () => ({
         ...baseOutfit(),
@@ -453,7 +453,7 @@ export const PostCoilQuest: Quest = {
       combat: new CombatStrategy().macro(
         Macro.trySkill($skill`Spit jurassic acid`)
           .skill($skill`Feel Envy`)
-          .skill($skill`Chest X-Ray`)
+          .skill($skill`Chest X-Ray`),
       ),
       outfit: () => ({
         ...baseOutfit(),
@@ -473,7 +473,7 @@ export const PostCoilQuest: Quest = {
       combat: new CombatStrategy().macro(
         Macro.trySkill($skill`Spit jurassic acid`)
           .skill($skill`Feel Envy`)
-          .skill($skill`Chest X-Ray`)
+          .skill($skill`Chest X-Ray`),
       ),
       outfit: () => ({
         ...baseOutfit(),
@@ -489,13 +489,13 @@ export const PostCoilQuest: Quest = {
       do: (): void => {
         if (mainStat === $stat`Muscle`) {
           $items`oil of stability, philter of phorce, cordial of concentration`.forEach((item) =>
-            retrieveItem(item)
+            retrieveItem(item),
           );
           use(1, $item`oil of stability`);
           use(1, $item`philter of phorce`);
         } else if (mainStat === $stat`Mysticality`) {
           $items`oil of expertise, ointment of the occult, cordial of concentration`.forEach(
-            (item) => retrieveItem(item)
+            (item) => retrieveItem(item),
           );
           use(1, $item`oil of expertise`);
           use(1, $item`ointment of the occult`);
@@ -539,7 +539,7 @@ export const PostCoilQuest: Quest = {
         Macro.trySkill($skill`Reflex Hammer`)
           .trySkill($skill`Feel Hatred`)
           .trySkill($skill`Snokebomb`)
-          .abort()
+          .abort(),
       ),
       choices: { [768]: 4 },
       limit: { tries: 2 },

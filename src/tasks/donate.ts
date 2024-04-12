@@ -50,7 +50,7 @@ function printResourceUsage(tResource: trackedResource): void {
     print(
       `${name}: ${resourceValue || resourceValue === "true" ? n ?? 1 : 0}/${
         n ?? "?"
-      } ${localResourceValue}`
+      } ${localResourceValue}`,
     );
   else if (
     typeof resourceValue === "string" &&
@@ -61,7 +61,7 @@ function printResourceUsage(tResource: trackedResource): void {
     print(
       `${name}: ${resourceValueLength > (n ?? 1) ? n ?? 1 : resourceValueLength}/${
         n ?? "?"
-      } ${localResourceValue}`
+      } ${localResourceValue}`,
     );
   else print(`${name}: ${resourceValue}/${n ?? "?"} ${localResourceValue}`);
 }
@@ -89,20 +89,20 @@ function logResourceUsage(): void {
   print(
     `Stomach: ${myFullness()}/${fullnessLimit()} ${get("_instant_fullness", "")
       .split(",")
-      .join(", ")}`
+      .join(", ")}`,
   );
   print(
     `Liver: ${myInebriety()}/${inebrietyLimit()} ${get("_instant_inebriety", "")
       .split(",")
-      .join(", ")}`
+      .join(", ")}`,
   );
   print(
     `Spleen: ${mySpleenUse()}/${spleenLimit()} ${get("_instant_spleenUse", "")
       .split(",")
-      .join(", ")}`
+      .join(", ")}`,
   );
   print(
-    `Sweat Remaining: ${get("sweat")}/100, Sweat Out Some Booze: ${get("_sweatOutSomeBoozeUsed")}/3`
+    `Sweat Remaining: ${get("sweat")}/100, Sweat Out Some Booze: ${get("_sweatOutSomeBoozeUsed")}/3`,
   );
 
   // Adventures Used
@@ -111,12 +111,12 @@ function logResourceUsage(): void {
 
   const tests = Array.from(testModifiers.keys());
   tests.forEach((whichTest) =>
-    print(`${whichTest.statName}: ${get(`_CSTest${whichTest.id}`, "?")}`)
+    print(`${whichTest.statName}: ${get(`_CSTest${whichTest.id}`, "?")}`),
   );
   print(
     `Leveling: ${
       turnsPlayed() - sumNumbers(tests.map((whichTest) => get(`_CSTest${whichTest.id}`, 0)))
-    }`
+    }`,
   );
   print(`Adventures used: ${turnsPlayed()}`);
 

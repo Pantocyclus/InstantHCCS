@@ -63,13 +63,13 @@ export const crimboCarols = $effects`Do You Crush What I Crush?, Holiday Yoked, 
 function logRelevantStats(whichTest: CommunityService): void {
   if (
     [CommunityService.Muscle, CommunityService.Mysticality, CommunityService.Moxie].includes(
-      whichTest
+      whichTest,
     )
   ) {
     const testStat = toStat(whichTest.statName);
     const statString = testStat.toString().slice(0, 3);
     print(
-      `Base ${statString}: ${myBasestat(testStat)}; Buffed ${statString}: ${myBuffedstat(testStat)}`
+      `Base ${statString}: ${myBasestat(testStat)}; Buffed ${statString}: ${myBuffedstat(testStat)}`,
     );
   } else if (whichTest === CommunityService.HP) {
     print(`Buffed Mus: ${myBuffedstat($stat`Muscle`)}; HP: ${myMaxhp()};`);
@@ -84,7 +84,7 @@ export function logTestSetup(whichTest: CommunityService): void {
     `${whichTest.statName} Test takes ${testTurns} adventure${
       testTurns === 1 ? "" : "s"
     } (predicted: ${whichTest.prediction}).`,
-    "blue"
+    "blue",
   );
   set(`_CSTest${whichTest.id}`, testTurns + (have($effect`Simmering`) ? 1 : 0));
 }
@@ -159,7 +159,7 @@ const peppermintCandiesCosts = new Map<Item, number>([
   [$item`cane-mail shirt`, 15],
 ]);
 const nonPeppermintCandies = complexCandies.filter(
-  (candy) => !Array.from(peppermintCandiesCosts.keys()).includes(candy)
+  (candy) => !Array.from(peppermintCandiesCosts.keys()).includes(candy),
 );
 
 function haveCandies(a: Item, b: Item): boolean {
@@ -170,7 +170,7 @@ function haveCandies(a: Item, b: Item): boolean {
     else
       candiesRequired.set(
         $item`peppermint sprout`,
-        currentAmount + (peppermintCandiesCosts.get(candy) ?? Infinity)
+        currentAmount + (peppermintCandiesCosts.get(candy) ?? Infinity),
       );
   });
 
@@ -192,7 +192,7 @@ export function getSynthExpBuff(): void {
       left.map((it) => retrievePrice(it)).reduce((acc, val) => acc + val) <
       right.map((it) => retrievePrice(it)).reduce((acc, val) => acc + val)
         ? left
-        : right
+        : right,
     );
   if (bestPair[0] === bestPair[1]) retrieveItem(bestPair[0], 2);
   else bestPair.forEach((it) => retrieveItem(it));

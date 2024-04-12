@@ -37,7 +37,7 @@ export const CoilWireQuest: Quest = {
         Macro.skill($skill`Open a Big Red Present`)
           .skill($skill`Micrometeorite`)
           .attack()
-          .repeat()
+          .repeat(),
       ),
       outfit: () => ({
         ...baseOutfit(),

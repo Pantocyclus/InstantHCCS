@@ -42,7 +42,7 @@ export const HotResQuest: Quest = {
         Macro.skill($skill`Become a Cloud of Mist`)
           .skill($skill`Fire Extinguisher: Foam Yourself`)
           .trySkill($skill`%fn, spit on me!`)
-          .skill($skill`Use the Force`)
+          .skill($skill`Use the Force`),
       ),
       choices: { 1387: 3 },
       outfit: () => ({

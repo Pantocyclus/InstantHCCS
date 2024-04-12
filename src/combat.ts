@@ -35,7 +35,7 @@ export default class Macro extends StrictMacro {
     if (mainStat === $stat`muscle`) {
       return this.while_(
         `!mpbelow ${mpCost($skill`Lunging Thrust-Smack`)}`,
-        Macro.skill($skill`Lunging Thrust-Smack`)
+        Macro.skill($skill`Lunging Thrust-Smack`),
       )
         .attack()
         .repeat();

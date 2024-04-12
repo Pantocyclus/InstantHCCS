@@ -83,9 +83,9 @@ export function main(command?: string): void {
   print(`Adventures remaining: ${myAdventures()}`, "purple");
   print(
     `Time: ${convertMilliseconds(
-      gametimeToInt() - get(timeProperty, gametimeToInt())
+      gametimeToInt() - get(timeProperty, gametimeToInt()),
     )} since first run today started`,
-    "purple"
+    "purple",
   );
   set(timeProperty, -1);
 }

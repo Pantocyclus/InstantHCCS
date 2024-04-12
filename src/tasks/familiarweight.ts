@@ -70,7 +70,7 @@ export const FamiliarWeightQuest: Quest = {
       combat: new CombatStrategy().macro(
         Macro.ifHolidayWanderer(Macro.skill($skill`Reflex Hammer`).abort())
           .if_($monster`sausage goblin`, Macro.default())
-          .abort()
+          .abort(),
       ),
       outfit: () => ({
         ...baseOutfit(),
@@ -84,7 +84,7 @@ export const FamiliarWeightQuest: Quest = {
       post: (): void => {
         eat(
           itemAmount($item`magical sausage`) + itemAmount($item`magical sausage casing`),
-          $item`magical sausage`
+          $item`magical sausage`,
         );
         burnLibram(300);
       },
@@ -107,9 +107,9 @@ export const FamiliarWeightQuest: Quest = {
           use(
             Math.min(
               4 - Math.floor(haveEffect($effect`Cold Hearted`) / 5),
-              itemAmount($item`love song of icy revenge`)
+              itemAmount($item`love song of icy revenge`),
             ),
-            $item`love song of icy revenge`
+            $item`love song of icy revenge`,
           );
         if (have($item`resolution: be kinder`)) ensureEffect($effect`Kindly Resolve`);
         cliExecute("spoon platypus");
@@ -173,8 +173,8 @@ export const FamiliarWeightQuest: Quest = {
             .trySkill($skill`Reflex Hammer`)
             .trySkill($skill`Snokebomb`)
             .trySkill($skill`KGB tranquilizer dart`)
-            .abort()
-        ).abort()
+            .abort(),
+        ).abort(),
       ),
       limit: { tries: 3 },
     },
@@ -227,7 +227,7 @@ export const FamiliarWeightQuest: Quest = {
       completed: () => get("commaFamiliar") === $familiar`Homemade Robot`,
       do: (): void => {
         visitUrl(
-          `inv_equip.php?which=2&action=equip&whichitem=${toInt($item`homemade robot gear`)}&pwd`
+          `inv_equip.php?which=2&action=equip&whichitem=${toInt($item`homemade robot gear`)}&pwd`,
         );
         visitUrl("charpane.php");
       },
@@ -239,7 +239,7 @@ export const FamiliarWeightQuest: Quest = {
       do: () =>
         CommunityService.FamiliarWeight.run(
           () => logTestSetup(CommunityService.FamiliarWeight),
-          25
+          25,
         ),
       outfit: { modifier: "familiar weight", familiar: $familiar`Comma Chameleon` },
       limit: { tries: 1 },

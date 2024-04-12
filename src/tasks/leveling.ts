@@ -76,7 +76,7 @@ export function bestShadowRift(): Location {
         return sum(getMonsters(l), (m) => {
           return sum(
             itemDropsArray(m),
-            ({ drop, rate }) => mallPrice(drop) * clamp((rate * dropModifier) / 100, 0, 1)
+            ({ drop, rate }) => mallPrice(drop) * clamp((rate * dropModifier) / 100, 0, 1),
           );
         });
       },
@@ -93,8 +93,8 @@ const lovEquipment: "LOV Eardigan" | "LOV Epaulettes" | "LOV Earring" =
   mainStat === $stat`Muscle`
     ? "LOV Eardigan"
     : mainStat === $stat`Mysticality`
-    ? "LOV Epaulettes"
-    : "LOV Earring";
+      ? "LOV Epaulettes"
+      : "LOV Earring";
 
 export const LevelingQuest: Quest = {
   name: "Leveling",
@@ -141,7 +141,7 @@ export const LevelingQuest: Quest = {
       combat: new CombatStrategy().macro(
         Macro.trySkill($skill`Giant Growth`)
           .if_($item`blue rocket`, Macro.item($item`blue rocket`))
-          .default()
+          .default(),
       ),
       outfit: () => ({
         ...baseOutfit(),
@@ -214,7 +214,7 @@ export const LevelingQuest: Quest = {
       combat: new CombatStrategy().macro(
         Macro.if_($monster`LOV Enforcer`, Macro.attack().repeat())
           .if_($monster`LOV Engineer`, Macro.skill($skill`Toynado`).repeat())
-          .if_($monster`LOV Equivocator`, Macro.default())
+          .if_($monster`LOV Equivocator`, Macro.default()),
       ),
       outfit: () => ({
         ...baseOutfit(),
@@ -305,7 +305,7 @@ export const LevelingQuest: Quest = {
       combat: new CombatStrategy().macro(
         Macro.trySkill($skill`Curse of Weaksauce`)
           .attack()
-          .repeat()
+          .repeat(),
       ),
       outfit: () => ({
         ...baseOutfit(),
@@ -327,7 +327,7 @@ export const LevelingQuest: Quest = {
       completed: () => get("_godLobsterFights") >= 3,
       do: () => visitUrl("main.php?fightgodlobster=1"),
       combat: new CombatStrategy().macro(Macro.default()),
-      choices: { 1310: () => (have($item`God Lobster's Ring`) ? 2 : 1) }, // Get -combat on last fight
+      choices: { 1310: have($item`God Lobster's Ring`) ? 2 : 3 }, // Get -combat on last fight
       outfit: () => ({
         ...baseOutfit(),
         shirt: $item`makeshift garbage shirt`,
@@ -400,7 +400,7 @@ export const LevelingQuest: Quest = {
           .trySkill($skill`%fn, spit on me!`)
           .trySkill($skill`Shattering Punch`)
           .trySkill($skill`Asdon Martin: Missile Launcher`)
-          .abort()
+          .abort(),
       ),
       acquire: [{ item: $item`makeshift garbage shirt` }],
       post: () => sendAutumnaton(),
@@ -425,8 +425,8 @@ export const LevelingQuest: Quest = {
           $monster`sausage goblin`,
           Macro.trySkill($skill`Portscan`)
             .trySkill($skill`%fn, spit on me!`)
-            .default()
-        ).abort()
+            .default(),
+        ).abort(),
       ),
       outfit: () => ({
         ...baseOutfit(),
@@ -438,7 +438,7 @@ export const LevelingQuest: Quest = {
       post: (): void => {
         eat(
           itemAmount($item`magical sausage`) + itemAmount($item`magical sausage casing`),
-          $item`magical sausage`
+          $item`magical sausage`,
         );
         sendAutumnaton();
       },
@@ -455,7 +455,7 @@ export const LevelingQuest: Quest = {
         Macro.trySkill($skill`Gulp Latte`)
           .if_($monster`Government agent`, Macro.trySkill($skill`Feel Envy`))
           .trySkill($skill`Portscan`)
-          .default()
+          .default(),
       ),
       outfit: baseOutfit,
       post: () => sendAutumnaton(),
@@ -519,7 +519,7 @@ export const LevelingQuest: Quest = {
       combat: new CombatStrategy().macro(
         Macro.trySkill($skill`Gulp Latte`)
           .if_($monster`Government agent`, Macro.trySkill($skill`Feel Envy`).default())
-          .default()
+          .default(),
       ),
       outfit: () => ({
         ...baseOutfit(),

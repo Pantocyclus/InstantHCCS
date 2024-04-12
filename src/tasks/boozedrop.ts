@@ -55,7 +55,7 @@ export const BoozeDropQuest: Quest = {
       combat: new CombatStrategy().macro(
         Macro.trySkill($skill`Reflex Hammer`)
           .trySkill($skill`Snokebomb`)
-          .abort()
+          .abort(),
       ),
       choices: { [768]: 6 },
       limit: { tries: 2 },
@@ -68,7 +68,7 @@ export const BoozeDropQuest: Quest = {
         Macro.skill($skill`Become a Bat`)
           .skill($skill`Bowl Straight Up`)
           .skill(toSkill(`%fn, let's pledge allegiance to a Zone`))
-          .default()
+          .default(),
       ),
       outfit: () => ({
         ...baseOutfit(),

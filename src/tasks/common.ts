@@ -62,7 +62,7 @@ export const meteorShowerTask: Task = {
   completed: () => have($effect`Meteor Showered`),
   do: $location`The Dire Warren`,
   combat: new CombatStrategy().macro(
-    Macro.skill($skill`Meteor Shower`).skill($skill`Use the Force`)
+    Macro.skill($skill`Meteor Shower`).skill($skill`Use the Force`),
   ),
   choices: { 1387: 3 },
   outfit: () => ({

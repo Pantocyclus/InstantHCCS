@@ -77,7 +77,7 @@ export const RunStartQuest: Quest = {
         $items`meteorite necklace, Stick-Knife of Loathing, Staff of the Roaring Hearth, norwhal helmet, witch's bra`.forEach(
           (it) => {
             if (!have(it)) takeStorage(it, 1);
-          }
+          },
         );
       },
       limit: { tries: 1 },
@@ -143,7 +143,7 @@ export const RunStartQuest: Quest = {
         cliExecute(
           `mummery ${
             mainStat === $stat`Muscle` ? "mus" : mainStat === $stat`Mysticality` ? "myst" : "mox"
-          }`
+          }`,
         ),
       outfit: baseOutfit,
       limit: { tries: 1 },
