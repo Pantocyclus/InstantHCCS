@@ -95,11 +95,11 @@ export const farmingResourceResources: trackedResource[] = [
   new trackedResource("_deckCardsDrawn", "Deck Draws", 15),
   new trackedResource("_mimicEggsObtained", "Mimic Eggs", 11),
   new trackedResource("_macrometeoriteUses", "Macrometeorites", 10),
-  new trackedResource("_AAABatteriesUsed", "Batteries (AAA)", 7),
+  new trackedResource($item`battery (AAA)`, "Batteries (AAA)", 7),
+  new trackedResource($item`pocket wish`, "Pocket Wishes (Genie + BofA)", 6),
   new trackedResource("_augSkillsCasts", "August Scepter Charges", 5),
   new trackedResource("_monkeyPawWishesUsed", "Monkey Paw Wishes", 5),
   new trackedResource("tomeSummons", "Tome Summons", 3),
-  new trackedResource($item`pocket wish`, "Genie Wishes", 3),
   new trackedResource("_pottedTeaTreeUsed", "Tea Tree", 3),
   new trackedResource($item`peppermint sprout`, "Peppermint Sprout", 3),
   new trackedResource("_monsterHabitatsRecalled", "Monster Habitats", 3),
@@ -138,22 +138,34 @@ export class Engine extends BaseEngine {
     const organUsage = () => [myFullness(), myInebriety(), mySpleenUse()];
     const originalOrgans = organUsage();
     this.checkLimits(task, undefined);
+
     super.execute(task);
     if (have($effect`Beaten Up`)) {
-      if (get("lastEncounter") === "Sssshhsssblllrrggghsssssggggrrgglsssshhssslblgl")
+      if (
+        [
+          // "Poetic Justice", // grimoire automatically re-runs certain tasks here (https://github.com/loathers/grimoire/blob/main/src/engine.ts#L525)
+          // "Lost and Found", // this includes all cleaver non-combats, so the script would never see these in lastEncounter
+          "Sssshhsssblllrrggghsssssggggrrgglsssshhssslblgl",
+        ].includes(get("lastEncounter"))
+      )
         uneffect($effect`Beaten Up`);
       else throw "Fight was lost; stop.";
     }
     originalValues.forEach(([resource, val]) => {
+      const trackingMafiaPref = get(resource, "").toString().length > 0;
       if (
-        get(resource, "").toString().length > 0
+        trackingMafiaPref
           ? val !== get(resource).toString()
           : itemAmount(toItem(resource)) < toInt(val)
       ) {
-        const s = `_instant${resource}`;
+        const s = `_instant_${resource}`.replace("__", "_");
         const arr = get(s, "").split(",");
         arr.push(task.name);
         set(s, arr.filter((v, i, a) => v.length > 0 && a.indexOf(v) === i).join(","));
+        if (!trackingMafiaPref) {
+          const usagePref = `${s}_used`.replace("__", "_");
+          set(usagePref, get(usagePref, 0) + toInt(val) - itemAmount(toItem(resource)));
+        }
       }
     });
     organUsage().forEach((organUse, idx) => {
@@ -249,6 +261,7 @@ export class Engine extends BaseEngine {
       .filter((s) => !bannedAutoMpRestorers.includes(s))
       .join(";");
     manager.set({
+      autoSatisfyWithCloset: false,
       hpAutoRecovery: -0.05,
       mpAutoRecovery: -0.05,
       maximizerCombinationLimit: 100000,
