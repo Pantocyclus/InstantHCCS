@@ -32,7 +32,7 @@ export const NoncombatQuest: Quest = {
         $effect`Driving Stealthily`,
         $effect`Feeling Lonely`,
         $effect`Gummed Shoes`,
-        $effect`Invisible Avatar`,
+        // $effect`Invisible Avatar`,
         $effect`Silent Running`,
         $effect`Smooth Movements`,
         $effect`The Sonata of Sneakiness`,
