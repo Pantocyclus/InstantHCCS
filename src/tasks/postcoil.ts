@@ -44,7 +44,7 @@ import {
 import { fillTo } from "libram/dist/resources/2017/AsdonMartin";
 import Macro, { mainStat } from "../combat";
 import { Quest } from "../engine/task";
-import { complexCandies, getSynthExpBuff } from "../lib";
+import { complexCandies } from "../lib";
 import { holidayRunawayTask } from "./common";
 import { mapMonster } from "libram/dist/resources/2020/Cartography";
 import { baseOutfit } from "../engine/outfit";
@@ -293,12 +293,12 @@ export const PostCoilQuest: Quest = {
       }),
       limit: { tries: 1 },
     },
-    {
-      name: "Synth Exp Buff",
-      completed: () => have(synthExpBuff),
-      do: (): void => getSynthExpBuff(),
-      limit: { tries: 1 },
-    },
+    // {
+    //   name: "Synth Exp Buff",
+    //   completed: () => have(synthExpBuff),
+    //   do: (): void => getSynthExpBuff(),
+    //   limit: { tries: 1 },
+    // },
     {
       name: "Remaining Stat Gain Multipliers",
       completed: () => statGainBuffs.every((ef) => have(ef)),
