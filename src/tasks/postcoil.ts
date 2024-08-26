@@ -353,19 +353,6 @@ export const PostCoilQuest: Quest = {
       },
     },
     {
-      name: "Tome Summons",
-      completed: () => get("tomeSummons") >= 3,
-      do: (): void => {
-        create(1, $item`box of Familiar Jacks`);
-        use(1, $item`box of Familiar Jacks`);
-        useFamiliar($familiar`Melodramedary`);
-        create(1, $item`box of Familiar Jacks`);
-        use(1, $item`box of Familiar Jacks`);
-      },
-      outfit: { familiar: $familiar`Homemade Robot` },
-      limit: { tries: 1 },
-    },
-    {
       name: "Alice Army",
       completed: () => get("grimoire3Summons") > 0,
       do: () => useSkill($skill`Summon Alice's Army Cards`),

@@ -1,5 +1,5 @@
 import { CombatStrategy } from "grimoire-kolmafia";
-import { cliExecute, myHp, myMaxhp, mySoulsauce, useSkill } from "kolmafia";
+import { cliExecute, myHp, myMaxhp, mySoulsauce, useSkill, visitUrl } from "kolmafia";
 import {
   $effect,
   $familiar,
@@ -14,7 +14,7 @@ import {
 } from "libram";
 import Macro, { mainStat } from "../combat";
 import { Quest } from "../engine/task";
-import { logTestSetup } from "../lib";
+import { logTestSetup, sendAutumnaton } from "../lib";
 import { holidayRunawayTask } from "./common";
 import { baseOutfit } from "../engine/outfit";
 
@@ -47,6 +47,30 @@ export const CoilWireQuest: Quest = {
         famequip: $item`tiny stillsuit`,
       }),
       post: () => useSkill(Math.floor(mySoulsauce() / 5), $skill`Soul Food`),
+      limit: { tries: 1 },
+    },
+    {
+      name: "Eldritch Tentacle",
+      prepare: (): void => {
+        if (get("umbrellaState") !== "broken") cliExecute("umbrella ml");
+      },
+      completed: () => get("_eldritchHorrorEvoked"),
+      do: (): void => {
+        useSkill($skill`Evoke Eldritch Horror`);
+        visitUrl("main.php");
+      },
+      post: (): void => {
+        visitUrl("main.php");
+        if (have($effect`Beaten Up`)) cliExecute("hottub");
+        sendAutumnaton();
+      },
+      combat: new CombatStrategy().macro(Macro.trySkill($skill`Blow the Purple Candle!`).default()),
+      outfit: () => ({
+        ...baseOutfit(),
+        shirt: $item`makeshift garbage shirt`,
+        offhand: $item`Roman Candelabra`,
+      }),
+      acquire: [{ item: $item`makeshift garbage shirt` }],
       limit: { tries: 1 },
     },
     {

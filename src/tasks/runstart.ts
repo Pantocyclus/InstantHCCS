@@ -2,16 +2,18 @@ import {
   availableAmount,
   canInteract,
   cliExecute,
+  create,
   getCampground,
   retrieveItem,
   // reverseNumberology,
   runChoice,
   takeStorage,
   use,
+  useFamiliar,
   useSkill,
   visitUrl,
 } from "kolmafia";
-import { $effect, $item, $items, $skill, $stat, get, have, SongBoom } from "libram";
+import { $effect, $familiar, $item, $items, $skill, $stat, get, have, SongBoom } from "libram";
 import { mainStat } from "../combat";
 import { Quest } from "../engine/task";
 import { baseOutfit } from "../engine/outfit";
@@ -87,6 +89,19 @@ export const RunStartQuest: Quest = {
       completed: () => get("_borrowedTimeUsed"),
       do: () => use($item`borrowed time`),
       acquire: [{ item: $item`borrowed time` }],
+      limit: { tries: 1 },
+    },
+    {
+      name: "Tome Summons",
+      completed: () => get("tomeSummons") >= 3,
+      do: (): void => {
+        create(1, $item`box of Familiar Jacks`);
+        use(1, $item`box of Familiar Jacks`);
+        useFamiliar($familiar`Melodramedary`);
+        create(1, $item`box of Familiar Jacks`);
+        use(1, $item`box of Familiar Jacks`);
+      },
+      outfit: { familiar: $familiar`Homemade Robot` },
       limit: { tries: 1 },
     },
     {

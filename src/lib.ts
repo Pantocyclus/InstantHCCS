@@ -1,4 +1,5 @@
 import {
+  cliExecute,
   haveEffect,
   Item,
   itemAmount,
@@ -197,4 +198,8 @@ export function getSynthExpBuff(): void {
   if (bestPair[0] === bestPair[1]) retrieveItem(bestPair[0], 2);
   else bestPair.forEach((it) => retrieveItem(it));
   sweetSynthesis(bestPair[0], bestPair[1]);
+}
+
+export function sendAutumnaton(): void {
+  if (have($item`autumn-aton`)) cliExecute("autumnaton send Shadow Rift");
 }

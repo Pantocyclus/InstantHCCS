@@ -24,7 +24,6 @@ import {
   totalFreeRests,
   use,
   useFamiliar,
-  useSkill,
   visitUrl,
   weightAdjustment,
 } from "kolmafia";
@@ -54,14 +53,10 @@ import {
 import { fillTo } from "libram/dist/resources/2017/AsdonMartin";
 import Macro, { mainStat } from "../combat";
 import { Quest } from "../engine/task";
-import { burnLibram } from "../lib";
+import { burnLibram, sendAutumnaton } from "../lib";
 import { innerElfTask } from "./common";
 import { mapMonster } from "libram/dist/resources/2020/Cartography";
 import { baseOutfit } from "../engine/outfit";
-
-function sendAutumnaton(): void {
-  if (have($item`autumn-aton`)) cliExecute("autumnaton send Shadow Rift");
-}
 
 let _bestShadowRift: Location | null = null;
 export function bestShadowRift(): Location {
@@ -227,25 +222,6 @@ export const LevelingQuest: Quest = {
         use(1, $item`LOV Elixir #3`);
         sendAutumnaton();
       },
-    },
-    {
-      name: "Eldritch Tentacle",
-      prepare: (): void => {
-        if (get("umbrellaState") !== "broken") cliExecute("umbrella ml");
-      },
-      completed: () => get("_eldritchHorrorEvoked"),
-      do: () => useSkill($skill`Evoke Eldritch Horror`),
-      post: (): void => {
-        if (have($effect`Beaten Up`)) cliExecute("hottub");
-        sendAutumnaton();
-      },
-      combat: new CombatStrategy().macro(Macro.default()),
-      outfit: () => ({
-        ...baseOutfit(),
-        shirt: $item`makeshift garbage shirt`,
-      }),
-      acquire: [{ item: $item`makeshift garbage shirt` }],
-      limit: { tries: 1 },
     },
     {
       name: "Witchess Knight",
