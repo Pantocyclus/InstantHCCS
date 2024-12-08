@@ -138,6 +138,7 @@ export const DonateQuest: Quest = {
         cliExecute("PVP_MAB strategy=bernoulliThompson debug");
       },
       post: () => set("PVP_MAB_use_meteoriteade", true),
+      limit: { tries: 1 },
     },
     {
       name: "Test",
