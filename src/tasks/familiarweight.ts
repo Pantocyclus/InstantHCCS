@@ -66,7 +66,7 @@ export const FamiliarWeightQuest: Quest = {
       name: "Thoughtful Empathy",
       completed: () => have($effect`Thoughtful Empathy`),
       do: () => useSkill($skill`Empathy of the Newt`),
-      outfit: { famequip: $item`April Shower Thoughts shield` },
+      outfit: { offhand: $item`April Shower Thoughts shield` },
       limit: { tries: 1 },
     },
     {

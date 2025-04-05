@@ -327,9 +327,9 @@ export const PostCoilQuest: Quest = {
       completed: () => statGainBuffs.every((ef) => have(ef)),
       do: () => statGainBuffs.forEach((ef) => ensureEffect(ef)),
       outfit: () => ({
+        offhand: $item`April Shower Thoughts shield`,
         pants: $item`designer sweatpants`,
         acc1: $item`Powerful Glove`,
-        famequip: $item`April Shower Thoughts shield`,
         modifier: "mp",
       }),
       limit: { tries: 1 },
@@ -402,9 +402,9 @@ export const PostCoilQuest: Quest = {
             eat(1, $item`magical sausage`);
         }),
       outfit: {
+        offhand: $item`April Shower Thoughts shield`,
         pants: $item`designer sweatpants`,
         acc1: $item`Powerful Glove`,
-        famequip: $item`April Shower Thoughts shield`,
         modifier: "mp",
       },
     },
@@ -566,7 +566,7 @@ export const PostCoilQuest: Quest = {
       name: "Thoughtful Empathy",
       completed: () => have($effect`Thoughtful Empathy`),
       do: () => useSkill($skill`Empathy of the Newt`),
-      outfit: { famequip: $item`April Shower Thoughts shield` },
+      outfit: { offhand: $item`April Shower Thoughts shield` },
       limit: { tries: 1 },
     },
     {
