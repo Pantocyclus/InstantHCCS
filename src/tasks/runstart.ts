@@ -8,12 +8,23 @@ import {
   // reverseNumberology,
   runChoice,
   takeStorage,
+  toInt,
   use,
-  useFamiliar,
   useSkill,
   visitUrl,
 } from "kolmafia";
-import { $effect, $familiar, $item, $items, $skill, $stat, get, have, SongBoom } from "libram";
+import {
+  $effect,
+  $familiar,
+  $item,
+  $items,
+  $location,
+  $skill,
+  $stat,
+  get,
+  have,
+  SongBoom,
+} from "libram";
 import { mainStat } from "../combat";
 import { Quest } from "../engine/task";
 import { baseOutfit } from "../engine/outfit";
@@ -92,14 +103,14 @@ export const RunStartQuest: Quest = {
       limit: { tries: 1 },
     },
     {
-      name: "Tome Summons",
-      completed: () => get("tomeSummons") >= 3,
+      name: "Homemade Robot Gear",
+      completed: () => have($item`homemade robot gear`),
       do: (): void => {
         create(1, $item`box of Familiar Jacks`);
         use(1, $item`box of Familiar Jacks`);
-        useFamiliar($familiar`Melodramedary`);
-        create(1, $item`box of Familiar Jacks`);
-        use(1, $item`box of Familiar Jacks`);
+        // useFamiliar($familiar`Melodramedary`);
+        // create(1, $item`box of Familiar Jacks`);
+        // use(1, $item`box of Familiar Jacks`);
       },
       outfit: { familiar: $familiar`Homemade Robot` },
       limit: { tries: 1 },
@@ -242,6 +253,55 @@ export const RunStartQuest: Quest = {
       name: "Set Apriling Band Helmet (NC)",
       completed: () => get("nextAprilBandTurn") > 0,
       do: () => cliExecute("aprilband effect nc"),
+      limit: { tries: 1 },
+    },
+    {
+      name: "Update Replica Store Credits",
+      completed: () =>
+        !have($item`2002 Mr. Store Catalog`) || get("_2002MrStoreCreditsCollected", true),
+      do: () =>
+        visitUrl(`inv_use.php?whichitem=${toInt($item`2002 Mr. Store Catalog`)}&which=f0&pwd`),
+      limit: { tries: 1 },
+    },
+    {
+      name: "Grab Embers",
+      completed: () => get("availableSeptEmbers") > 0 || have($item`bembershoot`),
+      do: () => visitUrl("shop.php?whichshop=september"),
+      limit: { tries: 1 },
+    },
+    {
+      name: "Grab Photobooth Props",
+      ready: () => have($item`Clan VIP Lounge key`),
+      completed: () => get("_photoBoothEquipment", 0) >= 3,
+      do: (): void => {
+        cliExecute("photobooth item fake arrow-through-the-head"); // NC hat
+        cliExecute("photobooth item astronaut helmet"); // Cold res hat
+        cliExecute("photobooth item feather boa"); // meat%
+      },
+      limit: { tries: 1 },
+    },
+    {
+      name: "Open McHugeLarge Duffel Bag",
+      completed: () => !have($item`McHugeLarge duffel bag`) || have($item`McHugeLarge left ski`),
+      do: () => cliExecute("inventory.php?action=skiduffel&pwd"),
+      limit: { tries: 1 },
+    },
+    {
+      name: "PirateRealm eyepatch",
+      completed: () => have($item`PirateRealm eyepatch`),
+      do: () => visitUrl("place.php?whichplace=realm_pirate&action=pr_port"),
+      limit: { tries: 1 },
+    },
+    {
+      name: "Personal Ventilation Unit",
+      completed: () => have($item`Personal Ventilation Unit`),
+      do: $location`The Secret Government Laboratory`,
+      limit: { tries: 1 },
+    },
+    {
+      name: "April Shower Globs",
+      completed: () => get("_aprilShowerGlobsCollected", false),
+      do: () => visitUrl("inventory.php?action=shower"),
       limit: { tries: 1 },
     },
   ],

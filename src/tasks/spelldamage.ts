@@ -39,6 +39,7 @@ export const SpellDamageQuest: Quest = {
       name: "Simmer",
       completed: () => have($effect`Simmering`),
       do: () => ensureEffect($effect`Simmering`),
+      outfit: { famequip: $item`April Shower Thoughts shield` },
       limit: { tries: 1 },
     },
     { ...innerElfTask },

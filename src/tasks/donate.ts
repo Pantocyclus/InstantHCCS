@@ -12,17 +12,7 @@ import {
   spleenLimit,
   turnsPlayed,
 } from "kolmafia";
-import {
-  $effect,
-  $effects,
-  $item,
-  CommunityService,
-  get,
-  have,
-  set,
-  sumNumbers,
-  uneffect,
-} from "libram";
+import { $effects, $item, CommunityService, get, have, set, sumNumbers } from "libram";
 import {
   farmingResourceResources,
   freeBanishResources,
@@ -159,12 +149,13 @@ export const DonateQuest: Quest = {
     },
     {
       name: "Shrug Negative Effects",
-      completed: () => !have($effect`Feeling Lost`) && !have($effect`Cowrruption`),
+      completed: () =>
+        $effects`Feeling Lost, Cowrruption, Cold Hearted, Citizen of a Zone`.every((e) => !have(e)),
       do: (): void => {
         for (const ef of $effects`Feeling Lost, Cowrruption, Cold Hearted, Citizen of a Zone`) {
           if (!have($item`soft green echo eyedrop antidote`))
             buy(1, $item`soft green echo eyedrop antidote`, 5000);
-          if (have(ef)) uneffect(ef);
+          cliExecute(`/shrug! ${ef.name}`);
         }
       },
       limit: { tries: 1 },

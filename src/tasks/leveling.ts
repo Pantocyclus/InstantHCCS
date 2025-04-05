@@ -36,6 +36,7 @@ import {
   $location,
   $monster,
   $skill,
+  $slot,
   $stat,
   clamp,
   ClosedCircuitPayphone,
@@ -53,7 +54,7 @@ import {
 import { fillTo } from "libram/dist/resources/2017/AsdonMartin";
 import Macro, { mainStat } from "../combat";
 import { Quest } from "../engine/task";
-import { burnLibram, sendAutumnaton } from "../lib";
+import { burnLibram, sendAutumnaton, tryAcquiringEffect } from "../lib";
 import { innerElfTask } from "./common";
 import { mapMonster } from "libram/dist/resources/2020/Cartography";
 import { baseOutfit } from "../engine/outfit";
@@ -141,11 +142,13 @@ export const LevelingQuest: Quest = {
       outfit: () => ({
         ...baseOutfit(),
         familiar: $familiar`Shorter-Order Cook`,
-        famequip: $item`tiny stillsuit`,
+        // eslint-disable-next-line libram/verify-constants
+        famequip: have($item`blue plate`) ? $item`tiny stillsuit` : $item`toy Cupid bow`,
       }),
       post: (): void => {
         if (have(ClosedCircuitPayphone.rufusTarget() as Item)) {
           withChoice(1498, 1, () => use($item`closed-circuit pay phone`));
+          if (have($item`blue plate`)) equip($slot`familiar`, $item`blue plate`);
         }
         sendAutumnaton();
       },
@@ -190,13 +193,81 @@ export const LevelingQuest: Quest = {
       },
       completed: () => get("_snojoFreeFights") >= 9,
       do: $location`The X-32-F Combat Training Snowman`,
-      post: (): void => {
-        if (get("_snojoFreeFights") >= 9) cliExecute("hottub"); // Clean -stat effects
-        sendAutumnaton();
-      },
+      post: () => sendAutumnaton(),
       combat: new CombatStrategy().macro(Macro.default()),
       outfit: baseOutfit,
-      limit: { tries: 5 },
+      limit: { tries: 4 },
+    },
+    // {
+    //   name: "Snojo for Screech",
+    //   prepare: (): void => {
+    //     if (get("snojoSetting") === null) {
+    //       visitUrl("place.php?whichplace=snojo&action=snojo_controller");
+    //       runChoice(1);
+    //     }
+    //     if (get("umbrellaState") !== "broken") cliExecute("umbrella ml");
+    //     if (get("parkaMode") !== "spikolodon") cliExecute("parka spikolodon");
+    //   },
+    //   completed: () => get("_snojoFreeFights") >= 9,
+    //   do: $location`The X-32-F Combat Training Snowman`,
+    //   post: (): void => {
+    //     if (get("_snojoFreeFights") >= 9) cliExecute("hottub"); // Clean -stat effects
+    //     sendAutumnaton();
+    //   },
+    //   combat: new CombatStrategy().macro(
+    //     Macro.trySkill($skill`%fn\, Release the Patriotic Screech!`).default(),
+    //   ),
+    //   outfit: () => ({
+    //     ...baseOutfit(),
+    //     familiar: $familiar`Patriotic Eagle`,
+    //     famequip: $item`tiny stillsuit`,
+    //   }),
+    //   limit: { tries: 1 },
+    // },
+    {
+      name: "CyberSpace Zone 1",
+      prepare: (): void => {
+        if (!have($item`datastick`))
+          visitUrl("place.php?whichplace=serverroom&action=serverroom_chipdrawer");
+        $effects`Honeypotted, Null Afternoon, Scarysauce, Feeling Nervous, Jalapeño Saucesphere`.forEach(
+          (e) => tryAcquiringEffect(e),
+        );
+      },
+      completed: () => get("_cyberZone1Turns") >= 9,
+      do: $location`Cyberzone 1`,
+      combat: new CombatStrategy().macro(
+        Macro.if_("monstername hacker", Macro.default()).trySkillRepeat($skill`Throw Cyber Rock`),
+      ),
+      outfit: () => ({
+        ...baseOutfit(),
+      }),
+      post: () => sendAutumnaton(),
+      limit: { tries: 9 },
+    },
+    {
+      name: "CyberSpace Zone 2",
+      prepare: (): void => {
+        if (!have($item`datastick`))
+          visitUrl("place.php?whichplace=serverroom&action=serverroom_chipdrawer");
+        $effects`Honeypotted, Null Afternoon, Scarysauce, Feeling Nervous, Jalapeño Saucesphere`.forEach(
+          (e) => tryAcquiringEffect(e),
+        );
+      },
+      completed: () => get("_cyberZone2Turns") >= 1,
+      do: $location`Cyberzone 2`,
+      combat: new CombatStrategy().macro(
+        Macro.if_("monstername hacker", Macro.default()).trySkillRepeat($skill`Throw Cyber Rock`),
+      ),
+      outfit: () => ({
+        ...baseOutfit(),
+      }),
+      post: (): void => {
+        sendAutumnaton();
+        cliExecute("shrug scarysauce");
+        cliExecute("shrug nervous");
+        cliExecute("shrug jalap");
+      },
+      limit: { tries: 1 },
     },
     {
       name: "LOV Tunnel",
@@ -292,7 +363,10 @@ export const LevelingQuest: Quest = {
         famequip: $item`tiny stillsuit`,
       }),
       acquire: [{ item: $item`makeshift garbage shirt` }],
-      post: () => sendAutumnaton(),
+      post: (): void => {
+        sendAutumnaton();
+        if (have($item`blue plate`)) equip($slot`familiar`, $item`blue plate`);
+      },
       limit: { tries: 1 },
     },
     {
@@ -318,6 +392,10 @@ export const LevelingQuest: Quest = {
       name: "Neverending Party",
       prepare: (): void => {
         if (get("umbrellaState") !== "broken") cliExecute("umbrella ml");
+        if (have($effect`Spit Upon`)) {
+          useFamiliar($familiar`Galloping Grill`);
+          equip($item`tiny stillsuit`);
+        }
       },
       completed: () => get("_neverendingPartyFreeTurns") >= 10,
       do: $location`The Neverending Party`,
@@ -325,7 +403,11 @@ export const LevelingQuest: Quest = {
         1322: 2,
         1324: 5,
       },
-      combat: new CombatStrategy().macro(Macro.trySkill($skill`Bowl Sideways`).default()),
+      combat: new CombatStrategy().macro(
+        Macro.trySkill($skill`Bowl Sideways`)
+          .trySkill($skill`%fn, spit on me!`)
+          .default(),
+      ),
       outfit: () => ({
         ...baseOutfit(),
         shirt: $item`makeshift garbage shirt`,

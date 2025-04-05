@@ -1,6 +1,11 @@
 import {
   cliExecute,
+  Effect,
+  equip,
+  equippedItem,
   haveEffect,
+  haveEquipped,
+  holiday,
   Item,
   itemAmount,
   mpCost,
@@ -9,12 +14,16 @@ import {
   myMaxhp,
   myMp,
   print,
+  restoreMp,
   retrieveItem,
   retrievePrice,
   Skill,
   sweetSynthesis,
   toInt,
+  toItem,
+  toSkill,
   toStat,
+  use,
   useSkill,
 } from "kolmafia";
 import {
@@ -23,10 +32,13 @@ import {
   $item,
   $items,
   $skill,
+  $slot,
   $stat,
   CommunityService,
+  get,
   have,
   set,
+  Witchess,
 } from "libram";
 import { printModtrace } from "libram/dist/modifier";
 import { mainStat } from "./combat";
@@ -87,7 +99,7 @@ export function logTestSetup(whichTest: CommunityService): void {
     } (predicted: ${whichTest.prediction}).`,
     "blue",
   );
-  set(`_CSTest${whichTest.id}`, testTurns + (have($effect`Simmering`) ? 1 : 0));
+  set(`_CSTest${whichTest.id}`, testTurns);
 }
 
 /*
@@ -202,4 +214,90 @@ export function getSynthExpBuff(): void {
 
 export function sendAutumnaton(): void {
   if (have($item`autumn-aton`)) cliExecute("autumnaton send Shadow Rift");
+}
+
+export function tryAcquiringEffect(ef: Effect, tryRegardless = false): void {
+  // Try acquiring an effect
+  if (have(ef)) return;
+
+  if (ef === $effect`Sparkling Consciousness`) {
+    // This has no ef.default for some reason
+    if (holiday() === "Dependence Day" && !get("_fireworkUsed") && retrieveItem($item`sparkler`, 1))
+      use($item`sparkler`, 1);
+    return;
+  }
+  if (!ef.default) return; // No way to acquire?
+
+  if (ef === $effect`Ode to Booze`) restoreMp(60);
+  if (tryRegardless || canAcquireEffect(ef)) {
+    const efDefault = ef.default;
+    if (efDefault.split(" ")[0] === "cargo") return; // Don't acquire effects with cargo (items are usually way more useful)
+
+    const usePowerfulGlove =
+      efDefault.includes("CHEAT CODE") &&
+      have($item`Powerful Glove`) &&
+      !haveEquipped($item`Powerful Glove`);
+    const currentAcc = equippedItem($slot`acc3`);
+    if (usePowerfulGlove) equip($slot`acc3`, $item`Powerful Glove`);
+    cliExecute(efDefault.replace(/cast 1 /g, "cast "));
+    if (usePowerfulGlove) equip($slot`acc3`, currentAcc);
+  }
+}
+
+export function canAcquireEffect(ef: Effect): boolean {
+  // This will not attempt to craft items to acquire the effect, which is the behaviour of ef.default
+  // You will need to have the item beforehand for this to return true
+  return ef.all
+    .map((defaultAction) => {
+      if (defaultAction.length === 0) return false; // This effect is not acquirable
+      const splitString = defaultAction.split(" ");
+      const action = splitString[0];
+      const target = splitString.slice(2).join(" ");
+
+      switch (action) {
+        case "eat": // We have the food
+        case "drink": // We have the booze
+        case "chew": // We have the spleen item
+        case "use": // We have the item
+          if (ef === $effect`Sparkling Consciousness` && get("_fireworkUsed")) return false;
+          return have(toItem(target));
+        case "cast":
+          return have(toSkill(target)) && myMp() >= mpCost(toSkill(target)); // We have the skill and can cast it
+        case "cargo":
+          return false; // Don't acquire effects with cargo (items are usually way more useful)
+        case "synthesize":
+          return false; // We currently don't support sweet synthesis
+        case "barrelprayer":
+          return get("barrelShrineUnlocked") && !get("_barrelPrayer");
+        case "witchess":
+          return Witchess.have() && get("puzzleChampBonus") >= 20 && !get("_witchessBuff");
+        case "telescope":
+          return get("telescopeUpgrades") > 0 && !get("telescopeLookedHigh");
+        case "beach":
+          return have($item`Beach Comb`); // need to check if specific beach head has been taken
+        case "spacegate":
+          return get("spacegateAlways") && !get("_spacegateVaccine");
+        case "pillkeeper":
+          return have($item`Eight Days a Week Pill Keeper`);
+        case "pool":
+          return get("_poolGames") < 3;
+        case "swim":
+          return !get("_olympicSwimmingPool");
+        case "shower":
+          return !get("_aprilShower");
+        case "terminal":
+          return (
+            get("_sourceTerminalEnhanceUses") <
+            1 +
+              get("sourceTerminalChips")
+                .split(",")
+                .filter((s) => s.includes("CRAM")).length
+          );
+        case "daycare":
+          return get("daycareOpen") && !get("_daycareSpa");
+        default:
+          return true; // Whatever edge cases we have not handled yet, just try to acquire it
+      }
+    })
+    .some((b) => b);
 }

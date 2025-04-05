@@ -7,6 +7,7 @@ import {
   cliExecute,
   create,
   eat,
+  Effect,
   getWorkshed,
   myClass,
   myLevel,
@@ -25,6 +26,7 @@ import {
 } from "kolmafia";
 import {
   $class,
+  $coinmaster,
   $effect,
   $effects,
   $familiar,
@@ -44,7 +46,7 @@ import {
 import { fillTo } from "libram/dist/resources/2017/AsdonMartin";
 import Macro, { mainStat } from "../combat";
 import { Quest } from "../engine/task";
-import { complexCandies } from "../lib";
+import { complexCandies, tryAcquiringEffect } from "../lib";
 import { holidayRunawayTask } from "./common";
 import { mapMonster } from "libram/dist/resources/2020/Cartography";
 import { baseOutfit } from "../engine/outfit";
@@ -95,6 +97,18 @@ const juiceBarBuffs =
           : myClass() === $class`Disco Bandit`
             ? $effects`Gr8ness, Perspicacious Pressure, Crusty Head`
             : $effects`Proficient Pressure, Eau D'enmity`;
+const showerGlobItem =
+  mainStat === $stat`Muscle`
+    ? $item`wet paper weights`
+    : mainStat === $stat`Mysticality`
+      ? $item`wet paperback`
+      : $item`wet paper cup`;
+const showerGlobBuff =
+  mainStat === $stat`Muscle`
+    ? $effect`Lifting Wets`
+    : mainStat === $stat`Mysticality`
+      ? $effect`Moisticality`
+      : $effect`[2994]In Your Cups`;
 
 const levelingBuffs = [
   // Skill
@@ -300,12 +314,22 @@ export const PostCoilQuest: Quest = {
     //   limit: { tries: 1 },
     // },
     {
+      name: "Shower Glob Stat Gain Buff",
+      completed: () => have(showerGlobBuff),
+      do: () => {
+        buy($coinmaster`Using your Shower Thoughts`, 1, showerGlobItem);
+        use(showerGlobItem, 1);
+      },
+      limit: { tries: 1 },
+    },
+    {
       name: "Remaining Stat Gain Multipliers",
       completed: () => statGainBuffs.every((ef) => have(ef)),
       do: () => statGainBuffs.forEach((ef) => ensureEffect(ef)),
       outfit: () => ({
         pants: $item`designer sweatpants`,
         acc1: $item`Powerful Glove`,
+        famequip: $item`April Shower Thoughts shield`,
         modifier: "mp",
       }),
       limit: { tries: 1 },
@@ -323,6 +347,37 @@ export const PostCoilQuest: Quest = {
       do: () => use($item`a ten-percent bonus`),
       outfit: { offhand: $item`familiar scrapbook` },
       limit: { tries: 1 },
+    },
+    {
+      name: "Sept-ember Mouthwash",
+      completed: () => get("availableSeptEmbers") === 0,
+      prepare: (): void => {
+        const usefulEffects: Effect[] = [
+          $effect`Cold as Nice`, // +3 cold res from Beach Comb
+          $effect`Scarysauce`, // +2 cold res
+          $effect`Elemental Saucesphere`, // +2 cold res
+          $effect`Feeling Peaceful`, // +2 cold res from Emotion Chip
+          $effect`Astral Shell`, // +1 cold res
+        ];
+        usefulEffects.forEach((ef) => tryAcquiringEffect(ef, true));
+      },
+      do: (): void => {
+        // Grab bembershoot
+        visitUrl(`shop.php?whichshop=september&action=buyitem&quantity=1&whichrow=1516&pwd`);
+        // Grab Mouthwashes
+        visitUrl("shop.php?whichshop=september&action=buyitem&quantity=3&whichrow=1512&pwd");
+
+        cliExecute("maximize cold res");
+        use($item`Mmm-brr! brand mouthwash`, 3);
+      },
+      limit: { tries: 1 },
+      outfit: {
+        modifier: "cold res",
+        familiar: $familiar`Exotic Parrot`,
+      },
+      post: (): void => {
+        if (have($effect`Scarysauce`)) cliExecute("shrug scarysauce");
+      },
     },
     {
       name: "Soul Food",
@@ -349,6 +404,7 @@ export const PostCoilQuest: Quest = {
       outfit: {
         pants: $item`designer sweatpants`,
         acc1: $item`Powerful Glove`,
+        famequip: $item`April Shower Thoughts shield`,
         modifier: "mp",
       },
     },
@@ -417,7 +473,7 @@ export const PostCoilQuest: Quest = {
         familiar: $familiar`Nanorhino`,
         famequip: $item`tiny stillsuit`,
       }),
-      limit: { tries: 1 },
+      limit: { tries: 2 },
     },
     {
       name: "Get Lime",
@@ -506,6 +562,13 @@ export const PostCoilQuest: Quest = {
       limit: { tries: 40 },
     },
     */
+    {
+      name: "Thoughtful Empathy",
+      completed: () => have($effect`Thoughtful Empathy`),
+      do: () => useSkill($skill`Empathy of the Newt`),
+      outfit: { famequip: $item`April Shower Thoughts shield` },
+      limit: { tries: 1 },
+    },
     {
       name: "Mini-Sauceror Buff",
       ready: () =>

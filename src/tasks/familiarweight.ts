@@ -11,6 +11,7 @@ import {
   mySign,
   toInt,
   use,
+  useSkill,
   visitUrl,
   weightAdjustment,
 } from "kolmafia";
@@ -41,7 +42,7 @@ export const FamiliarWeightQuest: Quest = {
   tasks: [
     {
       name: "Anticheese",
-      completed: () => get("lastAnticheeseDay") === 1,
+      completed: () => get("lastAnticheeseDay") >= 1,
       do: () => visitUrl("place.php?whichplace=desertbeach&action=db_nukehouse"),
       limit: { tries: 1 },
     },
@@ -59,6 +60,13 @@ export const FamiliarWeightQuest: Quest = {
         if (!have($item`sombrero-mounted sparkler`)) buy(1, $item`sombrero-mounted sparkler`);
       },
       outfit: baseOutfit,
+      limit: { tries: 1 },
+    },
+    {
+      name: "Thoughtful Empathy",
+      completed: () => have($effect`Thoughtful Empathy`),
+      do: () => useSkill($skill`Empathy of the Newt`),
+      outfit: { famequip: $item`April Shower Thoughts shield` },
       limit: { tries: 1 },
     },
     {

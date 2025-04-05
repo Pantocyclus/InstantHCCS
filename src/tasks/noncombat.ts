@@ -25,7 +25,7 @@ export const NoncombatQuest: Quest = {
       },
       do: () => CommunityService.Noncombat.run(() => logTestSetup(CommunityService.Noncombat), 1),
       outfit: {
-        familiar: $familiar`Disgeist`,
+        familiar: $familiar`Peace Turkey`,
         modifier: "-combat",
       },
       effects: [
