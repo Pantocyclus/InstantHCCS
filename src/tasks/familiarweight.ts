@@ -7,6 +7,7 @@ import {
   getFuel,
   haveEffect,
   itemAmount,
+  myDaycount,
   myFamiliar,
   mySign,
   toInt,
@@ -42,7 +43,7 @@ export const FamiliarWeightQuest: Quest = {
   tasks: [
     {
       name: "Anticheese",
-      completed: () => get("lastAnticheeseDay") >= 1,
+      completed: () => get("lastAnticheeseDay") >= 1 || myDaycount() > 1,
       do: () => visitUrl("place.php?whichplace=desertbeach&action=db_nukehouse"),
       limit: { tries: 1 },
     },
@@ -71,7 +72,8 @@ export const FamiliarWeightQuest: Quest = {
     },
     {
       name: "Sausage Goblin",
-      completed: () => get("_sausageFights") > 2,
+      completed: () =>
+        get("_sausageFights") > 2 || (myDaycount() > 1 && getKramcoWandererChance() < 1.0),
       ready: () => getKramcoWandererChance() >= 1.0,
       do: $location`The Neverending Party`,
       choices: { 1322: 2 },

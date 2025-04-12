@@ -14,6 +14,7 @@ import {
   itemDropsArray,
   Location,
   mallPrice,
+  myDaycount,
   myFamiliar,
   myInebriety,
   myLevel,
@@ -474,7 +475,8 @@ export const LevelingQuest: Quest = {
           equip($item`tiny stillsuit`);
         }
       },
-      completed: () => get("_sausageFights") > 1,
+      completed: () =>
+        get("_sausageFights") > 1 || (myDaycount() > 1 && getKramcoWandererChance() < 1.0),
       ready: () => getKramcoWandererChance() >= 1.0,
       do: $location`The Neverending Party`,
       choices: { 1322: 2 },

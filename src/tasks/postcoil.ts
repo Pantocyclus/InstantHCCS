@@ -38,7 +38,6 @@ import {
   $skills,
   $stat,
   CombatLoversLocket,
-  ensureEffect,
   get,
   have,
   set,
@@ -46,7 +45,7 @@ import {
 import { fillTo } from "libram/dist/resources/2017/AsdonMartin";
 import Macro, { mainStat } from "../combat";
 import { Quest } from "../engine/task";
-import { complexCandies, tryAcquiringEffect } from "../lib";
+import { canAcquireEffect, complexCandies, tryAcquiringEffect } from "../lib";
 import { holidayRunawayTask } from "./common";
 import { mapMonster } from "libram/dist/resources/2020/Cartography";
 import { baseOutfit } from "../engine/outfit";
@@ -129,16 +128,26 @@ const levelingBuffs = [
   // Class Skill
   $effect`Astral Shell`,
   $effect`Aloysius' Antiphon of Aptitude`,
+  $effect`Disco over Matter`,
+  $effect`Disco State of Mind`,
+  $effect`Disdain of the War Snapper`,
   $effect`Elemental Saucesphere`,
   $effect`Empathy`,
   $effect`Ghostly Shell`,
   $effect`Inscrutable Gaze`,
   $effect`Leash of Linguini`,
+  $effect`Lubricating Sauce`,
+  $effect`Mariachi Moisture`,
+  $effect`Pasta Oneness`,
   $effect`Patience of the Tortoise`,
   $effect`Rage of the Reindeer`,
   $effect`Reptilian Fortitude`,
   $effect`Saucemastery`,
+  $effect`Seal Clubbing Frenzy`,
+  $effect`Slippery as a Seal`,
   $effect`Stevedave's Shanty of Superiority`,
+  $effect`Strength of the Tortoise`,
+  $effect`Tubes of Universal Meat`,
   bloodSugarSauceMagic,
   // ML
   $effect`Drescher's Annoying Noise`,
@@ -162,6 +171,7 @@ const levelingBuffs = [
   $effect`Starry-Eyed`,
   $effect`Total Protonic Reversal`,
   $effect`Uncucumbered`,
+
   // Prismatic Damage
   $effect`Frostbeard`,
   $effect`Intimidating Mien`,
@@ -172,7 +182,7 @@ const levelingBuffs = [
   $effect`Bendin' Hell`,
   // Potions
   ...juiceBarBuffs,
-].filter((e) => e);
+];
 
 export const PostCoilQuest: Quest = {
   name: "PostCoil",
@@ -325,7 +335,7 @@ export const PostCoilQuest: Quest = {
     {
       name: "Remaining Stat Gain Multipliers",
       completed: () => statGainBuffs.every((ef) => have(ef)),
-      do: () => statGainBuffs.forEach((ef) => ensureEffect(ef)),
+      do: () => statGainBuffs.forEach((ef) => tryAcquiringEffect(ef)),
       outfit: () => ({
         offhand: $item`April Shower Thoughts shield`,
         pants: $item`designer sweatpants`,
@@ -391,10 +401,12 @@ export const PostCoilQuest: Quest = {
       name: "Buffs",
       prepare: () => fillTo(37),
       completed: () =>
-        myMeat() <= 1000 || levelingBuffs.every((ef) => have(ef)) || get("_feelPrideUsed") > 0,
+        myMeat() <= 1000 ||
+        levelingBuffs.every((ef) => have(ef) || !canAcquireEffect(ef)) ||
+        get("_feelPrideUsed") > 0,
       do: () =>
         levelingBuffs.forEach((ef) => {
-          if (myMeat() >= 1000) ensureEffect(ef);
+          if (myMeat() >= 1000) tryAcquiringEffect(ef);
           if (
             myMp() <= 100 &&
             (have($item`magical sausage`) || have($item`magical sausage casing`))

@@ -38,6 +38,7 @@ import {
   get,
   have,
   set,
+  unequip,
   Witchess,
 } from "libram";
 import { printModtrace } from "libram/dist/modifier";
@@ -216,14 +217,45 @@ export function sendAutumnaton(): void {
   if (have($item`autumn-aton`)) cliExecute("autumnaton send Shadow Rift");
 }
 
+const improvedShowerSkills = new Map([
+  [$effect`Slippery as a Seal`, $skill`Seal Clubbing Frenzy`],
+  [$effect`Strength of the Tortoise`, $skill`Patience of the Tortoise`],
+  [$effect`Thoughtful Empathy`, $skill`Empathy of the Newt`],
+  [$effect`Tubes of Universal Meat`, $skill`Manicotti Meditation`],
+  [$effect`Leash of Linguini`, $skill`Leash of Linguini`],
+  [$effect`Lubricating Sauce`, $skill`Sauce Contemplation`],
+  [$effect`Simmering`, $skill`Simmer`],
+  [$effect`Disco over Matter`, $skill`Disco Aerobics`],
+  [$effect`Mariachi Moisture`, $skill`Moxie of the Mariachi`],
+]);
+
 export function tryAcquiringEffect(ef: Effect, tryRegardless = false): void {
   // Try acquiring an effect
-  if (have(ef)) return;
+  if (have(ef)) return; // If we already have the effect, we're done
 
   if (ef === $effect`Sparkling Consciousness`) {
     // This has no ef.default for some reason
     if (holiday() === "Dependence Day" && !get("_fireworkUsed") && retrieveItem($item`sparkler`, 1))
       use($item`sparkler`, 1);
+    return;
+  } else if (ef === $effect`Empathy`) {
+    if (!have($skill`Empathy of the Newt`)) return;
+    const currentOffhandItem = equippedItem($slot`offhand`);
+    if (currentOffhandItem === $item`April Shower Thoughts shield`) unequip($slot`offhand`);
+    cliExecute("cast Empathy of the Newt");
+    if (currentOffhandItem === $item`April Shower Thoughts shield`)
+      equip($slot`offhand`, currentOffhandItem);
+    return;
+  }
+  if (improvedShowerSkills.has(ef)) {
+    const sk = improvedShowerSkills.get(ef) ?? $skill.none;
+    if (!have($item`April Shower Thoughts shield`) || !have(sk)) return;
+    const currentOffhandItem = equippedItem($slot`offhand`);
+    if (currentOffhandItem !== $item`April Shower Thoughts shield`)
+      equip($slot`offhand`, $item`April Shower Thoughts shield`);
+    cliExecute(`cast ${sk}`);
+    if (currentOffhandItem !== $item`April Shower Thoughts shield`)
+      equip($slot`offhand`, currentOffhandItem);
     return;
   }
   if (!ef.default) return; // No way to acquire?
