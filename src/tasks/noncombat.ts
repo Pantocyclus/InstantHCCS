@@ -21,12 +21,12 @@ export const NoncombatQuest: Quest = {
       completed: () => CommunityService.Noncombat.isDone(),
       prepare: (): void => {
         if (get("parkaMode") !== "pterodactyl") cliExecute("parka pterodactyl");
-        cliExecute("maximize -combat");
+        cliExecute("maximize -raw combat rate");
       },
       do: () => CommunityService.Noncombat.run(() => logTestSetup(CommunityService.Noncombat), 1),
       outfit: {
         familiar: $familiar`Peace Turkey`,
-        modifier: "-combat",
+        modifier: "-raw combat rate",
       },
       effects: [
         $effect`Driving Stealthily`,
