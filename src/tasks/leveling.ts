@@ -24,7 +24,6 @@ import {
   setLocation,
   totalFreeRests,
   use,
-  useFamiliar,
   visitUrl,
   weightAdjustment,
 } from "kolmafia";
@@ -45,6 +44,7 @@ import {
   get,
   getKramcoWandererChance,
   have,
+  PeridotOfPeril,
   set,
   sum,
   TunnelOfLove,
@@ -57,7 +57,6 @@ import Macro, { mainStat } from "../combat";
 import { Quest } from "../engine/task";
 import { burnLibram, sendAutumnaton, tryAcquiringEffect } from "../lib";
 import { innerElfTask } from "./common";
-import { mapMonster } from "libram/dist/resources/2020/Cartography";
 import { baseOutfit } from "../engine/outfit";
 
 let _bestShadowRift: Location | null = null;
@@ -111,8 +110,8 @@ export const LevelingQuest: Quest = {
         if (have($item`astral six-pack`)) use($item`astral six-pack`);
         uneffect($effect`Aloysius' Antiphon of Aptitude`);
       },
-      completed: () => myInebriety() >= 4,
-      do: () => drink(4 - myInebriety(), $item`astral pilsner`),
+      completed: () => myInebriety() >= 1,
+      do: () => drink(1 - myInebriety(), $item`astral pilsner`),
       effects: $effects`Ode to Booze`,
       post: () => uneffect($effect`Ode to Booze`),
       limit: { tries: 1 },
@@ -183,7 +182,7 @@ export const LevelingQuest: Quest = {
       limit: { tries: 5 },
     },
     {
-      name: "Snojo for Spit Upon",
+      name: "Snojo for Fam Turns",
       prepare: (): void => {
         if (get("snojoSetting") === null) {
           visitUrl("place.php?whichplace=snojo&action=snojo_controller");
@@ -393,10 +392,6 @@ export const LevelingQuest: Quest = {
       name: "Neverending Party",
       prepare: (): void => {
         if (get("umbrellaState") !== "broken") cliExecute("umbrella ml");
-        if (have($effect`Spit Upon`)) {
-          useFamiliar($familiar`Galloping Grill`);
-          equip($item`tiny stillsuit`);
-        }
       },
       completed: () => get("_neverendingPartyFreeTurns") >= 10,
       do: $location`The Neverending Party`,
@@ -404,11 +399,7 @@ export const LevelingQuest: Quest = {
         1322: 2,
         1324: 5,
       },
-      combat: new CombatStrategy().macro(
-        Macro.trySkill($skill`Bowl Sideways`)
-          .trySkill($skill`%fn, spit on me!`)
-          .default(),
-      ),
+      combat: new CombatStrategy().macro(Macro.trySkill($skill`Bowl Sideways`).default()),
       outfit: () => ({
         ...baseOutfit(),
         shirt: $item`makeshift garbage shirt`,
@@ -441,10 +432,6 @@ export const LevelingQuest: Quest = {
       name: "Free Kills",
       completed: () => get("_shatteringPunchUsed") >= 3 && get("_missileLauncherUsed"),
       prepare: (): void => {
-        if (have($effect`Spit Upon`)) {
-          useFamiliar($familiar`Galloping Grill`);
-          equip($item`tiny stillsuit`);
-        }
         if (getFuel() < 100 && !get("_missileLauncherUsed")) fillTo(100);
       },
       do: $location`Uncle Gator's Country Fun-Time Liquid Waste Sluice`,
@@ -456,7 +443,6 @@ export const LevelingQuest: Quest = {
         Macro.trySkill($skill`Feel Pride`)
           .trySkill($skill`Cincho: Confetti Extravaganza`)
           .trySkill($skill`Bowl Sideways`)
-          .trySkill($skill`%fn, spit on me!`)
           .trySkill($skill`Shattering Punch`)
           .trySkill($skill`Asdon Martin: Missile Launcher`)
           .abort(),
@@ -470,10 +456,6 @@ export const LevelingQuest: Quest = {
       prepare: (): void => {
         if (get("umbrellaState") !== "broken") cliExecute("umbrella ml");
         cliExecute("terminal educate portscan");
-        if (have($effect`Spit Upon`)) {
-          useFamiliar($familiar`Galloping Grill`);
-          equip($item`tiny stillsuit`);
-        }
       },
       completed: () =>
         get("_sausageFights") > 1 || (myDaycount() > 1 && getKramcoWandererChance() < 1.0),
@@ -481,12 +463,7 @@ export const LevelingQuest: Quest = {
       do: $location`The Neverending Party`,
       choices: { 1322: 2 },
       combat: new CombatStrategy().macro(
-        Macro.if_(
-          $monster`sausage goblin`,
-          Macro.trySkill($skill`Portscan`)
-            .trySkill($skill`%fn, spit on me!`)
-            .default(),
-        ).abort(),
+        Macro.if_($monster`sausage goblin`, Macro.trySkill($skill`Portscan`).default()).abort(),
       ),
       outfit: () => ({
         ...baseOutfit(),
@@ -549,23 +526,22 @@ export const LevelingQuest: Quest = {
     },
     {
       name: "Oliver's Place Map",
-      ready: () => get("_monstersMapped") < 3,
       prepare: (): void => {
         if (get("umbrellaState") !== "broken") cliExecute("umbrella ml");
         if (get("parkaMode") !== "dilophosaur") cliExecute("parka dilophosaur");
-        if (have($effect`Spit Upon`)) equip($item`tiny stillsuit`);
+        PeridotOfPeril.setChoice($monster`goblin flapper`);
       },
       completed: () => have($effect`Everything Looks Yellow`),
       post: (): void => {
         set("_CSParkaYRUsed", true);
         sendAutumnaton();
       },
-      // eslint-disable-next-line libram/verify-constants
-      do: () => mapMonster($location`An Unusually Quiet Barroom Brawl`, $monster`goblin flapper`),
+      do: $location`An Unusually Quiet Barroom Brawl`,
       combat: new CombatStrategy().macro(Macro.skill($skill`Spit jurassic acid`).abort()),
       outfit: () => ({
         ...baseOutfit(),
         offhand: $item`latte lovers member's mug`,
+        acc3: $item`Peridot of Peril`,
       }),
     },
     {
@@ -599,16 +575,16 @@ export const LevelingQuest: Quest = {
         sendAutumnaton();
       },
     },
-    {
-      name: "Bricko Oyster",
-      completed: () =>
-        have($effect`Spit Upon`) || get("camelSpit") >= 100 || !have($item`BRICKO oyster`),
-      do: () => $item`BRICKO oyster`,
-      combat: new CombatStrategy().macro(Macro.default()),
-      post: () => sendAutumnaton(),
-      limit: { tries: 2 },
-      outfit: baseOutfit,
-    },
+    // {
+    //   name: "Bricko Oyster",
+    //   completed: () =>
+    //     have($effect`Spit Upon`) || get("camelSpit") >= 100 || !have($item`BRICKO oyster`),
+    //   do: () => $item`BRICKO oyster`,
+    //   combat: new CombatStrategy().macro(Macro.default()),
+    //   post: () => sendAutumnaton(),
+    //   limit: { tries: 2 },
+    //   outfit: baseOutfit,
+    // },
     {
       name: "Open wardrobe-o-matic", // Assume we won't be leveling any more, even in aftercore, for the rest of the day
       completed: () =>

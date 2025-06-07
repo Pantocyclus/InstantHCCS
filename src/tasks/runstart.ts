@@ -124,11 +124,16 @@ export const RunStartQuest: Quest = {
       do: (): void => {
         create(1, $item`box of Familiar Jacks`);
         use(1, $item`box of Familiar Jacks`);
-        // useFamiliar($familiar`Melodramedary`);
-        // create(1, $item`box of Familiar Jacks`);
-        // use(1, $item`box of Familiar Jacks`);
       },
       outfit: { familiar: $familiar`Homemade Robot` },
+      limit: { tries: 1 },
+    },
+    {
+      name: "Gnome kgnee",
+      completed: () => get("_gnomePart"),
+      do: () => visitUrl("arena.php"),
+      outfit: { familiar: $familiar`Reagnimated Gnome` },
+      choices: { 597: 4 },
       limit: { tries: 1 },
     },
     {

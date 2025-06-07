@@ -8,13 +8,20 @@ import {
   create,
   eat,
   Effect,
+  equip,
+  equippedItem,
+  getPower,
   getWorkshed,
   myClass,
+  myHp,
+  myId,
   myLevel,
+  myMaxhp,
   myMaxmp,
   myMeat,
   myMp,
   mySoulsauce,
+  print,
   restoreMp,
   retrieveItem,
   toInt,
@@ -36,18 +43,20 @@ import {
   $monster,
   $skill,
   $skills,
+  $slot,
   $stat,
   CombatLoversLocket,
   get,
   have,
+  PeridotOfPeril,
   set,
+  unequip,
 } from "libram";
 import { fillTo } from "libram/dist/resources/2017/AsdonMartin";
 import Macro, { mainStat } from "../combat";
 import { Quest } from "../engine/task";
 import { canAcquireEffect, complexCandies, tryAcquiringEffect } from "../lib";
 import { holidayRunawayTask } from "./common";
-import { mapMonster } from "libram/dist/resources/2020/Cartography";
 import { baseOutfit } from "../engine/outfit";
 
 const statGainBuffs =
@@ -188,6 +197,69 @@ export const PostCoilQuest: Quest = {
   name: "PostCoil",
   completed: () => get("csServicesPerformed").split(",").length > 1,
   tasks: [
+    {
+      name: "Beret",
+      completed: () => get("_beretBuskingUses", 0) >= 5,
+      do: (): void => {
+        if (!have($effect`Hammertime`)) {
+          if (!have($item`too legit potion`)) create($item`too legit potion`);
+          use($item`too legit potion`);
+        }
+        if (!have($effect`Hammertime`)) Error("Failed to get Hammertime!");
+
+        if (!have($item`coconut shell`)) useSkill($skill`Advanced Cocktailcrafting`);
+        if (!have($item`coconut shell`)) Error("Failed to get Coconut Shell!");
+
+        unequip($slot`back`);
+        unequip($slot`weapon`);
+        unequip($slot`off-hand`);
+        unequip($slot`acc1`);
+        unequip($slot`acc2`);
+        unequip($slot`acc3`);
+
+        // eslint-disable-next-line libram/verify-constants
+        equip($slot`familiar`, $item`prismatic beret`);
+        equip($slot`shirt`, $item`Jurassic Parka`); // 100DA
+
+        if (
+          get("_beretBuskingUses", 0) === 0 ||
+          get("_beretBuskingUses", 0) === 1 ||
+          get("_beretBuskingUses", 0) === 4 // Cast 1, 2, 5: 800 DA
+        ) {
+          equip($slot`hat`, $item`Apriling band helmet`); // 200DA
+          equip($slot`pants`, $item`tearaway pants`); // 500DA
+        } else if (
+          get("_beretBuskingUses", 0) === 2 // Cast 3: 160DA
+        ) {
+          equip($slot`hat`, $item`coconut shell`); // 60DA
+          unequip($slot`pants`);
+        } else if (
+          get("_beretBuskingUses", 0) === 3 // Cast 4: 160DA
+        ) {
+          unequip($slot`hat`);
+          equip($slot`pants`, $item`tearaway pants`); // 500DA
+        }
+
+        const hatDA =
+          getPower(equippedItem($slot`hat`)) * (1 + (have($skill`Tao of the Terrapin`) ? 1 : 0));
+        const shirtDA = getPower(equippedItem($slot`shirt`));
+        const pantsDA =
+          getPower(equippedItem($slot`pants`)) *
+          (1 + (have($skill`Tao of the Terrapin`) ? 1 : 0) + (have($effect`Hammertime`) ? 3 : 0));
+        print(`Beret Busk: ${get("_beretBuskingUses", 0) + 1}`);
+        print(
+          `Total: ${hatDA + shirtDA + pantsDA} - Hat: ${hatDA}, Shirt: ${shirtDA}, Pants: ${pantsDA}`,
+        );
+
+        const currentBusks = get("_beretBuskingUses", 0);
+        visitUrl(`runskillz.php?action=Skillz&whichskill=7565&targetplayer=${myId()}&pwd`);
+        set("_beretBuskingUses", currentBusks + 1);
+      },
+      outfit: {
+        familiar: $familiar`Mad Hatrack`,
+      },
+      limit: { tries: 5 },
+    },
     {
       name: "Mayday",
       completed: () => !have($item`MayDay™ supply package`),
@@ -359,6 +431,19 @@ export const PostCoilQuest: Quest = {
       limit: { tries: 1 },
     },
     {
+      name: "Entauntauned",
+      completed: () => get("_entauntaunedToday"),
+      do: () => visitUrl("main.php?action=camel"),
+      choices: {
+        1418: 1,
+      },
+      outfit: {
+        weapon: $item`Fourth of May Cosplay Saber`,
+        familiar: $familiar`Melodramedary`,
+      },
+      limit: { tries: 1 },
+    },
+    {
       name: "Sept-ember Mouthwash",
       completed: () => get("availableSeptEmbers") === 0,
       prepare: (): void => {
@@ -404,7 +489,11 @@ export const PostCoilQuest: Quest = {
         myMeat() <= 1000 ||
         levelingBuffs.every((ef) => have(ef) || !canAcquireEffect(ef)) ||
         get("_feelPrideUsed") > 0,
-      do: () =>
+      do: (): void => {
+        if (myHp() <= 30 && myMaxhp() > 30) {
+          if (get("_hotTubSoaks") < 5) cliExecute("hottub");
+          else useSkill($skill`Cannelloni Cocoon`);
+        }
         levelingBuffs.forEach((ef) => {
           if (myMeat() >= 1000) tryAcquiringEffect(ef);
           if (
@@ -412,7 +501,8 @@ export const PostCoilQuest: Quest = {
             (have($item`magical sausage`) || have($item`magical sausage casing`))
           )
             eat(1, $item`magical sausage`);
-        }),
+        });
+      },
       outfit: {
         offhand: $item`April Shower Thoughts shield`,
         pants: $item`designer sweatpants`,
@@ -446,9 +536,10 @@ export const PostCoilQuest: Quest = {
     { ...holidayRunawayTask },
     {
       name: "Ninja Costume",
-      ready: () => get("_monstersMapped") < 3 && get("_chestXRayUsed") < 3,
+      ready: () => get("_chestXRayUsed") < 3,
+      prepare: () => PeridotOfPeril.setChoice($monster`amateur ninja`),
       completed: () => have($item`li'l ninja costume`),
-      do: () => mapMonster($location`The Haiku Dungeon`, $monster`amateur ninja`),
+      do: $location`The Haiku Dungeon`,
       post: () => visitUrl("questlog.php?which=1"), // Check quest log for protonic ghost location
       combat: new CombatStrategy().macro(
         Macro.ifHolidayWanderer(Macro.skill($skill`Feel Hatred`).abort())
@@ -459,8 +550,9 @@ export const PostCoilQuest: Quest = {
         ...baseOutfit(),
         back: $item`protonic accelerator pack`,
         acc1: $item`Lil' Doctor™ bag`,
+        acc3: $item`Peridot of Peril`,
       }),
-      limit: { tries: 2 },
+      limit: { tries: 1 },
     },
     {
       name: "Nanobrainy",
@@ -495,16 +587,17 @@ export const PostCoilQuest: Quest = {
     },
     {
       name: "Skeleton Fruits",
-      ready: () => get("_monstersMapped") < 3 && get("_chestXRayUsed") < 3,
+      ready: () => get("_chestXRayUsed") < 3,
       prepare: (): void => {
         if (get("parkaMode") !== "spikolodon") cliExecute("parka spikolodon");
+        PeridotOfPeril.setChoice($monster`novelty tropical skeleton`);
       },
       completed: () =>
         mainStat === $stat`Moxie` ||
         have($item`cherry`) ||
         have($item`oil of expertise`) ||
         have($effect`Expert Oiliness`),
-      do: () => mapMonster($location`The Skeleton Store`, $monster`novelty tropical skeleton`),
+      do: $location`The Skeleton Store`,
       combat: new CombatStrategy().macro(
         Macro.trySkill($skill`Spit jurassic acid`)
           .skill($skill`Feel Envy`)
@@ -512,6 +605,7 @@ export const PostCoilQuest: Quest = {
       ),
       outfit: () => ({
         ...baseOutfit(),
+        acc1: $item`Peridot of Peril`,
         acc3: $item`Lil' Doctor™ bag`,
       }),
       limit: { tries: 1 },

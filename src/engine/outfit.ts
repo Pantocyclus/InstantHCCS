@@ -11,10 +11,9 @@ export function baseOutfit(): OutfitSpec {
     acc1: $item`Cincho de Mayo`,
     acc2: $item`Eight Days a Week Pill Keeper`,
     acc3: $item`backup camera`,
-    familiar: $familiar`Melodramedary`,
-    famequip: have($item`dromedary drinking helmet`)
-      ? $item`dromedary drinking helmet`
-      : // eslint-disable-next-line libram/verify-constants
-        $item`toy Cupid bow`,
+    familiar: $familiar`Reagnimated Gnome`,
+    famequip: have($item`gnomish housemaid's kgnee`)
+      ? $item`gnomish housemaid's kgnee`
+      : $item`toy Cupid bow`,
   };
 }
