@@ -228,8 +228,8 @@ export const LevelingQuest: Quest = {
       prepare: (): void => {
         if (!have($item`datastick`))
           visitUrl("place.php?whichplace=serverroom&action=serverroom_chipdrawer");
-        $effects`Honeypotted, Null Afternoon, Scarysauce, Jalapeño Saucesphere`.forEach((e) =>
-          tryAcquiringEffect(e),
+        $effects`Honeypotted, Null Afternoon, Scarysauce, Feeling Nervous, Jalapeño Saucesphere`.forEach(
+          (e) => tryAcquiringEffect(e),
         );
       },
       completed: () => get("_cyberZone1Turns") >= 9,
@@ -248,8 +248,8 @@ export const LevelingQuest: Quest = {
       prepare: (): void => {
         if (!have($item`datastick`))
           visitUrl("place.php?whichplace=serverroom&action=serverroom_chipdrawer");
-        $effects`Honeypotted, Null Afternoon, Scarysauce, Jalapeño Saucesphere`.forEach((e) =>
-          tryAcquiringEffect(e),
+        $effects`Honeypotted, Null Afternoon, Scarysauce, Feeling Nervous, Jalapeño Saucesphere`.forEach(
+          (e) => tryAcquiringEffect(e),
         );
       },
       completed: () => get("_cyberZone2Turns") >= 1,
