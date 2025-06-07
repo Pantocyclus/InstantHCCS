@@ -136,7 +136,7 @@ const levelingBuffs = [
   // $effect`Triple-Sized`,
   // Class Skill
   $effect`Astral Shell`,
-  $effect`Aloysius' Antiphon of Aptitude`,
+  // $effect`Aloysius' Antiphon of Aptitude`,
   $effect`Disco over Matter`,
   $effect`Disco State of Mind`,
   $effect`Disdain of the War Snapper`,
@@ -161,7 +161,7 @@ const levelingBuffs = [
   // ML
   $effect`Drescher's Annoying Noise`,
   $effect`Driving Recklessly`,
-  $effect`Ur-Kel's Aria of Annoyance`,
+  // $effect`Ur-Kel's Aria of Annoyance`,
   $effect`Pride of the Puffin`,
   // Beach Comb
   $effect`Do I Know You From Somewhere?`,
@@ -177,6 +177,7 @@ const levelingBuffs = [
   $effect`Broad-Spectrum Vaccine`,
   $effect`Favored by Lyle`,
   $effect`Grumpy and Ornery`,
+  $effect`Puzzle Champ`,
   $effect`Starry-Eyed`,
   $effect`Total Protonic Reversal`,
   $effect`Uncucumbered`,
@@ -205,10 +206,10 @@ export const PostCoilQuest: Quest = {
           if (!have($item`too legit potion`)) create($item`too legit potion`);
           use($item`too legit potion`);
         }
-        if (!have($effect`Hammertime`)) Error("Failed to get Hammertime!");
+        if (!have($effect`Hammertime`)) throw new Error("Failed to get Hammertime!");
 
         if (!have($item`coconut shell`)) useSkill($skill`Advanced Cocktailcrafting`);
-        if (!have($item`coconut shell`)) Error("Failed to get Coconut Shell!");
+        if (!have($item`coconut shell`)) throw new Error("Failed to get Coconut Shell!");
 
         unequip($slot`back`);
         unequip($slot`weapon`);

@@ -108,7 +108,7 @@ export const LevelingQuest: Quest = {
       ready: () => myLevel() >= 11,
       prepare: (): void => {
         if (have($item`astral six-pack`)) use($item`astral six-pack`);
-        uneffect($effect`Aloysius' Antiphon of Aptitude`);
+        // uneffect($effect`Aloysius' Antiphon of Aptitude`);
       },
       completed: () => myInebriety() >= 1,
       do: () => drink(1 - myInebriety(), $item`astral pilsner`),
@@ -228,8 +228,8 @@ export const LevelingQuest: Quest = {
       prepare: (): void => {
         if (!have($item`datastick`))
           visitUrl("place.php?whichplace=serverroom&action=serverroom_chipdrawer");
-        $effects`Honeypotted, Null Afternoon, Scarysauce, Feeling Nervous, Jalapeño Saucesphere`.forEach(
-          (e) => tryAcquiringEffect(e),
+        $effects`Honeypotted, Null Afternoon, Scarysauce, Jalapeño Saucesphere`.forEach((e) =>
+          tryAcquiringEffect(e),
         );
       },
       completed: () => get("_cyberZone1Turns") >= 9,
@@ -248,8 +248,8 @@ export const LevelingQuest: Quest = {
       prepare: (): void => {
         if (!have($item`datastick`))
           visitUrl("place.php?whichplace=serverroom&action=serverroom_chipdrawer");
-        $effects`Honeypotted, Null Afternoon, Scarysauce, Feeling Nervous, Jalapeño Saucesphere`.forEach(
-          (e) => tryAcquiringEffect(e),
+        $effects`Honeypotted, Null Afternoon, Scarysauce, Jalapeño Saucesphere`.forEach((e) =>
+          tryAcquiringEffect(e),
         );
       },
       completed: () => get("_cyberZone2Turns") >= 1,
@@ -263,7 +263,6 @@ export const LevelingQuest: Quest = {
       post: (): void => {
         sendAutumnaton();
         cliExecute("shrug scarysauce");
-        cliExecute("shrug nervous");
         cliExecute("shrug jalap");
       },
       limit: { tries: 1 },
