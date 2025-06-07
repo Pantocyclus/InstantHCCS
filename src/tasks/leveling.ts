@@ -142,7 +142,6 @@ export const LevelingQuest: Quest = {
       outfit: () => ({
         ...baseOutfit(),
         familiar: $familiar`Shorter-Order Cook`,
-        // eslint-disable-next-line libram/verify-constants
         famequip: have($item`blue plate`) ? $item`tiny stillsuit` : $item`toy Cupid bow`,
       }),
       post: (): void => {

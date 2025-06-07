@@ -217,7 +217,6 @@ export const PostCoilQuest: Quest = {
         unequip($slot`acc2`);
         unequip($slot`acc3`);
 
-        // eslint-disable-next-line libram/verify-constants
         equip($slot`familiar`, $item`prismatic beret`);
         equip($slot`shirt`, $item`Jurassic Parka`); // 100DA
 

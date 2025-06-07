@@ -65,7 +65,6 @@ export const WeaponDamageQuest: Quest = {
       name: "Test",
       prepare: (): void => {
         SongBoom.setSong("These Fists Were Made for Punchin'");
-        // eslint-disable-next-line libram/verify-constants
         for (const it of $items`Fabiotion, resolution: be feistier, imported taffy`)
           if (have(it)) ensureEffect(effectModifier(it, "effect"));
         if (!have($effect`Spit Upon`)) cliExecute("genie effect outer wolf");
