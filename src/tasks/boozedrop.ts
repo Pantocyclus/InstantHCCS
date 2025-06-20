@@ -21,6 +21,7 @@ import {
   ensureEffect,
   get,
   have,
+  uneffect,
 } from "libram";
 import Macro from "../combat";
 import { Quest } from "../engine/task";
@@ -103,7 +104,7 @@ export const BoozeDropQuest: Quest = {
         }
       },
       completed: () => CommunityService.BoozeDrop.isDone(),
-      do: () => CommunityService.BoozeDrop.run(() => logTestSetup(CommunityService.BoozeDrop), 3),
+      do: () => CommunityService.BoozeDrop.run(() => logTestSetup(CommunityService.BoozeDrop), 1),
       outfit: {
         modifier: "1 Item Drop, 2 Booze Drop, -equip broken champagne bottle",
         familiar: $familiar`Trick-or-Treating Tot`,
@@ -123,6 +124,7 @@ export const BoozeDropQuest: Quest = {
       ],
       acquire: [{ item: $item`wad of used tape` }],
       limit: { tries: 1 },
+      post: () => uneffect($effect`Fat Leon's Phat Loot Lyric`),
     },
   ],
 };

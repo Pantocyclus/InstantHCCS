@@ -12,6 +12,8 @@ import {
   equippedItem,
   getPower,
   getWorkshed,
+  Item,
+  myBasestat,
   myClass,
   myHp,
   myId,
@@ -24,6 +26,7 @@ import {
   print,
   restoreMp,
   retrieveItem,
+  runChoice,
   toInt,
   use,
   useFamiliar,
@@ -58,6 +61,7 @@ import { Quest } from "../engine/task";
 import { canAcquireEffect, complexCandies, tryAcquiringEffect } from "../lib";
 import { holidayRunawayTask } from "./common";
 import { baseOutfit } from "../engine/outfit";
+import { printModtrace } from "libram/dist/modifier";
 
 const statGainBuffs =
   mainStat === $stat`Muscle`
@@ -199,82 +203,11 @@ export const PostCoilQuest: Quest = {
   completed: () => get("csServicesPerformed").split(",").length > 1,
   tasks: [
     {
-      name: "Beret",
-      completed: () => get("_beretBuskingUses", 0) >= 5,
-      do: (): void => {
-        if (!have($effect`Hammertime`)) {
-          if (!have($item`too legit potion`)) create($item`too legit potion`);
-          use($item`too legit potion`);
-        }
-        if (!have($effect`Hammertime`)) throw new Error("Failed to get Hammertime!");
-
-        if (!have($item`coconut shell`)) useSkill($skill`Advanced Cocktailcrafting`);
-        if (!have($item`coconut shell`)) throw new Error("Failed to get Coconut Shell!");
-
-        unequip($slot`back`);
-        unequip($slot`weapon`);
-        unequip($slot`off-hand`);
-        unequip($slot`acc1`);
-        unequip($slot`acc2`);
-        unequip($slot`acc3`);
-
-        equip($slot`familiar`, $item`prismatic beret`);
-        equip($slot`shirt`, $item`Jurassic Parka`); // 100DA
-
-        if (
-          get("_beretBuskingUses", 0) === 0 ||
-          get("_beretBuskingUses", 0) === 1 ||
-          get("_beretBuskingUses", 0) === 4 // Cast 1, 2, 5: 800 DA
-        ) {
-          equip($slot`hat`, $item`Apriling band helmet`); // 200DA
-          equip($slot`pants`, $item`tearaway pants`); // 500DA
-        } else if (
-          get("_beretBuskingUses", 0) === 2 // Cast 3: 160DA
-        ) {
-          equip($slot`hat`, $item`coconut shell`); // 60DA
-          unequip($slot`pants`);
-        } else if (
-          get("_beretBuskingUses", 0) === 3 // Cast 4: 160DA
-        ) {
-          unequip($slot`hat`);
-          equip($slot`pants`, $item`tearaway pants`); // 500DA
-        }
-
-        const hatDA =
-          getPower(equippedItem($slot`hat`)) * (1 + (have($skill`Tao of the Terrapin`) ? 1 : 0));
-        const shirtDA = getPower(equippedItem($slot`shirt`));
-        const pantsDA =
-          getPower(equippedItem($slot`pants`)) *
-          (1 + (have($skill`Tao of the Terrapin`) ? 1 : 0) + (have($effect`Hammertime`) ? 3 : 0));
-        print(`Beret Busk: ${get("_beretBuskingUses", 0) + 1}`);
-        print(
-          `Total: ${hatDA + shirtDA + pantsDA} - Hat: ${hatDA}, Shirt: ${shirtDA}, Pants: ${pantsDA}`,
-        );
-
-        const currentBusks = get("_beretBuskingUses", 0);
-        visitUrl(`runskillz.php?action=Skillz&whichskill=7565&targetplayer=${myId()}&pwd`);
-        set("_beretBuskingUses", currentBusks + 1);
-      },
-      outfit: {
-        familiar: $familiar`Mad Hatrack`,
-      },
-      limit: { tries: 5 },
-    },
-    {
       name: "Mayday",
       completed: () => !have($item`MayDay™ supply package`),
       do: (): void => {
         use($item`MayDay™ supply package`);
         if (have($item`space blanket`)) autosell(1, $item`space blanket`);
-      },
-      limit: { tries: 1 },
-    },
-    {
-      name: "Install Workshed",
-      completed: () => getWorkshed() === $item`Asdon Martin keyfob (on ring)`,
-      do: (): void => {
-        use($item`Asdon Martin keyfob (on ring)`);
-        fillTo(37);
       },
       limit: { tries: 1 },
     },
@@ -306,16 +239,16 @@ export const PostCoilQuest: Quest = {
       outfit: { pants: $item`designer sweatpants` },
       limit: { tries: 1 },
     },
-    {
-      name: "Underground Fireworks Shop",
-      prepare: () => visitUrl("clan_viplounge.php?action=fwshop&whichfloor=2", false),
-      completed: () => have($item`blue rocket`) || have($effect`Everything Looks Blue`),
-      do: (): void => {
-        if (!have($item`blue rocket`)) buy(1, $item`blue rocket`);
-      },
-      outfit: { pants: $item`designer sweatpants` },
-      limit: { tries: 1 },
-    },
+    // {
+    //   name: "Underground Fireworks Shop",
+    //   prepare: () => visitUrl("clan_viplounge.php?action=fwshop&whichfloor=2", false),
+    //   completed: () => have($item`blue rocket`) || have($effect`Everything Looks Blue`),
+    //   do: (): void => {
+    //     if (!have($item`blue rocket`)) buy(1, $item`blue rocket`);
+    //   },
+    //   outfit: { pants: $item`designer sweatpants` },
+    //   limit: { tries: 1 },
+    // },
     {
       name: "Fortune Teller Consult",
       completed: () =>
@@ -430,12 +363,28 @@ export const PostCoilQuest: Quest = {
       outfit: { offhand: $item`familiar scrapbook` },
       limit: { tries: 1 },
     },
+    // {
+    //   name: "Cobbs Knob Peridot + Force",
+    //   prepare: () => PeridotOfPeril.setChoice($monster`sleeping Knob Goblin Guard`),
+    //   completed: () =>
+    //     get("_saberForceUses") >= 1 ||
+    //     PeridotOfPeril.periledToday($location`The Outskirts of Cobb's Knob`),
+    //   do: $location`The Outskirts of Cobb's Knob`,
+    //   combat: new CombatStrategy().macro(Macro.skill($skill`Use the Force`)),
+    //   choices: { 1387: 3 },
+    //   outfit: () => ({
+    //     ...baseOutfit(),
+    //     weapon: $item`Fourth of May Cosplay Saber`,
+    //   }),
+    //   limit: { tries: 1 },
+    // },
     {
       name: "Entauntauned",
       completed: () => get("_entauntaunedToday"),
-      do: () => visitUrl("main.php?action=camel"),
-      choices: {
-        1418: 1,
+      do: (): void => {
+        visitUrl("main.php?action=camel");
+        runChoice(1);
+        visitUrl("main.php");
       },
       outfit: {
         weapon: $item`Fourth of May Cosplay Saber`,
@@ -444,8 +393,104 @@ export const PostCoilQuest: Quest = {
       limit: { tries: 1 },
     },
     {
-      name: "Sept-ember Mouthwash",
+      name: "Grab Sept-ember Mouthwash",
       completed: () => get("availableSeptEmbers") === 0,
+      do: (): void => {
+        // Grab bembershoot
+        visitUrl(`shop.php?whichshop=september&action=buyitem&quantity=1&whichrow=1516&pwd`);
+        // Grab Mouthwashes
+        visitUrl("shop.php?whichshop=september&action=buyitem&quantity=3&whichrow=1512&pwd");
+      },
+      limit: { tries: 1 },
+    },
+    {
+      name: "Beret",
+      ready: () => myBasestat($stat`Moxie`) >= 55,
+      completed: () => get("_beretBuskingUses", 0) >= 5,
+      do: (): void => {
+        if (!have($effect`Hammertime`)) {
+          if (!have($item`too legit potion`)) create($item`too legit potion`);
+          use($item`too legit potion`);
+        }
+        if (!have($effect`Hammertime`)) throw new Error("Failed to get Hammertime!");
+
+        function tryBuying(it: Item): void {
+          if (!have(it)) buy(it, 1);
+          if (!have(it)) throw new Error(`Failed to buy ${it}!`);
+        }
+        tryBuying($item`alpha-mail pants`);
+        tryBuying($item`yellow plastic hard hat`);
+        tryBuying($item`pentacorn hat`);
+        // tryBuying($item`frilly skirt`);
+        // tryBuying($item`Kentucky-style derby`);
+
+        unequip($slot`back`);
+        unequip($slot`weapon`);
+        unequip($slot`off-hand`);
+        unequip($slot`acc1`);
+        unequip($slot`acc2`);
+        unequip($slot`acc3`);
+
+        equip($slot`familiar`, $item`prismatic beret`);
+
+        if (
+          get("_beretBuskingUses", 0) === 0 // Cast 1: 800DA
+        ) {
+          unequip($slot`hat`);
+          equip($slot`shirt`, $item`Jurassic Parka`); // 100DA
+          equip($slot`pants`, $item`alpha-mail pants`); // 700DA
+        } else if (
+          get("_beretBuskingUses", 0) === 1 // Cast 2: 860DA
+        ) {
+          equip($slot`hat`, $item`astronaut helmet`); // 60DA
+          equip($slot`shirt`, $item`Jurassic Parka`); // 100DA
+          equip($slot`pants`, $item`alpha-mail pants`); // 700DA
+        } else if (
+          get("_beretBuskingUses", 0) === 2 // Cast 3: 860DA
+        ) {
+          equip($slot`hat`, $item`astronaut helmet`); // 60DA
+          equip($slot`shirt`, $item`Jurassic Parka`); // 100DA
+          equip($slot`pants`, $item`alpha-mail pants`); // 700DA
+        } else if (
+          get("_beretBuskingUses", 0) === 3 // Cast 4: 830DA
+        ) {
+          equip($slot`hat`, $item`pentacorn hat`); // 80DA
+          equip($slot`shirt`, $item`makeshift garbage shirt`); // 50DA
+          equip($slot`pants`, $item`alpha-mail pants`); // 700DA
+        } else if (
+          get("_beretBuskingUses", 0) === 4 // Cast 5: 980DA
+        ) {
+          equip($slot`hat`, $item`yellow plastic hard hat`); // 180DA
+          equip($slot`shirt`, $item`Jurassic Parka`); // 100DA
+          equip($slot`pants`, $item`alpha-mail pants`); // 700DA
+        }
+
+        const hatDA =
+          getPower(equippedItem($slot`hat`)) * (1 + (have($skill`Tao of the Terrapin`) ? 1 : 0));
+        const shirtDA = getPower(equippedItem($slot`shirt`));
+        const pantsDA =
+          getPower(equippedItem($slot`pants`)) *
+          (1 + (have($skill`Tao of the Terrapin`) ? 1 : 0) + (have($effect`Hammertime`) ? 3 : 0));
+        const totalDA = hatDA + shirtDA + pantsDA;
+        print(`Beret Busk: ${get("_beretBuskingUses", 0) + 1}`);
+        print(`Total: ${totalDA} - Hat: ${hatDA}, Shirt: ${shirtDA}, Pants: ${pantsDA}`);
+
+        const currentBusks = get("_beretBuskingUses", 0);
+        const buskDAs = [800, 860, 860, 830, 980];
+        if (totalDA !== buskDAs[currentBusks])
+          throw new Error(`Failed to get ${buskDAs[currentBusks]} (got ${totalDA})`);
+        visitUrl(`runskillz.php?action=Skillz&whichskill=7565&targetplayer=${myId()}&pwd`);
+        set("_beretBuskingUses", currentBusks + 1);
+      },
+      acquire: [{ item: $item`makeshift garbage shirt` }],
+      outfit: {
+        familiar: $familiar`Mad Hatrack`,
+      },
+      limit: { tries: 5 },
+    },
+    {
+      name: "Use Sept-ember Mouthwash",
+      completed: () => !have($item`Mmm-brr! brand mouthwash`),
       prepare: (): void => {
         const usefulEffects: Effect[] = [
           $effect`Cold as Nice`, // +3 cold res from Beach Comb
@@ -457,15 +502,10 @@ export const PostCoilQuest: Quest = {
         usefulEffects.forEach((ef) => tryAcquiringEffect(ef, true));
       },
       do: (): void => {
-        // Grab bembershoot
-        visitUrl(`shop.php?whichshop=september&action=buyitem&quantity=1&whichrow=1516&pwd`);
-        // Grab Mouthwashes
-        visitUrl("shop.php?whichshop=september&action=buyitem&quantity=3&whichrow=1512&pwd");
-
-        cliExecute("maximize cold res");
-        use($item`Mmm-brr! brand mouthwash`, 3);
+        printModtrace("Cold Resistance");
+        use($item`Mmm-brr! brand mouthwash`, 1);
       },
-      limit: { tries: 1 },
+      limit: { tries: 3 },
       outfit: {
         modifier: "cold res",
         familiar: $familiar`Exotic Parrot`,
@@ -481,6 +521,14 @@ export const PostCoilQuest: Quest = {
       do: (): void => {
         while (mySoulsauce() >= 5 && myMp() <= myMaxmp() - 15) useSkill($skill`Soul Food`);
       },
+    },
+    {
+      name: "Install Workshed",
+      completed: () => getWorkshed() === $item`Asdon Martin keyfob (on ring)`,
+      do: (): void => {
+        use($item`Asdon Martin keyfob (on ring)`);
+      },
+      limit: { tries: 1 },
     },
     {
       name: "Buffs",
@@ -608,7 +656,7 @@ export const PostCoilQuest: Quest = {
         acc1: $item`Peridot of Peril`,
         acc3: $item`Lil' Doctor™ bag`,
       }),
-      limit: { tries: 1 },
+      limit: { tries: 2 },
     },
     {
       name: "Reminisce Evil Olive",

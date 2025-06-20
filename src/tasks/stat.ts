@@ -91,6 +91,7 @@ export const MysticalityQuest: Quest = {
       post: (): void => {
         uneffect($effect`The Magical Mojomuscular Melody`);
         burnLibram(300);
+        uneffect($effect`Stevedave's Shanty of Superiority`);
       },
       limit: { tries: 1 },
     },

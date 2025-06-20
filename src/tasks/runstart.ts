@@ -131,9 +131,12 @@ export const RunStartQuest: Quest = {
     {
       name: "Gnome kgnee",
       completed: () => get("_gnomePart"),
-      do: () => visitUrl("arena.php"),
+      do: (): void => {
+        visitUrl("arena.php");
+        runChoice(4);
+        visitUrl("main.php");
+      },
       outfit: { familiar: $familiar`Reagnimated Gnome` },
-      choices: { 597: 4 },
       limit: { tries: 1 },
     },
     {

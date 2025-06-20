@@ -1,5 +1,14 @@
 import { CombatStrategy } from "grimoire-kolmafia";
-import { cliExecute, myHp, myMaxhp, mySoulsauce, useSkill, visitUrl } from "kolmafia";
+import {
+  cliExecute,
+  myHp,
+  myMaxhp,
+  myMaxmp,
+  myMp,
+  mySoulsauce,
+  useSkill,
+  visitUrl,
+} from "kolmafia";
 import {
   $effect,
   $familiar,
@@ -56,6 +65,8 @@ export const CoilWireQuest: Quest = {
       },
       completed: () => get("_eldritchHorrorEvoked"),
       do: (): void => {
+        if (myMp() < 66 && myMaxmp() >= 66)
+          visitUrl("place.php?whichplace=chateau&action=chateau_restbox");
         useSkill($skill`Evoke Eldritch Horror`);
         visitUrl("main.php");
       },

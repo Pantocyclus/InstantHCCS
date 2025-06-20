@@ -71,7 +71,7 @@ export const WeaponDamageQuest: Quest = {
       },
       completed: () => CommunityService.WeaponDamage.isDone(),
       do: () =>
-        CommunityService.WeaponDamage.run(() => logTestSetup(CommunityService.WeaponDamage), 2),
+        CommunityService.WeaponDamage.run(() => logTestSetup(CommunityService.WeaponDamage), 1),
       outfit: { modifier: "weapon dmg", familiar: $familiar`Disembodied Hand` },
       effects: [
         $effect`Billiards Belligerence`,

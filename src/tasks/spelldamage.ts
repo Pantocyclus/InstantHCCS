@@ -5,7 +5,9 @@ import {
   myHp,
   myMaxhp,
   retrieveItem,
+  use,
   useSkill,
+  visitUrl,
 } from "kolmafia";
 import {
   $effect,
@@ -17,7 +19,9 @@ import {
   $skill,
   CommunityService,
   ensureEffect,
+  get,
   have,
+  uneffect,
 } from "libram";
 import { Quest } from "../engine/task";
 import { burnLibram, logTestSetup } from "../lib";
@@ -70,10 +74,18 @@ export const SpellDamageQuest: Quest = {
       prepare: (): void => {
         for (const it of $items`confiscated cell phone, Bettie page, resolution: be luckier, resolution: be feistier, cordial of concentration`)
           if (have(it)) ensureEffect(effectModifier(it, "effect"));
+        if (CommunityService.SpellDamage.actualCost() > 1) {
+          if (!get("_cargoPocketEmptied")) {
+            visitUrl("inventory.php?action=pocket");
+            visitUrl("choice.php?whichchoice=1420&option=1&pocket=177");
+          }
+          if (!have($effect`Sigils of Yeg`) && have($item`Yeg's Motel hand soap`))
+            use($item`Yeg's Motel hand soap`);
+        }
       },
       completed: () => CommunityService.SpellDamage.isDone(),
       do: () =>
-        CommunityService.SpellDamage.run(() => logTestSetup(CommunityService.SpellDamage), 24),
+        CommunityService.SpellDamage.run(() => logTestSetup(CommunityService.SpellDamage), 5),
       outfit: {
         modifier: "spell dmg",
         familiar: have($item`Abracandalabra`)
@@ -97,6 +109,7 @@ export const SpellDamageQuest: Quest = {
         burnLibram(300);
         useSkill($skill`Spirit of Nothing`);
         equip($familiar`Left-Hand Man`, $item.none);
+        uneffect($effect`Jackasses' Symphony of Destruction`);
       },
       limit: { tries: 1 },
     },

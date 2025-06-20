@@ -134,11 +134,7 @@ export const LevelingQuest: Quest = {
         have($item`Rufus's shadow lodestone`) ||
         (!have($effect`Shadow Affinity`) && get("encountersUntilSRChoice") !== 0),
       do: bestShadowRift(),
-      combat: new CombatStrategy().macro(
-        Macro.trySkill($skill`Giant Growth`)
-          .if_($item`blue rocket`, Macro.item($item`blue rocket`))
-          .default(),
-      ),
+      combat: new CombatStrategy().macro(Macro.trySkill($skill`Giant Growth`).default()),
       outfit: () => ({
         ...baseOutfit(),
         familiar: $familiar`Shorter-Order Cook`,
@@ -228,8 +224,8 @@ export const LevelingQuest: Quest = {
       prepare: (): void => {
         if (!have($item`datastick`))
           visitUrl("place.php?whichplace=serverroom&action=serverroom_chipdrawer");
-        $effects`Honeypotted, Null Afternoon, Scarysauce, Feeling Nervous, Jalapeño Saucesphere`.forEach(
-          (e) => tryAcquiringEffect(e),
+        $effects`Honeypotted, Null Afternoon, Scarysauce, Jalapeño Saucesphere`.forEach((e) =>
+          tryAcquiringEffect(e),
         );
       },
       completed: () => get("_cyberZone1Turns") >= 9,
@@ -248,8 +244,8 @@ export const LevelingQuest: Quest = {
       prepare: (): void => {
         if (!have($item`datastick`))
           visitUrl("place.php?whichplace=serverroom&action=serverroom_chipdrawer");
-        $effects`Honeypotted, Null Afternoon, Scarysauce, Feeling Nervous, Jalapeño Saucesphere`.forEach(
-          (e) => tryAcquiringEffect(e),
+        $effects`Honeypotted, Null Afternoon, Scarysauce, Jalapeño Saucesphere`.forEach((e) =>
+          tryAcquiringEffect(e),
         );
       },
       completed: () => get("_cyberZone2Turns") >= 1,
@@ -284,6 +280,8 @@ export const LevelingQuest: Quest = {
         ...baseOutfit(),
         weapon: $item`June cleaver`,
         shirt: $item`makeshift garbage shirt`,
+        familiar: $familiar`Grim Brother`,
+        famequip: $item`tiny stillsuit`,
       }),
       acquire: [{ item: $item`makeshift garbage shirt` }],
       limit: { tries: 1 },
@@ -523,7 +521,7 @@ export const LevelingQuest: Quest = {
       limit: { tries: 1 },
     },
     {
-      name: "Oliver's Place Map",
+      name: "Oliver's Place Peridot",
       prepare: (): void => {
         if (get("umbrellaState") !== "broken") cliExecute("umbrella ml");
         if (get("parkaMode") !== "dilophosaur") cliExecute("parka dilophosaur");

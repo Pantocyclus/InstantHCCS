@@ -1,5 +1,5 @@
 import { OutfitSpec } from "grimoire-kolmafia";
-import { $familiar, $item, $items, have } from "libram";
+import { $effect, $familiar, $item, $items, have } from "libram";
 
 export function baseOutfit(): OutfitSpec {
   return {
@@ -11,9 +11,12 @@ export function baseOutfit(): OutfitSpec {
     acc1: $item`Cincho de Mayo`,
     acc2: $item`Eight Days a Week Pill Keeper`,
     acc3: $item`backup camera`,
-    familiar: $familiar`Reagnimated Gnome`,
-    famequip: have($item`gnomish housemaid's kgnee`)
-      ? $item`gnomish housemaid's kgnee`
-      : $item`toy Cupid bow`,
+    familiar: !have($effect`Shortly Stacked`)
+      ? $familiar`Reagnimated Gnome`
+      : $familiar`Grim Brother`,
+    famequip:
+      !have($effect`Shortly Stacked`) && have($item`gnomish housemaid's kgnee`)
+        ? $item`gnomish housemaid's kgnee`
+        : $item`toy Cupid bow`,
   };
 }
