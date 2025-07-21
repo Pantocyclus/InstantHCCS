@@ -15,6 +15,7 @@ import {
 import {
   Item,
   itemAmount,
+  myFamiliar,
   myFullness,
   myHp,
   myInebriety,
@@ -177,6 +178,10 @@ export class Engine extends BaseEngine {
         set(s, arr.filter((v, i, a) => v.length > 0 && a.indexOf(v) === i).join(","));
       }
     });
+    // eslint-disable-next-line libram/verify-constants
+    if (myFamiliar() === $familiar`Cooler Yeti`) {
+      print(`Cooler Yeti FamXp: ${myFamiliar().experience}`);
+    }
     if (task.completed()) {
       print(`${task.name} completed!`, "blue");
     } else {

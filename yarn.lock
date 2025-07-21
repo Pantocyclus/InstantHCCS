@@ -2313,9 +2313,9 @@ has@^1.0.3:
     function-bind "^1.1.1"
 
 html-entities@^2.5.2:
-  version "2.5.2"
-  resolved "https://registry.yarnpkg.com/html-entities/-/html-entities-2.5.2.tgz#201a3cf95d3a15be7099521620d19dfb4f65359f"
-  integrity sha512-K//PSRMQk4FZ78Kyau+mZurHn3FH0Vwr+H36eE0rPbeYkRRi9YxceYPhuN60UwWorxyKHhqoAJl2OFKa4BVtaA==
+  version "2.6.0"
+  resolved "https://registry.yarnpkg.com/html-entities/-/html-entities-2.6.0.tgz#7c64f1ea3b36818ccae3d3fb48b6974208e984f8"
+  integrity sha512-kig+rMn/QOVRvr7c86gQ8lWXq+Hkv6CbAH1hLu+RG338StTpE8Z0b44SDVaqVu7HGKf27frdmUYEs9hTUX/cLQ==
 
 human-signals@^2.1.0:
   version "2.1.0"
@@ -2609,10 +2609,10 @@ kind-of@^6.0.0, kind-of@^6.0.2:
   resolved "https://registry.yarnpkg.com/kind-of/-/kind-of-6.0.3.tgz#07c05034a6c349fa06e24fa35aa76db4580ce4dd"
   integrity sha512-dcS1ul+9tmeD95T+x28/ehLgd9mENa3LsvDTtzm3vyBEO7RPptvAD+t44WVXaUjTBRcrpFeFlC8WCruUR456hw==
 
-kolmafia@^5.28549.0:
-  version "5.28549.0"
-  resolved "https://registry.yarnpkg.com/kolmafia/-/kolmafia-5.28549.0.tgz#ac5611280af93605c7d9b84e3da8a8ca7db86484"
-  integrity sha512-cQy6jVquX8ccOltnleeWiiSrkjNYHz7K2eVeQD+V/zRFl0SpKWZ7qwM9+pXS/Og4a7X4LRN5drItJ2CjH1DWxQ==
+kolmafia@^5.28574.0:
+  version "5.28574.0"
+  resolved "https://registry.yarnpkg.com/kolmafia/-/kolmafia-5.28574.0.tgz#9aa79c91ee7ebd13b18de63ebc334daa671af15f"
+  integrity sha512-dwucrmziZcEptycejYArh9O9VvgCQ1azq+mvK5kMzntu9FL/ufZyJvvJyEYH71MH9mISUlLgv7QLWn3j/8dX5A==
 
 levn@^0.4.1:
   version "0.4.1"
@@ -2622,10 +2622,10 @@ levn@^0.4.1:
     prelude-ls "^1.2.1"
     type-check "~0.4.0"
 
-libram@^0.11.5:
-  version "0.11.5"
-  resolved "https://registry.yarnpkg.com/libram/-/libram-0.11.5.tgz#8ac546def3708a44077cbaeab8f48ce2bb118c0d"
-  integrity sha512-7RgNMCbZD9IMcS8WwOzo6Hzx18l623nKctzRAaswm7gI5y61KL6uRIN1uEjq7Ha8fdyryjQxvI2Vd3OxTJo6vw==
+libram@^0.11.6:
+  version "0.11.6"
+  resolved "https://registry.yarnpkg.com/libram/-/libram-0.11.6.tgz#7428682bedb86852ea8a1d57a9f3f52b8cbeed87"
+  integrity sha512-qEXuIJQNPeoWLAglQjWgJBWSOATdDS1IkuiRVzkCaerMORucYj1Rd7FJNQpqLh1npX7Sh6rH1Ws/7aBGPtTr1A==
   dependencies:
     html-entities "^2.5.2"
 

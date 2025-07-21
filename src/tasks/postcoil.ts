@@ -27,9 +27,7 @@ import {
   restoreMp,
   retrieveItem,
   runChoice,
-  toInt,
   use,
-  useFamiliar,
   useSkill,
   visitUrl,
   wait,
@@ -58,7 +56,7 @@ import {
 import { fillTo } from "libram/dist/resources/2017/AsdonMartin";
 import Macro, { mainStat } from "../combat";
 import { Quest } from "../engine/task";
-import { canAcquireEffect, complexCandies, tryAcquiringEffect } from "../lib";
+import { canAcquireEffect, tryAcquiringEffect } from "../lib";
 import { holidayRunawayTask } from "./common";
 import { baseOutfit } from "../engine/outfit";
 import { printModtrace } from "libram/dist/modifier";
@@ -91,12 +89,12 @@ const barrelBuff =
     : myClass() === $class`Sauceror`
       ? $effect`Warlock, Warstock, and Warbarrel`
       : $effect.none;
-const synthExpBuff =
-  mainStat === $stat`Muscle`
-    ? $effect`Synthesis: Movement`
-    : mainStat === $stat`Mysticality`
-      ? $effect`Synthesis: Learning`
-      : $effect`Synthesis: Style`;
+// const synthExpBuff =
+//   mainStat === $stat`Muscle`
+//     ? $effect`Synthesis: Movement`
+//     : mainStat === $stat`Mysticality`
+//       ? $effect`Synthesis: Learning`
+//       : $effect`Synthesis: Style`;
 const juiceBarBuffs =
   myClass() === $class`Seal Clubber`
     ? [] //$effects`Over the Ocean`
@@ -122,12 +120,25 @@ const showerGlobBuff =
       ? $effect`Moisticality`
       : $effect`[2994]In Your Cups`;
 
+const famwtBuffs = [
+  $effect`Billiards Belligerence`,
+  $effect`Blood Bond`,
+  $effect`Do I Know You From Somewhere?`,
+  $effect`Empathy`,
+  $effect`Thoughtful Empathy`,
+  $effect`Leash of Linguini`,
+  $effect`Puzzle Champ`,
+  // $effect`You Can Really Taste the Dormouse`,
+
+  // famxp
+  $effect`Curiosity of Br'er Tarrypin`,
+];
+
 const levelingBuffs = [
   // Skill
   $effect`A Few Extra Pounds`,
   $effect`Big`,
   $effect`Blessing of the Bird`,
-  $effect`Blood Bond`,
   $effect`Blood Bubble`,
   $effect`Carol of the Bulls`,
   $effect`Carol of the Hells`,
@@ -145,10 +156,8 @@ const levelingBuffs = [
   $effect`Disco State of Mind`,
   $effect`Disdain of the War Snapper`,
   $effect`Elemental Saucesphere`,
-  $effect`Empathy`,
   $effect`Ghostly Shell`,
   $effect`Inscrutable Gaze`,
-  $effect`Leash of Linguini`,
   $effect`Lubricating Sauce`,
   $effect`Mariachi Moisture`,
   $effect`Pasta Oneness`,
@@ -168,20 +177,19 @@ const levelingBuffs = [
   // $effect`Ur-Kel's Aria of Annoyance`,
   $effect`Pride of the Puffin`,
   // Beach Comb
-  $effect`Do I Know You From Somewhere?`,
   $effect`Lack of Body-Building`,
   $effect`Resting Beach Face`,
   combStatBuff,
   $effect`You Learned Something Maybe!`,
+  // Fam Weight
+  ...famwtBuffs,
   // Items
   generalStorePotion,
   barrelBuff,
   // Other
-  $effect`Billiards Belligerence`,
   $effect`Broad-Spectrum Vaccine`,
   $effect`Favored by Lyle`,
   $effect`Grumpy and Ornery`,
-  $effect`Puzzle Champ`,
   $effect`Starry-Eyed`,
   $effect`Total Protonic Reversal`,
   $effect`Uncucumbered`,
@@ -194,13 +202,14 @@ const levelingBuffs = [
   $effect`Takin' It Greasy`,
   $effect`Your Fifteen Minutes`,
   $effect`Bendin' Hell`,
+
   // Potions
   ...juiceBarBuffs,
 ];
 
 export const PostCoilQuest: Quest = {
   name: "PostCoil",
-  completed: () => get("csServicesPerformed").split(",").length > 1,
+  completed: () => have($effect`Inner Elf`) || get("csServicesPerformed").split(",").length > 1,
   tasks: [
     {
       name: "Mayday",
@@ -279,7 +288,6 @@ export const PostCoilQuest: Quest = {
         buy(1, $item`detuned radio`);
         changeMcd(10);
       },
-      outfit: baseOutfit,
       limit: { tries: 1 },
     },
     {
@@ -293,35 +301,35 @@ export const PostCoilQuest: Quest = {
       completed: () => get("_candySummons", 0) > 0,
       do: () => useSkill($skill`Summon Crimbo Candy`),
     },
-    {
-      name: "Get Moxie Complex Candies",
-      completed: () =>
-        mainStat !== $stat`Moxie` ||
-        have(synthExpBuff) ||
-        complexCandies.some((candy) => have(candy) && toInt(candy) % 5 === 4),
-      do: (): void => {
-        if (have($familiar`Stocking Mimic`)) {
-          useFamiliar($familiar`Stocking Mimic`);
-          adv1($location`The Dire Warren`, -1);
-        } else {
-          CombatLoversLocket.reminisce($monster`Hobelf`);
-        }
-      },
-      combat: new CombatStrategy().macro(
-        Macro.if_($monster`Hobelf`, Macro.skill($skill`Use the Force`))
-          .trySkill($skill`Reflex Hammer`)
-          .trySkill($skill`Feel Hatred`)
-          .trySkill($skill`Snokebomb`)
-          .abort(),
-      ),
-      choices: { 1387: 3 },
-      outfit: () => ({
-        ...baseOutfit(),
-        weapon: $item`Fourth of May Cosplay Saber`,
-        acc3: $item`Lil' Doctor™ bag`,
-      }),
-      limit: { tries: 1 },
-    },
+    // {
+    //   name: "Get Moxie Complex Candies",
+    //   completed: () =>
+    //     mainStat !== $stat`Moxie` ||
+    //     have(synthExpBuff) ||
+    //     complexCandies.some((candy) => have(candy) && toInt(candy) % 5 === 4),
+    //   do: (): void => {
+    //     if (have($familiar`Stocking Mimic`)) {
+    //       useFamiliar($familiar`Stocking Mimic`);
+    //       adv1($location`The Dire Warren`, -1);
+    //     } else {
+    //       CombatLoversLocket.reminisce($monster`Hobelf`);
+    //     }
+    //   },
+    //   combat: new CombatStrategy().macro(
+    //     Macro.if_($monster`Hobelf`, Macro.skill($skill`Use the Force`))
+    //       .trySkill($skill`Reflex Hammer`)
+    //       .trySkill($skill`Feel Hatred`)
+    //       .trySkill($skill`Snokebomb`)
+    //       .abort(),
+    //   ),
+    //   choices: { 1387: 3 },
+    //   outfit: () => ({
+    //     ...baseOutfit(),
+    //     weapon: $item`Fourth of May Cosplay Saber`,
+    //     acc3: $item`Lil' Doctor™ bag`,
+    //   }),
+    //   limit: { tries: 1 },
+    // },
     // {
     //   name: "Synth Exp Buff",
     //   completed: () => have(synthExpBuff),
@@ -363,6 +371,12 @@ export const PostCoilQuest: Quest = {
       outfit: { offhand: $item`familiar scrapbook` },
       limit: { tries: 1 },
     },
+    // {
+    //   name: "Your Days are Numbed",
+    //   completed: () => have($effect`Your Days Are Numbed`),
+    //   do: () => cliExecute("genie effect Your Days are Numbed"),
+    //   limit: { tries: 1 },
+    // },
     // {
     //   name: "Cobbs Knob Peridot + Force",
     //   prepare: () => PeridotOfPeril.setChoice($monster`sleeping Knob Goblin Guard`),
@@ -489,6 +503,14 @@ export const PostCoilQuest: Quest = {
       limit: { tries: 5 },
     },
     {
+      name: "Soul Food",
+      ready: () => mySoulsauce() >= 5,
+      completed: () => mySoulsauce() < 5 || myMp() > myMaxmp() - 15,
+      do: (): void => {
+        while (mySoulsauce() >= 5 && myMp() <= myMaxmp() - 15) useSkill($skill`Soul Food`);
+      },
+    },
+    {
       name: "Use Sept-ember Mouthwash",
       completed: () => !have($item`Mmm-brr! brand mouthwash`),
       prepare: (): void => {
@@ -498,6 +520,8 @@ export const PostCoilQuest: Quest = {
           $effect`Elemental Saucesphere`, // +2 cold res
           $effect`Feeling Peaceful`, // +2 cold res from Emotion Chip
           $effect`Astral Shell`, // +1 cold res
+
+          ...famwtBuffs,
         ];
         usefulEffects.forEach((ef) => tryAcquiringEffect(ef, true));
       },
@@ -508,18 +532,11 @@ export const PostCoilQuest: Quest = {
       limit: { tries: 3 },
       outfit: {
         modifier: "cold res",
-        familiar: $familiar`Exotic Parrot`,
+        // eslint-disable-next-line libram/verify-constants
+        familiar: $familiar`Cooler Yeti`,
       },
       post: (): void => {
         if (have($effect`Scarysauce`)) cliExecute("shrug scarysauce");
-      },
-    },
-    {
-      name: "Soul Food",
-      ready: () => mySoulsauce() >= 5,
-      completed: () => mySoulsauce() < 5 || myMp() > myMaxmp() - 15,
-      do: (): void => {
-        while (mySoulsauce() >= 5 && myMp() <= myMaxmp() - 15) useSkill($skill`Soul Food`);
       },
     },
     {

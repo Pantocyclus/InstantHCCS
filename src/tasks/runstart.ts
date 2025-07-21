@@ -25,14 +25,12 @@ import {
   $items,
   $location,
   $skill,
-  $stat,
+  CommunityService,
   get,
   have,
   SongBoom,
 } from "libram";
-import { mainStat } from "../combat";
 import { Quest } from "../engine/task";
-import { baseOutfit } from "../engine/outfit";
 import {
   discoveredFurniture,
   FURNITURE_PIECES,
@@ -44,10 +42,11 @@ import {
   Result,
   setFurniture,
 } from "libram/dist/resources/2025/Leprecondo";
+import { getGarden } from "../lib";
 
 export const RunStartQuest: Quest = {
   name: "Run Start",
-  completed: () => get("kingLiberated"),
+  completed: () => CommunityService.CoilWire.isDone() || get("kingLiberated"),
   tasks: [
     {
       name: "Council",
@@ -128,17 +127,17 @@ export const RunStartQuest: Quest = {
       outfit: { familiar: $familiar`Homemade Robot` },
       limit: { tries: 1 },
     },
-    {
-      name: "Gnome kgnee",
-      completed: () => get("_gnomePart"),
-      do: (): void => {
-        visitUrl("arena.php");
-        runChoice(4);
-        visitUrl("main.php");
-      },
-      outfit: { familiar: $familiar`Reagnimated Gnome` },
-      limit: { tries: 1 },
-    },
+    // {
+    //   name: "Gnome kgnee",
+    //   completed: () => get("_gnomePart"),
+    //   do: (): void => {
+    //     visitUrl("arena.php");
+    //     runChoice(4);
+    //     visitUrl("main.php");
+    //   },
+    //   outfit: { familiar: $familiar`Reagnimated Gnome` },
+    //   limit: { tries: 1 },
+    // },
     {
       name: "Chateau Desk",
       completed: () => get("_chateauDeskHarvested"),
@@ -186,18 +185,18 @@ export const RunStartQuest: Quest = {
       },
       limit: { tries: 1 },
     }, */
-    {
-      name: "Mummery",
-      completed: () => get("_mummeryMods").includes(`Experience (${mainStat})`),
-      do: () =>
-        cliExecute(
-          `mummery ${
-            mainStat === $stat`Muscle` ? "mus" : mainStat === $stat`Mysticality` ? "myst" : "mox"
-          }`,
-        ),
-      outfit: baseOutfit,
-      limit: { tries: 1 },
-    },
+    // {
+    //   name: "Mummery",
+    //   completed: () => get("_mummeryMods").includes(`Experience (${mainStat})`),
+    //   do: () =>
+    //     cliExecute(
+    //       `mummery ${
+    //         mainStat === $stat`Muscle` ? "mus" : mainStat === $stat`Mysticality` ? "myst" : "mox"
+    //       }`,
+    //     ),
+    //   outfit: baseOutfit,
+    //   limit: { tries: 1 },
+    // },
     {
       name: "BoomBox",
       completed: () => SongBoom.song() === "Total Eclipse of Your Meat",
@@ -256,6 +255,43 @@ export const RunStartQuest: Quest = {
       name: "Backup Camera Reverser",
       completed: () => get("backupCameraReverserEnabled"),
       do: () => cliExecute("backupcamera reverser"),
+      limit: { tries: 1 },
+    },
+    {
+      name: "Grab Wishes",
+      completed: () => !have($item`genie bottle`) || get("_genieWishesUsed") >= 3,
+      do: () => cliExecute("genie item pocket"),
+      limit: { tries: 3 },
+    },
+    {
+      name: "Harvest Power Plant",
+      completed: () =>
+        !have($item`potted power plant`) ||
+        get("_pottedPowerPlant")
+          .split(",")
+          .every((s) => s === "0"),
+      do: (): void => {
+        visitUrl(`inv_use.php?pwd&whichitem=${toInt($item`potted power plant`)}`);
+        get("_pottedPowerPlant")
+          .split(",")
+          .forEach((s, i) => {
+            if (s !== "0") visitUrl(`choice.php?pwd&whichchoice=1448&option=1&pp=${i + 1}`);
+          });
+      },
+      limit: { tries: 1 },
+    },
+    {
+      name: "Harvest Garden",
+      completed: () =>
+        [$item.none, $item`packet of mushroom spores`].includes(getGarden()) ||
+        getCampground()[getGarden().name] === 0,
+      do: () => cliExecute("garden pick"),
+      limit: { tries: 1 },
+    },
+    {
+      name: "Looking Glass",
+      completed: () => get("_lookingGlass"),
+      do: () => visitUrl("clan_viplounge.php?action=lookingglass&whichfloor=2"),
       limit: { tries: 1 },
     },
     {

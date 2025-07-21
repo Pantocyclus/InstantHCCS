@@ -9,7 +9,6 @@ import {
   itemAmount,
   myDaycount,
   myFamiliar,
-  mySign,
   toInt,
   use,
   useSkill,
@@ -36,6 +35,18 @@ import { Quest } from "../engine/task";
 import { burnLibram, logTestSetup } from "../lib";
 import { meteorShowerTask } from "./common";
 import { baseOutfit } from "../engine/outfit";
+
+const famWtEffects = [
+  $effect`Billiards Belligerence`,
+  $effect`Blood Bond`,
+  $effect`Do I Know You From Somewhere?`,
+  $effect`Empathy`,
+  $effect`Leash of Linguini`,
+  $effect`Puzzle Champ`,
+  $effect`Robot Friends`,
+  $effect`Shortly Stacked`,
+  $effect`You Can Really Taste the Dormouse`,
+];
 
 export const FamiliarWeightQuest: Quest = {
   name: "Familiar Weight",
@@ -104,13 +115,12 @@ export const FamiliarWeightQuest: Quest = {
       completed: () => getFuel() >= 37,
       do: (): void => {
         if (have($effect`Driving Stealthily`)) cliExecute("shrug driving stealthily");
-        fillTo(37);
+        fillTo(187);
       },
     },
     {
       name: "Buffs",
-      ready: () => !get("moonTuned"),
-      completed: () => mySign() === "Platypus",
+      completed: () => famWtEffects.every((ef) => have(ef)),
       do: (): void => {
         if (have($item`green candy heart`)) ensureEffect($effect`Heart of Green`);
         if (have($item`love song of icy revenge`))
@@ -122,19 +132,8 @@ export const FamiliarWeightQuest: Quest = {
             $item`love song of icy revenge`,
           );
         if (have($item`resolution: be kinder`)) ensureEffect($effect`Kindly Resolve`);
-        cliExecute("spoon platypus");
       },
-      effects: [
-        $effect`Billiards Belligerence`,
-        $effect`Blood Bond`,
-        $effect`Do I Know You From Somewhere?`,
-        $effect`Empathy`,
-        $effect`Leash of Linguini`,
-        $effect`Puzzle Champ`,
-        $effect`Robot Friends`,
-        $effect`Shortly Stacked`,
-        $effect`You Can Really Taste the Dormouse`,
-      ],
+      effects: famWtEffects,
       limit: { tries: 1 },
     },
     {
@@ -157,39 +156,34 @@ export const FamiliarWeightQuest: Quest = {
     },
     {
       name: "Gingerbread Earn Sprinkles",
+      prepare: () => {
+        if (getFuel() < 187 && !get("_missileLauncherUsed")) fillTo(187);
+      },
       completed: () =>
         itemAmount($item`sprinkles`) >= 50 ||
         get("_gingerbreadCityTurns") >= 4 ||
         have($item`gingerbread spice latte`) ||
         have($effect`Whole Latte Love`) ||
-        (get("_chestXRayUsed") >= 3 && get("_gingerbreadMobHitUsed")) ||
+        get("_missileLauncherUsed") ||
         get("_banderRunaways") >= (familiarWeight(myFamiliar()) + weightAdjustment()) / 5,
       do: $location`Gingerbread Upscale Retail District`,
       outfit: () => ({
-        ...baseOutfit(),
-        offhand: $item`familiar scrapbook`,
-        acc1: $item`Kremlin's Greatest Briefcase`,
-        acc3: $item`Lil' Doctor™ bag`,
         familiar: $familiar`Chocolate Lab`,
-        famequip: $item`tiny stillsuit`,
+        modifier: "familiar weight",
       }),
       combat: new CombatStrategy().macro(
         Macro.externalIf(
-          itemAmount($item`sprinkles`) < 50 &&
-            (get("_chestXRayUsed") < 3 || !get("_gingerbreadMobHitUsed")),
-          Macro.trySkill($skill`Gingerbread Mob Hit`)
-            .trySkill($skill`Chest X-Ray`)
-            .trySkill($skill`Feel Hatred`)
-            .trySkill($skill`Reflex Hammer`)
-            .trySkill($skill`Snokebomb`)
-            .trySkill($skill`KGB tranquilizer dart`)
-            .abort(),
+          itemAmount($item`sprinkles`) < 50 && !get("_missileLauncherUsed"),
+          Macro.trySkill($skill`Asdon Martin: Missile Launcher`).abort(),
         ).abort(),
       ),
       limit: { tries: 3 },
     },
     {
       name: "Gingerbread Get Latte",
+      prepare: () => {
+        if (getFuel() < 87 && !get("_missileLauncherUsed")) fillTo(87);
+      },
       ready: () =>
         itemAmount($item`sprinkles`) >= 50 &&
         get("_banderRunaways") < (familiarWeight(myFamiliar()) + weightAdjustment()) / 5,
@@ -199,12 +193,8 @@ export const FamiliarWeightQuest: Quest = {
         have($effect`Whole Latte Love`),
       do: $location`Gingerbread Upscale Retail District`,
       outfit: () => ({
-        ...baseOutfit(),
-        offhand: $item`familiar scrapbook`,
-        acc1: $item`Kremlin's Greatest Briefcase`,
-        acc3: $item`Lil' Doctor™ bag`,
         familiar: $familiar`Pair of Stomping Boots`,
-        famequip: $item`tiny stillsuit`,
+        modifier: "familiar weight",
       }),
       combat: new CombatStrategy().macro(Macro.runaway()),
       choices: {
@@ -214,23 +204,24 @@ export const FamiliarWeightQuest: Quest = {
         if (have($item`gingerbread spice latte`)) {
           ensureEffect($effect`Whole Latte Love`);
           set("_gingerbreadCityNoonCompleted", true);
+          cliExecute("spoon platypus");
         }
       },
       limit: { tries: 3 },
     },
-    {
-      name: "Get Shaving Buff",
-      completed: () => get("_chestXRayUsed") >= 3 || have($effect`Toiletbrush Moustache`),
-      do: $location`The Dire Warren`,
-      combat: new CombatStrategy().macro(Macro.trySkill($skill`Chest X-Ray`).abort()),
-      outfit: () => ({
-        ...baseOutfit(),
-        offhand: $item`familiar scrapbook`,
-        acc1: $item`Kremlin's Greatest Briefcase`,
-        acc3: $item`Lil' Doctor™ bag`,
-      }),
-      limit: { tries: 1 },
-    },
+    // {
+    //   name: "Get Shaving Buff",
+    //   completed: () => get("_chestXRayUsed") >= 3 || have($effect`Toiletbrush Moustache`),
+    //   do: $location`The Dire Warren`,
+    //   combat: new CombatStrategy().macro(Macro.trySkill($skill`Chest X-Ray`).abort()),
+    //   outfit: () => ({
+    //     ...baseOutfit(),
+    //     offhand: $item`familiar scrapbook`,
+    //     acc1: $item`Kremlin's Greatest Briefcase`,
+    //     acc3: $item`Lil' Doctor™ bag`,
+    //   }),
+    //   limit: { tries: 1 },
+    // },
     { ...meteorShowerTask },
     {
       name: "Feed Chameleon",

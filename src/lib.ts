@@ -3,6 +3,7 @@ import {
   Effect,
   equip,
   equippedItem,
+  getCampground,
   haveEffect,
   haveEquipped,
   holiday,
@@ -214,7 +215,7 @@ export function getSynthExpBuff(): void {
 }
 
 export function sendAutumnaton(): void {
-  if (have($item`autumn-aton`)) cliExecute("autumnaton send Shadow Rift");
+  cliExecute("autumnaton send The Sleazy Back Alley");
 }
 
 const improvedShowerSkills = new Map([
@@ -332,4 +333,9 @@ export function canAcquireEffect(ef: Effect): boolean {
       }
     })
     .some((b) => b);
+}
+
+const gardens = $items`packet of pumpkin seeds, Peppermint Pip Packet, packet of dragon's teeth, packet of beer seeds, packet of winter seeds, packet of thanksgarden seeds, packet of tall grass seeds, packet of mushroom spores, packet of rock seeds`;
+export function getGarden(): Item {
+  return gardens.find((it) => it.name in getCampground()) || $item.none;
 }

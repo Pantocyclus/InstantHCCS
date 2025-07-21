@@ -1,13 +1,4 @@
-import {
-  buy,
-  cliExecute,
-  effectModifier,
-  myClass,
-  myThrall,
-  toSkill,
-  useSkill,
-  visitUrl,
-} from "kolmafia";
+import { cliExecute, effectModifier, myClass, myThrall, useSkill } from "kolmafia";
 import {
   $class,
   $effect,
@@ -39,16 +30,16 @@ export const BoozeDropQuest: Quest = {
       do: () => cliExecute("aprilband effect drop"),
       limit: { tries: 1 },
     },
-    {
-      name: "Underground Fireworks Shop",
-      prepare: () => visitUrl("clan_viplounge.php?action=fwshop&whichfloor=2", false),
-      completed: () => have($item`oversized sparkler`),
-      do: (): void => {
-        if (!have($item`oversized sparkler`)) buy(1, $item`oversized sparkler`);
-      },
-      outfit: baseOutfit,
-      limit: { tries: 1 },
-    },
+    // {
+    //   name: "Underground Fireworks Shop",
+    //   prepare: () => visitUrl("clan_viplounge.php?action=fwshop&whichfloor=2", false),
+    //   completed: () => have($item`oversized sparkler`),
+    //   do: (): void => {
+    //     if (!have($item`oversized sparkler`)) buy(1, $item`oversized sparkler`);
+    //   },
+    //   outfit: baseOutfit,
+    //   limit: { tries: 1 },
+    // },
     {
       name: "Mini-Accordion Thief Buff",
       ready: () => have($familiar`Mini-Adventurer`) && myClass() === $class`Accordion Thief`,
@@ -56,12 +47,17 @@ export const BoozeDropQuest: Quest = {
       do: $location`The Dire Warren`,
       outfit: () => ({
         ...baseOutfit(),
+        back: $item`vampyric cloake`,
         acc3: $item`Lil' Doctor™ bag`,
         familiar: $familiar`Mini-Adventurer`,
         famequip: $item`tiny stillsuit`,
       }),
       combat: new CombatStrategy().macro(
-        Macro.trySkill($skill`Reflex Hammer`)
+        Macro.skill($skill`Become a Bat`)
+          .skill($skill`Bowl Straight Up`)
+          .trySkill($skill`Asdon Martin: Spring-Loaded Front Bumper`)
+          .trySkill($skill`Reflex Hammer`)
+          .trySkill($skill`Feel Hatred`)
           .trySkill($skill`Snokebomb`)
           .abort(),
       ),
@@ -69,26 +65,24 @@ export const BoozeDropQuest: Quest = {
       limit: { tries: 2 },
     },
     {
-      name: "Vampyric Cape + Bowling Ball + DSH Buffs (Sauceror)",
+      name: "Vampyric Cape + Bowling Ball",
       completed: () => have($effect`Bat-Adjacent Form`),
-      do: $location`The X-32-F Combat Training Snowman`,
+      do: $location`The Dire Warren`,
       combat: new CombatStrategy().macro(
         Macro.skill($skill`Become a Bat`)
           .skill($skill`Bowl Straight Up`)
-          .skill(toSkill(`%fn, let's pledge allegiance to a Zone`))
-          .default(),
+          .trySkill($skill`Asdon Martin: Spring-Loaded Front Bumper`)
+          .trySkill($skill`Reflex Hammer`)
+          .trySkill($skill`Feel Hatred`)
+          .trySkill($skill`Snokebomb`)
+          .abort(),
       ),
       outfit: () => ({
         ...baseOutfit(),
         back: $item`vampyric cloake`,
-        pants: $item`designer sweatpants`,
-        familiar: $familiar`Patriotic Eagle`,
-        famequip: $item`tiny stillsuit`,
+        acc3: $item`Lil' Doctor™ bag`,
       }),
       limit: { tries: 1 },
-      post: (): void => {
-        cliExecute("hottub");
-      },
     },
     {
       name: "Test",

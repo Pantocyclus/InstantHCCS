@@ -1,29 +1,17 @@
 import { CombatStrategy } from "grimoire-kolmafia";
 import {
   cliExecute,
-  create,
   drink,
   eat,
-  equip,
   familiarWeight,
-  getFuel,
-  getMonsters,
-  inebrietyLimit,
-  Item,
   itemAmount,
-  itemDropsArray,
-  Location,
-  mallPrice,
   myDaycount,
   myFamiliar,
   myInebriety,
   myLevel,
-  numericModifier,
-  restoreMp,
-  runChoice,
-  setLocation,
   totalFreeRests,
   use,
+  useFamiliar,
   visitUrl,
   weightAdjustment,
 } from "kolmafia";
@@ -36,54 +24,45 @@ import {
   $location,
   $monster,
   $skill,
-  $slot,
   $stat,
-  clamp,
-  ClosedCircuitPayphone,
-  CombatLoversLocket,
   get,
   getKramcoWandererChance,
   have,
-  PeridotOfPeril,
-  set,
-  sum,
   TunnelOfLove,
   uneffect,
   Witchess,
-  withChoice,
 } from "libram";
-import { fillTo } from "libram/dist/resources/2017/AsdonMartin";
 import Macro, { mainStat } from "../combat";
 import { Quest } from "../engine/task";
-import { burnLibram, sendAutumnaton, tryAcquiringEffect } from "../lib";
+import { burnLibram, sendAutumnaton } from "../lib";
 import { innerElfTask } from "./common";
 import { baseOutfit } from "../engine/outfit";
 
-let _bestShadowRift: Location | null = null;
-export function bestShadowRift(): Location {
-  if (!_bestShadowRift) {
-    _bestShadowRift = ClosedCircuitPayphone.chooseRift({
-      canAdventure: true,
-      sortBy: (l: Location) => {
-        setLocation(l);
-        // We probably aren't capping item drops with the penalty
-        // so we don't really need to compute the actual outfit (or the dropModifier for that matter actually)
-        const dropModifier = 1 + numericModifier("Item Drop") / 100;
-        return sum(getMonsters(l), (m) => {
-          return sum(
-            itemDropsArray(m),
-            ({ drop, rate }) => mallPrice(drop) * clamp((rate * dropModifier) / 100, 0, 1),
-          );
-        });
-      },
-    });
-    if (!_bestShadowRift) {
-      throw new Error("Failed to find a suitable Shadow Rift to adventure in");
-    }
-  }
-  // Mafia bug disallows adv1($location`Shadow Rift (<exact location>)`, -1, "") when overdrunk
-  return myInebriety() > inebrietyLimit() ? $location`Shadow Rift` : _bestShadowRift;
-}
+// let _bestShadowRift: Location | null = null;
+// export function bestShadowRift(): Location {
+//   if (!_bestShadowRift) {
+//     _bestShadowRift = ClosedCircuitPayphone.chooseRift({
+//       canAdventure: true,
+//       sortBy: (l: Location) => {
+//         setLocation(l);
+//         // We probably aren't capping item drops with the penalty
+//         // so we don't really need to compute the actual outfit (or the dropModifier for that matter actually)
+//         const dropModifier = 1 + numericModifier("Item Drop") / 100;
+//         return sum(getMonsters(l), (m) => {
+//           return sum(
+//             itemDropsArray(m),
+//             ({ drop, rate }) => mallPrice(drop) * clamp((rate * dropModifier) / 100, 0, 1),
+//           );
+//         });
+//       },
+//     });
+//     if (!_bestShadowRift) {
+//       throw new Error("Failed to find a suitable Shadow Rift to adventure in");
+//     }
+//   }
+//   // Mafia bug disallows adv1($location`Shadow Rift (<exact location>)`, -1, "") when overdrunk
+//   return myInebriety() > inebrietyLimit() ? $location`Shadow Rift` : _bestShadowRift;
+// }
 
 const lovEquipment: "LOV Eardigan" | "LOV Epaulettes" | "LOV Earring" =
   mainStat === $stat`Muscle`
@@ -117,82 +96,108 @@ export const LevelingQuest: Quest = {
       limit: { tries: 1 },
     },
     { ...innerElfTask },
-    {
-      name: "Get Rufus Quest",
-      completed: () => get("_shadowAffinityToday") || !have($item`closed-circuit pay phone`),
-      do: () => ClosedCircuitPayphone.chooseQuest(() => 2),
-      limit: { tries: 1 },
-    },
-    {
-      name: "Shadow Rift",
-      prepare: (): void => {
-        if (get("umbrellaState") !== "broken") cliExecute("umbrella ml");
-        if (get("parkaMode") !== "spikolodon") cliExecute("parka spikolodon");
-        restoreMp(50);
-      },
-      completed: () =>
-        have($item`Rufus's shadow lodestone`) ||
-        (!have($effect`Shadow Affinity`) && get("encountersUntilSRChoice") !== 0),
-      do: bestShadowRift(),
-      combat: new CombatStrategy().macro(Macro.trySkill($skill`Giant Growth`).default()),
-      outfit: () => ({
-        ...baseOutfit(),
-        familiar: $familiar`Shorter-Order Cook`,
-        famequip: have($item`blue plate`) ? $item`tiny stillsuit` : $item`toy Cupid bow`,
-      }),
-      post: (): void => {
-        if (have(ClosedCircuitPayphone.rufusTarget() as Item)) {
-          withChoice(1498, 1, () => use($item`closed-circuit pay phone`));
-          if (have($item`blue plate`)) equip($slot`familiar`, $item`blue plate`);
-        }
-        sendAutumnaton();
-      },
-      limit: { tries: 12 },
-    },
-    {
-      name: "Snojo for Newspaper",
-      prepare: (): void => {
-        if (get("snojoSetting") === null) {
-          visitUrl("place.php?whichplace=snojo&action=snojo_controller");
-          runChoice(1);
-        }
-        if (get("umbrellaState") !== "broken") cliExecute("umbrella ml");
-        if (get("parkaMode") !== "spikolodon") cliExecute("parka spikolodon");
-      },
-      completed: () =>
-        have($item`burning newspaper`) ||
-        have($item`burning paper crane`) ||
-        get("_snojoFreeFights") >= 5,
-      do: $location`The X-32-F Combat Training Snowman`,
-      combat: new CombatStrategy().macro(Macro.default()),
-      outfit: () => ({
-        ...baseOutfit(),
-        familiar: $familiar`Garbage Fire`,
-        famequip: $item`tiny stillsuit`,
-      }),
-      post: (): void => {
-        if (have($item`burning newspaper`)) cliExecute("create burning paper crane");
-        sendAutumnaton();
-      },
-      limit: { tries: 5 },
-    },
-    {
-      name: "Snojo for Fam Turns",
-      prepare: (): void => {
-        if (get("snojoSetting") === null) {
-          visitUrl("place.php?whichplace=snojo&action=snojo_controller");
-          runChoice(1);
-        }
-        if (get("umbrellaState") !== "broken") cliExecute("umbrella ml");
-        if (get("parkaMode") !== "spikolodon") cliExecute("parka spikolodon");
-      },
-      completed: () => get("_snojoFreeFights") >= 9,
-      do: $location`The X-32-F Combat Training Snowman`,
-      post: () => sendAutumnaton(),
-      combat: new CombatStrategy().macro(Macro.default()),
-      outfit: baseOutfit,
-      limit: { tries: 4 },
-    },
+    // {
+    //   name: "Get Rufus Quest",
+    //   completed: () => get("_shadowAffinityToday") || !have($item`closed-circuit pay phone`),
+    //   do: () => ClosedCircuitPayphone.chooseQuest(() => 2),
+    //   limit: { tries: 1 },
+    // },
+    // {
+    //   name: "Shadow Rift",
+    //   prepare: (): void => {
+    //     if (get("umbrellaState") !== "broken") cliExecute("umbrella ml");
+    //     if (get("parkaMode") !== "spikolodon") cliExecute("parka spikolodon");
+    //     restoreMp(50);
+    //   },
+    //   completed: () =>
+    //     have($item`Rufus's shadow lodestone`) ||
+    //     (!have($effect`Shadow Affinity`) && get("encountersUntilSRChoice") !== 0),
+    //   do: bestShadowRift(),
+    //   combat: new CombatStrategy().macro(Macro.trySkill($skill`Giant Growth`).default()),
+    //   outfit: () => ({
+    //     ...baseOutfit(),
+    //   }),
+    //   post: (): void => {
+    //     if (have(ClosedCircuitPayphone.rufusTarget() as Item)) {
+    //       withChoice(1498, 1, () => use($item`closed-circuit pay phone`));
+    //     }
+    //     sendAutumnaton();
+    //   },
+    //   limit: { tries: 12 },
+    // },
+    // {
+    //   name: "CyberSpace Zone 1",
+    //   prepare: (): void => {
+    //     if (!have($item`datastick`))
+    //       visitUrl("place.php?whichplace=serverroom&action=serverroom_chipdrawer");
+    //     $effects`Honeypotted, Null Afternoon, Scarysauce, Jalapeño Saucesphere`.forEach((e) =>
+    //       tryAcquiringEffect(e),
+    //     );
+    //     // eslint-disable-next-line libram/verify-constants
+    //     useFamiliar($familiar`Cooler Yeti`);
+    //     useFamiliar($familiar`Shorter-Order Cook`);
+    //   },
+    //   completed: () => get("_cyberZone1Turns") >= 9,
+    //   do: $location`Cyberzone 1`,
+    //   combat: new CombatStrategy().macro(
+    //     Macro.if_("monstername hacker", Macro.default()).trySkillRepeat($skill`Throw Cyber Rock`),
+    //   ),
+    //   outfit: () => ({
+    //     ...baseOutfit(),
+    //     familiar: $familiar`Shorter-Order Cook`,
+    //     famequip: have($item`blue plate`) ? $item`tiny stillsuit` : $item`toy Cupid bow`,
+    //   }),
+    //   post: () => sendAutumnaton(),
+    //   limit: { tries: 9 },
+    // },
+    // {
+    //   name: "CyberSpace Zone 2",
+    //   prepare: (): void => {
+    //     if (!have($item`datastick`))
+    //       visitUrl("place.php?whichplace=serverroom&action=serverroom_chipdrawer");
+    //     $effects`Honeypotted, Null Afternoon, Scarysauce, Jalapeño Saucesphere`.forEach((e) =>
+    //       tryAcquiringEffect(e),
+    //     );
+    //     // eslint-disable-next-line libram/verify-constants
+    //     useFamiliar($familiar`Cooler Yeti`);
+    //     useFamiliar($familiar`Shorter-Order Cook`);
+    //   },
+    //   completed: () => get("_cyberZone2Turns") >= 1,
+    //   do: $location`Cyberzone 2`,
+    //   combat: new CombatStrategy().macro(
+    //     Macro.if_("monstername hacker", Macro.default()).trySkillRepeat($skill`Throw Cyber Rock`),
+    //   ),
+    //   outfit: () => ({
+    //     ...baseOutfit(),
+    //     familiar: $familiar`Shorter-Order Cook`,
+    //     famequip: have($item`blue plate`) ? $item`tiny stillsuit` : $item`toy Cupid bow`,
+    //   }),
+    //   post: (): void => {
+    //     sendAutumnaton();
+    //     cliExecute("shrug scarysauce");
+    //     cliExecute("shrug jalap");
+    //   },
+    //   limit: { tries: 1 },
+    // },
+    // {
+    //   name: "Snojo for Fam Turns",
+    //   prepare: (): void => {
+    //     if (get("snojoSetting") === null) {
+    //       visitUrl("place.php?whichplace=snojo&action=snojo_controller");
+    //       runChoice(1);
+    //     }
+    //     if (get("umbrellaState") !== "broken") cliExecute("umbrella ml");
+    //     if (get("parkaMode") !== "spikolodon") cliExecute("parka spikolodon");
+    //   },
+    //   completed: () => get("_snojoFreeFights") >= 9,
+    //   do: $location`The X-32-F Combat Training Snowman`,
+    //   post: () => sendAutumnaton(),
+    //   combat: new CombatStrategy().macro(Macro.default()),
+    //   outfit: () => ({
+    //     ...baseOutfit(),
+    //   }),
+    //   limit: { tries: 9 },
+    // },
     // {
     //   name: "Snojo for Screech",
     //   prepare: (): void => {
@@ -220,50 +225,6 @@ export const LevelingQuest: Quest = {
     //   limit: { tries: 1 },
     // },
     {
-      name: "CyberSpace Zone 1",
-      prepare: (): void => {
-        if (!have($item`datastick`))
-          visitUrl("place.php?whichplace=serverroom&action=serverroom_chipdrawer");
-        $effects`Honeypotted, Null Afternoon, Scarysauce, Jalapeño Saucesphere`.forEach((e) =>
-          tryAcquiringEffect(e),
-        );
-      },
-      completed: () => get("_cyberZone1Turns") >= 9,
-      do: $location`Cyberzone 1`,
-      combat: new CombatStrategy().macro(
-        Macro.if_("monstername hacker", Macro.default()).trySkillRepeat($skill`Throw Cyber Rock`),
-      ),
-      outfit: () => ({
-        ...baseOutfit(),
-      }),
-      post: () => sendAutumnaton(),
-      limit: { tries: 9 },
-    },
-    {
-      name: "CyberSpace Zone 2",
-      prepare: (): void => {
-        if (!have($item`datastick`))
-          visitUrl("place.php?whichplace=serverroom&action=serverroom_chipdrawer");
-        $effects`Honeypotted, Null Afternoon, Scarysauce, Jalapeño Saucesphere`.forEach((e) =>
-          tryAcquiringEffect(e),
-        );
-      },
-      completed: () => get("_cyberZone2Turns") >= 1,
-      do: $location`Cyberzone 2`,
-      combat: new CombatStrategy().macro(
-        Macro.if_("monstername hacker", Macro.default()).trySkillRepeat($skill`Throw Cyber Rock`),
-      ),
-      outfit: () => ({
-        ...baseOutfit(),
-      }),
-      post: (): void => {
-        sendAutumnaton();
-        cliExecute("shrug scarysauce");
-        cliExecute("shrug jalap");
-      },
-      limit: { tries: 1 },
-    },
-    {
       name: "LOV Tunnel",
       prepare: (): void => {
         if (get("umbrellaState") !== "broken") cliExecute("umbrella ml");
@@ -280,8 +241,9 @@ export const LevelingQuest: Quest = {
         ...baseOutfit(),
         weapon: $item`June cleaver`,
         shirt: $item`makeshift garbage shirt`,
-        familiar: $familiar`Grim Brother`,
-        famequip: $item`tiny stillsuit`,
+        // eslint-disable-next-line libram/verify-constants
+        familiar: $familiar`Cooler Yeti`,
+        famequip: $item`toy Cupid bow`,
       }),
       acquire: [{ item: $item`makeshift garbage shirt` }],
       limit: { tries: 1 },
@@ -290,10 +252,23 @@ export const LevelingQuest: Quest = {
         sendAutumnaton();
       },
     },
+    // {
+    //   name: "Inflammable Leaf",
+    //   completed: () => get("_leafMonstersFought") >= 5 || itemAmount($item`inflammable leaf`) < 11,
+    //   do: () => BurningLeaves.burnSpecialLeaves($monster`flaming leaflet`),
+    //   combat: new CombatStrategy().macro(Macro.default()),
+    //   outfit: () => ({
+    //     ...baseOutfit(),
+    //   }),
+    //   limit: { tries: 5 },
+    // },
     {
       name: "Witchess Knight",
       prepare: (): void => {
         if (get("umbrellaState") !== "broken") cliExecute("umbrella ml");
+        // eslint-disable-next-line libram/verify-constants
+        useFamiliar($familiar`Cooler Yeti`);
+        useFamiliar($familiar`Shorter-Order Cook`);
       },
       completed: () => get("_witchessFights") >= 3,
       do: () => Witchess.fightPiece($monster`Witchess Knight`),
@@ -301,33 +276,43 @@ export const LevelingQuest: Quest = {
       outfit: () => ({
         ...baseOutfit(),
         shirt: $item`makeshift garbage shirt`,
+        familiar: $familiar`Shorter-Order Cook`,
+        famequip: $item`blue plate`,
       }),
       acquire: [{ item: $item`makeshift garbage shirt` }],
       post: () => sendAutumnaton(),
       limit: { tries: 3 },
     },
-    {
-      name: "Reminisce Knight",
-      prepare: (): void => {
-        if (get("umbrellaState") !== "broken") cliExecute("umbrella ml");
-      },
-      completed: () =>
-        mainStat === $stat`Moxie` ||
-        CombatLoversLocket.monstersReminisced().includes($monster`Witchess Knight`),
-      do: () => CombatLoversLocket.reminisce($monster`Witchess Knight`),
-      combat: new CombatStrategy().macro(Macro.default()),
-      outfit: () => ({
-        ...baseOutfit(),
-        shirt: $item`makeshift garbage shirt`,
-      }),
-      acquire: [{ item: $item`makeshift garbage shirt` }],
-      post: () => sendAutumnaton(),
-      limit: { tries: 1 },
-    },
+    // {
+    //   name: "Reminisce Knight",
+    //   prepare: (): void => {
+    //     if (get("umbrellaState") !== "broken") cliExecute("umbrella ml");
+    //     // eslint-disable-next-line libram/verify-constants
+    //     useFamiliar($familiar`Cooler Yeti`);
+    //     useFamiliar($familiar`Shorter-Order Cook`);
+    //   },
+    //   completed: () =>
+    //     mainStat === $stat`Moxie` ||
+    //     CombatLoversLocket.monstersReminisced().includes($monster`Witchess Knight`),
+    //   do: () => CombatLoversLocket.reminisce($monster`Witchess Knight`),
+    //   combat: new CombatStrategy().macro(Macro.default()),
+    //   outfit: () => ({
+    //     ...baseOutfit(),
+    //     shirt: $item`makeshift garbage shirt`,
+    //     familiar: $familiar`Shorter-Order Cook`,
+    //     famequip: $item`blue plate`,
+    //   }),
+    //   acquire: [{ item: $item`makeshift garbage shirt` }],
+    //   post: () => sendAutumnaton(),
+    //   limit: { tries: 1 },
+    // },
     {
       name: "Witchess King",
       prepare: (): void => {
         if (get("umbrellaState") !== "broken") cliExecute("umbrella ml");
+        // eslint-disable-next-line libram/verify-constants
+        useFamiliar($familiar`Cooler Yeti`);
+        useFamiliar($familiar`Shorter-Order Cook`);
       },
       completed: () => have($item`dented scepter`),
       do: () => Witchess.fightPiece($monster`Witchess King`),
@@ -336,6 +321,8 @@ export const LevelingQuest: Quest = {
         ...baseOutfit(),
         weapon: $item`Fourth of May Cosplay Saber`,
         shirt: $item`makeshift garbage shirt`,
+        familiar: $familiar`Shorter-Order Cook`,
+        famequip: $item`blue plate`,
       }),
       acquire: [{ item: $item`makeshift garbage shirt` }],
       post: () => sendAutumnaton(),
@@ -343,6 +330,11 @@ export const LevelingQuest: Quest = {
     },
     {
       name: "Witchess Witch",
+      prepare: () => {
+        // eslint-disable-next-line libram/verify-constants
+        useFamiliar($familiar`Cooler Yeti`);
+        useFamiliar($familiar`Shorter-Order Cook`);
+      },
       completed: () => have($item`battle broom`),
       do: () => Witchess.fightPiece($monster`Witchess Witch`),
       combat: new CombatStrategy().macro(
@@ -356,12 +348,11 @@ export const LevelingQuest: Quest = {
         offhand: $item`dented scepter`,
         shirt: $item`makeshift garbage shirt`,
         familiar: $familiar`Shorter-Order Cook`,
-        famequip: $item`tiny stillsuit`,
+        famequip: $item`blue plate`,
       }),
       acquire: [{ item: $item`makeshift garbage shirt` }],
       post: (): void => {
         sendAutumnaton();
-        if (have($item`blue plate`)) equip($slot`familiar`, $item`blue plate`);
       },
       limit: { tries: 1 },
     },
@@ -384,27 +375,30 @@ export const LevelingQuest: Quest = {
       post: () => sendAutumnaton(),
       limit: { tries: 3 },
     },
-    {
-      name: "Neverending Party",
-      prepare: (): void => {
-        if (get("umbrellaState") !== "broken") cliExecute("umbrella ml");
-      },
-      completed: () => get("_neverendingPartyFreeTurns") >= 10,
-      do: $location`The Neverending Party`,
-      choices: {
-        1322: 2,
-        1324: 5,
-      },
-      combat: new CombatStrategy().macro(Macro.trySkill($skill`Bowl Sideways`).default()),
-      outfit: () => ({
-        ...baseOutfit(),
-        shirt: $item`makeshift garbage shirt`,
-      }),
-      acquire: [{ item: $item`makeshift garbage shirt` }],
-      post: () => sendAutumnaton(),
-      limit: { tries: 11 },
-    },
-
+    // {
+    //   name: "Neverending Party",
+    //   prepare: (): void => {
+    //     if (get("umbrellaState") !== "broken") cliExecute("umbrella ml");
+    //     // eslint-disable-next-line libram/verify-constants
+    //     useFamiliar($familiar`Cooler Yeti`);
+    //     useFamiliar($familiar`Shorter-Order Cook`);
+    //   },
+    //   completed: () => get("_neverendingPartyFreeTurns") >= 10,
+    //   do: $location`The Neverending Party`,
+    //   choices: {
+    //     1322: 2,
+    //     1324: 5,
+    //   },
+    //   combat: new CombatStrategy().macro(Macro.trySkill($skill`Bowl Sideways`).default()),
+    //   outfit: () => ({
+    //     ...baseOutfit(),
+    //     shirt: $item`makeshift garbage shirt`,
+    //     //familiar: $familiar`Shorter-Order Cook`,
+    //   }),
+    //   acquire: [{ item: $item`makeshift garbage shirt` }],
+    //   post: () => sendAutumnaton(),
+    //   limit: { tries: 11 },
+    // },
     {
       name: "Retrieve Bowling Ball",
       completed: () =>
@@ -424,29 +418,29 @@ export const LevelingQuest: Quest = {
       post: () => sendAutumnaton(),
       limit: { tries: 10 },
     },
-    {
-      name: "Free Kills",
-      completed: () => get("_shatteringPunchUsed") >= 3 && get("_missileLauncherUsed"),
-      prepare: (): void => {
-        if (getFuel() < 100 && !get("_missileLauncherUsed")) fillTo(100);
-      },
-      do: $location`Uncle Gator's Country Fun-Time Liquid Waste Sluice`,
-      outfit: () => ({
-        ...baseOutfit(),
-        shirt: $item`makeshift garbage shirt`,
-      }),
-      combat: new CombatStrategy().macro(
-        Macro.trySkill($skill`Feel Pride`)
-          .trySkill($skill`Cincho: Confetti Extravaganza`)
-          .trySkill($skill`Bowl Sideways`)
-          .trySkill($skill`Shattering Punch`)
-          .trySkill($skill`Asdon Martin: Missile Launcher`)
-          .abort(),
-      ),
-      acquire: [{ item: $item`makeshift garbage shirt` }],
-      post: () => sendAutumnaton(),
-      limit: { tries: 6 },
-    },
+    // {
+    //   name: "Free Kills",
+    //   completed: () => get("_shatteringPunchUsed") >= 3 && get("_missileLauncherUsed"),
+    //   prepare: (): void => {
+    //     if (getFuel() < 100 && !get("_missileLauncherUsed")) fillTo(100);
+    //   },
+    //   do: $location`Uncle Gator's Country Fun-Time Liquid Waste Sluice`,
+    //   outfit: () => ({
+    //     ...baseOutfit(),
+    //     shirt: $item`makeshift garbage shirt`,
+    //   }),
+    //   combat: new CombatStrategy().macro(
+    //     Macro.trySkill($skill`Feel Pride`)
+    //       .trySkill($skill`Cincho: Confetti Extravaganza`)
+    //       .trySkill($skill`Bowl Sideways`)
+    //       .trySkill($skill`Shattering Punch`)
+    //       .trySkill($skill`Asdon Martin: Missile Launcher`)
+    //       .abort(),
+    //   ),
+    //   acquire: [{ item: $item`makeshift garbage shirt` }],
+    //   post: () => sendAutumnaton(),
+    //   limit: { tries: 6 },
+    // },
     {
       name: "Sausage Goblin",
       prepare: (): void => {
@@ -456,15 +450,17 @@ export const LevelingQuest: Quest = {
       completed: () =>
         get("_sausageFights") > 1 || (myDaycount() > 1 && getKramcoWandererChance() < 1.0),
       ready: () => getKramcoWandererChance() >= 1.0,
-      do: $location`The Neverending Party`,
+      do: $location`Noob Cave`,
       choices: { 1322: 2 },
       combat: new CombatStrategy().macro(
-        Macro.if_($monster`sausage goblin`, Macro.trySkill($skill`Portscan`).default()).abort(),
+        Macro.if_($monster`sausage goblin`, Macro.default()).abort(),
       ),
       outfit: () => ({
         ...baseOutfit(),
         offhand: $item`Kramco Sausage-o-Matic™`,
         shirt: $item`makeshift garbage shirt`,
+        familiar: $familiar`Shorter-Order Cook`,
+        famequip: $item`blue plate`,
       }),
       acquire: [{ item: $item`makeshift garbage shirt` }],
       limit: { tries: 1 },
@@ -475,70 +471,6 @@ export const LevelingQuest: Quest = {
         );
         sendAutumnaton();
       },
-    },
-    {
-      name: "Oliver's Place Agent with Portscan and Envy",
-      prepare: (): void => {
-        if (get("umbrellaState") !== "broken") cliExecute("umbrella ml");
-        cliExecute("terminal educate portscan");
-      },
-      completed: () => get("_speakeasyFreeFights", 0) >= 1,
-      do: $location`An Unusually Quiet Barroom Brawl`,
-      combat: new CombatStrategy().macro(
-        Macro.trySkill($skill`Gulp Latte`)
-          .if_($monster`Government agent`, Macro.trySkill($skill`Feel Envy`))
-          .trySkill($skill`Portscan`)
-          .default(),
-      ),
-      outfit: baseOutfit,
-      post: () => sendAutumnaton(),
-      limit: { tries: 1 },
-    },
-    {
-      name: "Oliver's Place Agent with Portscan",
-      prepare: (): void => {
-        if (get("umbrellaState") !== "broken") cliExecute("umbrella ml");
-        cliExecute("terminal educate portscan");
-      },
-      completed: () => get("_speakeasyFreeFights", 0) >= 2,
-      do: $location`An Unusually Quiet Barroom Brawl`,
-      combat: new CombatStrategy().macro(Macro.trySkill($skill`Portscan`).default()),
-      outfit: baseOutfit,
-      post: () => sendAutumnaton(),
-      limit: { tries: 1 },
-    },
-    {
-      name: "Oliver's Place Agent",
-      prepare: (): void => {
-        if (get("umbrellaState") !== "broken") cliExecute("umbrella ml");
-        cliExecute("terminal educate portscan");
-      },
-      completed: () => get("_speakeasyFreeFights", 0) >= 3,
-      do: $location`An Unusually Quiet Barroom Brawl`,
-      post: () => sendAutumnaton(),
-      combat: new CombatStrategy().macro(Macro.default()),
-      outfit: baseOutfit,
-      limit: { tries: 1 },
-    },
-    {
-      name: "Oliver's Place Peridot",
-      prepare: (): void => {
-        if (get("umbrellaState") !== "broken") cliExecute("umbrella ml");
-        if (get("parkaMode") !== "dilophosaur") cliExecute("parka dilophosaur");
-        PeridotOfPeril.setChoice($monster`goblin flapper`);
-      },
-      completed: () => have($effect`Everything Looks Yellow`),
-      post: (): void => {
-        set("_CSParkaYRUsed", true);
-        sendAutumnaton();
-      },
-      do: $location`An Unusually Quiet Barroom Brawl`,
-      combat: new CombatStrategy().macro(Macro.skill($skill`Spit jurassic acid`).abort()),
-      outfit: () => ({
-        ...baseOutfit(),
-        offhand: $item`latte lovers member's mug`,
-        acc3: $item`Peridot of Peril`,
-      }),
     },
     {
       name: "DMT",
@@ -566,8 +498,8 @@ export const LevelingQuest: Quest = {
         const lastIngredient = get("latteUnlocks").includes("carrot") ? "carrot" : "pumpkin";
         if (get("_latteRefillsUsed") < 3)
           cliExecute(`latte refill cinnamon vanilla ${lastIngredient}`);
-        while (itemAmount($item`BRICKO brick`) >= 8 && have($item`BRICKO eye brick`))
-          create($item`BRICKO oyster`);
+        // while (itemAmount($item`BRICKO brick`) >= 8 && have($item`BRICKO eye brick`))
+        //   create($item`BRICKO oyster`);
         sendAutumnaton();
       },
     },
@@ -584,6 +516,7 @@ export const LevelingQuest: Quest = {
     {
       name: "Open wardrobe-o-matic", // Assume we won't be leveling any more, even in aftercore, for the rest of the day
       completed: () =>
+        myLevel() < 20 ||
         !have($item`wardrobe-o-matic`) ||
         $items`futuristic shirt, futuristic hat, futuristic collar`.some((it) => have(it)),
       do: () => use($item`wardrobe-o-matic`),
