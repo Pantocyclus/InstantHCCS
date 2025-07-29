@@ -12,10 +12,12 @@ import {
 import { Quest } from "../engine/task";
 import { burnLibram, logTestSetup } from "../lib";
 import { bloodSugarSauceMagic } from "./postcoil";
+import { restoreMpTask } from "./common";
 
 export const HPQuest: Quest = {
   name: "HP",
   tasks: [
+    { ...restoreMpTask },
     {
       name: "Test",
       prepare: (): void => {
@@ -48,6 +50,7 @@ export const HPQuest: Quest = {
 export const MuscleQuest: Quest = {
   name: "Muscle",
   tasks: [
+    { ...restoreMpTask },
     {
       name: "Test",
       prepare: (): void => {
@@ -76,6 +79,7 @@ export const MuscleQuest: Quest = {
 export const MysticalityQuest: Quest = {
   name: "Mysticality",
   tasks: [
+    { ...restoreMpTask },
     {
       name: "Test",
       completed: () => CommunityService.Mysticality.isDone(),
@@ -101,6 +105,7 @@ export const MysticalityQuest: Quest = {
 export const MoxieQuest: Quest = {
   name: "Moxie",
   tasks: [
+    { ...restoreMpTask },
     {
       name: "Test",
       completed: () => CommunityService.Moxie.isDone(),

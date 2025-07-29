@@ -5,11 +5,13 @@ import Macro from "../combat";
 import { Quest } from "../engine/task";
 import { logTestSetup } from "../lib";
 import { baseOutfit } from "../engine/outfit";
+import { restoreMpTask } from "./common";
 
 export const HotResQuest: Quest = {
   name: "Hot Res",
   completed: () => CommunityService.HotRes.isDone(),
   tasks: [
+    { ...restoreMpTask },
     {
       name: "Foam Suit",
       ready: () => get("_fireExtinguisherCharge") >= 10 && get("_saberForceUses") < 5,

@@ -1,5 +1,5 @@
 import { CombatStrategy } from "grimoire-kolmafia";
-import { myLevel } from "kolmafia";
+import { myLevel, myMaxmp, myMp } from "kolmafia";
 import {
   $effect,
   $familiar,
@@ -16,6 +16,7 @@ import {
 import Macro from "../combat";
 import { Task } from "../engine/task";
 import { baseOutfit } from "../engine/outfit";
+import { attemptRestoringMpWithFreeRests } from "../lib";
 
 const MOTHERSLIME_CLAN = "The Genius Clan";
 const VIP_CLAN = "Bonus Adventures from Hell";
@@ -70,4 +71,11 @@ export const meteorShowerTask: Task = {
     weapon: $item`Fourth of May Cosplay Saber`,
   }),
   limit: { tries: 1 },
+};
+
+export const restoreMpTask: Task = {
+  name: "Restore Mp",
+  completed: () => myMp() >= Math.min(100, myMaxmp()),
+  do: () => attemptRestoringMpWithFreeRests(100),
+  limit: { skip: 1 },
 };

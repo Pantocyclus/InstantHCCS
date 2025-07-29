@@ -17,7 +17,7 @@ import {
 } from "libram";
 import { Quest } from "../engine/task";
 import { burnLibram, crimboCarols, logTestSetup } from "../lib";
-import { innerElfTask } from "./common";
+import { innerElfTask, restoreMpTask } from "./common";
 import Macro from "../combat";
 import { baseOutfit } from "../engine/outfit";
 
@@ -25,6 +25,7 @@ export const WeaponDamageQuest: Quest = {
   name: "Weapon Damage",
   completed: () => CommunityService.WeaponDamage.isDone(),
   tasks: [
+    { ...restoreMpTask },
     {
       name: "Carol Ghost Buff",
       ready: () => crimboCarols.every((ef) => !have(ef)) && get("_reflexHammerUsed") < 3,

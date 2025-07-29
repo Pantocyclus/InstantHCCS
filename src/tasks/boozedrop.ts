@@ -1,4 +1,4 @@
-import { cliExecute, effectModifier, myClass, myThrall, useSkill } from "kolmafia";
+import { cliExecute, effectModifier, myClass } from "kolmafia";
 import {
   $class,
   $effect,
@@ -7,7 +7,6 @@ import {
   $items,
   $location,
   $skill,
-  $thrall,
   CommunityService,
   ensureEffect,
   get,
@@ -19,11 +18,13 @@ import { Quest } from "../engine/task";
 import { CombatStrategy } from "grimoire-kolmafia";
 import { logTestSetup } from "../lib";
 import { baseOutfit } from "../engine/outfit";
+import { restoreMpTask } from "./common";
 
 export const BoozeDropQuest: Quest = {
   name: "Booze Drop",
   completed: () => CommunityService.BoozeDrop.isDone(),
   tasks: [
+    { ...restoreMpTask },
     {
       name: "Set Apriling Band Helmet (Booze)",
       completed: () => get("nextAprilBandTurn") > 0,
@@ -90,10 +91,10 @@ export const BoozeDropQuest: Quest = {
         for (const it of $items`lavender candy heart, resolution: be happier, pulled yellow taffy, resolution: be luckier, autumn leaf`)
           if (have(it)) ensureEffect(effectModifier(it, "effect"));
         if (myClass() !== $class`Pastamancer`) {
-          ensureEffect($effect`Spice Haze`);
+          // ensureEffect($effect`Spice Haze`);
           if (myClass() === $class`Accordion Thief`) ensureEffect($effect`Beer Barrel Polka`);
         } else {
-          if (myThrall() !== $thrall`Spice Ghost`) useSkill($skill`Bind Spice Ghost`);
+          // if (myThrall() !== $thrall`Spice Ghost`) useSkill($skill`Bind Spice Ghost`);
           ensureEffect($effect`Pork Barrel`);
         }
       },

@@ -1,5 +1,6 @@
 import { CombatStrategy } from "grimoire-kolmafia";
 import {
+  autosell,
   buy,
   cliExecute,
   eat,
@@ -33,7 +34,7 @@ import { fillTo } from "libram/dist/resources/2017/AsdonMartin";
 import Macro from "../combat";
 import { Quest } from "../engine/task";
 import { burnLibram, logTestSetup } from "../lib";
-import { meteorShowerTask } from "./common";
+import { meteorShowerTask, restoreMpTask } from "./common";
 import { baseOutfit } from "../engine/outfit";
 
 const famWtEffects = [
@@ -52,6 +53,7 @@ export const FamiliarWeightQuest: Quest = {
   name: "Familiar Weight",
   completed: () => CommunityService.FamiliarWeight.isDone(),
   tasks: [
+    { ...restoreMpTask },
     {
       name: "Anticheese",
       completed: () => get("lastAnticheeseDay") >= 1 || myDaycount() > 1,
@@ -112,11 +114,30 @@ export const FamiliarWeightQuest: Quest = {
     },
     {
       name: "Fill Asdon Before Tuning Moon",
-      completed: () => getFuel() >= 37,
+      prepare: () => {
+        [
+          $item`pentacorn hat`,
+          $item`yellow plastic hard hat`,
+          $item`alpha-mail pants`,
+          $item`bowl of cottage cheese`,
+          $item`grapefruit`,
+          $item`cherry`,
+          $item`orange`,
+          $item`strawberry`,
+          $item`pair of government shades`,
+          $item`datastick`,
+          $item`bottle of rum`,
+          $item`Kokomo Resort Pass`,
+        ].forEach((it) => {
+          if (have(it)) autosell(it, itemAmount(it));
+        });
+      },
+      completed: () => getFuel() >= 37 + (have($effect`Driving Observantly`) ? 0 : 50),
       do: (): void => {
         if (have($effect`Driving Stealthily`)) cliExecute("shrug driving stealthily");
-        fillTo(187);
+        fillTo(37 + (have($effect`Driving Observantly`) ? 0 : 50));
       },
+      limit: { tries: 1 },
     },
     {
       name: "Buffs",
@@ -156,34 +177,39 @@ export const FamiliarWeightQuest: Quest = {
     },
     {
       name: "Gingerbread Earn Sprinkles",
-      prepare: () => {
-        if (getFuel() < 187 && !get("_missileLauncherUsed")) fillTo(187);
-      },
+      // prepare: () => {
+      //   if (getFuel() < 187 && !get("_missileLauncherUsed")) fillTo(187);
+      // },
       completed: () =>
         itemAmount($item`sprinkles`) >= 50 ||
         get("_gingerbreadCityTurns") >= 4 ||
         have($item`gingerbread spice latte`) ||
         have($effect`Whole Latte Love`) ||
-        get("_missileLauncherUsed") ||
+        // get("_missileLauncherUsed") ||
         get("_banderRunaways") >= (familiarWeight(myFamiliar()) + weightAdjustment()) / 5,
       do: $location`Gingerbread Upscale Retail District`,
       outfit: () => ({
+        acc1: $item`Lil' Doctor™ bag`,
         familiar: $familiar`Chocolate Lab`,
         modifier: "familiar weight",
       }),
       combat: new CombatStrategy().macro(
-        Macro.externalIf(
-          itemAmount($item`sprinkles`) < 50 && !get("_missileLauncherUsed"),
-          Macro.trySkill($skill`Asdon Martin: Missile Launcher`).abort(),
-        ).abort(),
+        Macro
+          // .externalIf(
+          //   itemAmount($item`sprinkles`) < 50 && !get("_missileLauncherUsed"),
+          //   Macro.trySkill($skill`Asdon Martin: Missile Launcher`),
+          // )
+          .trySkill($skill`Chest X-Ray`)
+          .trySkill($skill`Gingerbread Mob Hit`)
+          .abort(),
       ),
       limit: { tries: 3 },
     },
     {
       name: "Gingerbread Get Latte",
-      prepare: () => {
-        if (getFuel() < 87 && !get("_missileLauncherUsed")) fillTo(87);
-      },
+      // prepare: () => {
+      //   if (getFuel() < 87 && !get("_missileLauncherUsed")) fillTo(87);
+      // },
       ready: () =>
         itemAmount($item`sprinkles`) >= 50 &&
         get("_banderRunaways") < (familiarWeight(myFamiliar()) + weightAdjustment()) / 5,

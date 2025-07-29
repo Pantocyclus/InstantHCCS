@@ -25,13 +25,14 @@ import {
 } from "libram";
 import { Quest } from "../engine/task";
 import { burnLibram, logTestSetup } from "../lib";
-import { innerElfTask, meteorShowerTask } from "./common";
+import { innerElfTask, meteorShowerTask, restoreMpTask } from "./common";
 import { bloodSugarSauceMagic } from "./postcoil";
 
 export const SpellDamageQuest: Quest = {
   name: "Spell Damage",
   completed: () => CommunityService.SpellDamage.isDone(),
   tasks: [
+    { ...restoreMpTask },
     {
       name: "Obsidian Nutcracker",
       completed: () => have($item`Abracandalabra`) || have($item`obsidian nutcracker`),

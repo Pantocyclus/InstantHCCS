@@ -3,11 +3,13 @@ import { $effect, $familiar, CommunityService, get, have, uneffect } from "libra
 import { fillTo } from "libram/dist/resources/2017/AsdonMartin";
 import { Quest } from "../engine/task";
 import { burnLibram, logTestSetup } from "../lib";
+import { restoreMpTask } from "./common";
 
 export const NoncombatQuest: Quest = {
   name: "Noncombat",
   completed: () => CommunityService.Noncombat.isDone(),
   tasks: [
+    { ...restoreMpTask },
     {
       name: "Fill Asdon",
       completed: () => getFuel() >= 37 || have($effect`Driving Stealthily`),
@@ -29,7 +31,7 @@ export const NoncombatQuest: Quest = {
         modifier: "-raw combat rate",
       },
       effects: [
-        $effect`Driving Stealthily`,
+        // $effect`Driving Stealthily`,
         $effect`Feeling Lonely`,
         $effect`Gummed Shoes`,
         // $effect`Invisible Avatar`,

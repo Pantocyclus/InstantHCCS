@@ -24,7 +24,6 @@ import {
   myMp,
   mySoulsauce,
   print,
-  restoreMp,
   retrieveItem,
   runChoice,
   use,
@@ -56,7 +55,7 @@ import {
 import { fillTo } from "libram/dist/resources/2017/AsdonMartin";
 import Macro, { mainStat } from "../combat";
 import { Quest } from "../engine/task";
-import { canAcquireEffect, tryAcquiringEffect } from "../lib";
+import { attemptRestoringMpWithFreeRests, canAcquireEffect, tryAcquiringEffect } from "../lib";
 import { holidayRunawayTask } from "./common";
 import { baseOutfit } from "../engine/outfit";
 import { printModtrace } from "libram/dist/modifier";
@@ -246,6 +245,15 @@ export const PostCoilQuest: Quest = {
       do: () => use($item`Dramatic™ range`),
       acquire: [{ item: $item`Dramatic™ range` }],
       outfit: { pants: $item`designer sweatpants` },
+      limit: { tries: 1 },
+    },
+    {
+      name: "Kokomo",
+      completed: () => get("_summonResortPassUsed"),
+      do: (): void => {
+        useSkill($skill`Summon Kokomo Resort Pass`);
+        useSkill($skill`Summon Kokomo Resort Pass`);
+      },
       limit: { tries: 1 },
     },
     // {
@@ -647,7 +655,7 @@ export const PostCoilQuest: Quest = {
     {
       name: "Get Lime",
       completed: () => get("_preventScurvy"),
-      prepare: () => restoreMp(50),
+      prepare: () => attemptRestoringMpWithFreeRests(50),
       do: () => useSkill($skill`Prevent Scurvy and Sobriety`),
     },
     {

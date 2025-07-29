@@ -476,7 +476,7 @@ export const LevelingQuest: Quest = {
       name: "DMT",
       prepare: (): void => {
         if (get("umbrellaState") !== "broken") cliExecute("umbrella ml");
-        burnLibram(300, true);
+        burnLibram(300);
       },
       completed: () => get("_machineTunnelsAdv") >= 5,
       do: $location`The Deep Machine Tunnels`,

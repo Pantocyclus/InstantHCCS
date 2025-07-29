@@ -13,6 +13,7 @@ import {
   myBasestat,
   myBuffedstat,
   myMaxhp,
+  myMaxmp,
   myMp,
   print,
   restoreMp,
@@ -24,8 +25,10 @@ import {
   toItem,
   toSkill,
   toStat,
+  totalFreeRests,
   use,
   useSkill,
+  visitUrl,
 } from "kolmafia";
 import {
   $effect,
@@ -119,47 +122,45 @@ function mystSynthAttainable(): boolean {
 }
 */
 
-function needBrickos(): boolean {
+/*function needBrickos(): boolean {
   const oysters = itemAmount($item`BRICKO oyster`);
   const brickContributions = Math.floor(itemAmount($item`BRICKO brick`) / 8);
   const eyeContributions = itemAmount($item`BRICKO eye brick`);
   const materials = brickContributions < eyeContributions ? brickContributions : eyeContributions;
   return have($skill`Summon BRICKOs`) && oysters + materials < 1;
-}
+}*/
 
-function chooseLibram(useBrickos: boolean): Skill {
+function chooseLibram(): Skill {
   const needLoveSong =
     itemAmount($item`love song of icy revenge`) +
       Math.floor(haveEffect($effect`Cold Hearted`) / 5) <
     4;
-  if (useBrickos && needBrickos()) {
+  /*if (useBrickos && needBrickos()) {
     return $skill`Summon BRICKOs`;
-    /*
-  } else if (!have($effect`Synthesis: Smart`) && !mystSynthAttainable()) {
+    } else if (!have($effect`Synthesis: Smart`) && !mystSynthAttainable()) {
     return $skill`Summon Candy Heart`;
-    */
   } else if (
     (!have($item`resolution: be happier`) && !have($effect`Joyful Resolve`)) ||
     (!have($item`resolution: be feistier`) && !have($effect`Destructive Resolve`))
   ) {
     return $skill`Summon Resolutions`;
-  } else if (
+  } else */ if (
     (!have($item`green candy heart`) && !have($effect`Heart of Green`)) ||
     (!have($item`lavender candy heart`) && !have($effect`Heart of Lavender`))
   ) {
     return $skill`Summon Candy Heart`;
   } else if (needLoveSong) {
     return $skill`Summon Love Song`;
-  } else if (!have($item`resolution: be kinder`) && !have($effect`Kindly Resolve`)) {
+  } /*else if (!have($item`resolution: be kinder`) && !have($effect`Kindly Resolve`)) {
     return $skill`Summon Resolutions`;
-  }
+  }*/
 
   return $skill`Summon Taffy`;
 }
 
-export function burnLibram(saveMp: number, useBrickos?: boolean): void {
-  while (myMp() >= mpCost(chooseLibram(useBrickos ?? false)) + saveMp) {
-    useSkill(chooseLibram(useBrickos ?? false));
+export function burnLibram(saveMp: number): void {
+  while (myMp() >= mpCost(chooseLibram()) + saveMp) {
+    useSkill(chooseLibram());
   }
 }
 
@@ -338,4 +339,14 @@ export function canAcquireEffect(ef: Effect): boolean {
 const gardens = $items`packet of pumpkin seeds, Peppermint Pip Packet, packet of dragon's teeth, packet of beer seeds, packet of winter seeds, packet of thanksgarden seeds, packet of tall grass seeds, packet of mushroom spores, packet of rock seeds`;
 export function getGarden(): Item {
   return gardens.find((it) => it.name in getCampground()) || $item.none;
+}
+
+export function attemptRestoringMpWithFreeRests(mpTarget: number): void {
+  if (myMp() >= mpTarget || myMp() === myMaxmp()) return;
+  if (get("timesRested") >= totalFreeRests()) {
+    restoreMp(mpTarget);
+    return;
+  }
+  visitUrl("place.php?whichplace=chateau&action=chateau_restbox");
+  attemptRestoringMpWithFreeRests(mpTarget);
 }
