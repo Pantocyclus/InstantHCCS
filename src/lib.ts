@@ -122,38 +122,17 @@ function mystSynthAttainable(): boolean {
 }
 */
 
-/*function needBrickos(): boolean {
-  const oysters = itemAmount($item`BRICKO oyster`);
-  const brickContributions = Math.floor(itemAmount($item`BRICKO brick`) / 8);
-  const eyeContributions = itemAmount($item`BRICKO eye brick`);
-  const materials = brickContributions < eyeContributions ? brickContributions : eyeContributions;
-  return have($skill`Summon BRICKOs`) && oysters + materials < 1;
-}*/
-
 function chooseLibram(): Skill {
   const needLoveSong =
     itemAmount($item`love song of icy revenge`) +
       Math.floor(haveEffect($effect`Cold Hearted`) / 5) <
     4;
-  /*if (useBrickos && needBrickos()) {
-    return $skill`Summon BRICKOs`;
-    } else if (!have($effect`Synthesis: Smart`) && !mystSynthAttainable()) {
-    return $skill`Summon Candy Heart`;
-  } else if (
-    (!have($item`resolution: be happier`) && !have($effect`Joyful Resolve`)) ||
-    (!have($item`resolution: be feistier`) && !have($effect`Destructive Resolve`))
-  ) {
-    return $skill`Summon Resolutions`;
-  } else */ if (
-    (!have($item`green candy heart`) && !have($effect`Heart of Green`)) ||
-    (!have($item`lavender candy heart`) && !have($effect`Heart of Lavender`))
-  ) {
-    return $skill`Summon Candy Heart`;
-  } else if (needLoveSong) {
+
+  if (needLoveSong) {
     return $skill`Summon Love Song`;
-  } /*else if (!have($item`resolution: be kinder`) && !have($effect`Kindly Resolve`)) {
-    return $skill`Summon Resolutions`;
-  }*/
+  } else if (!have($item`green candy heart`) && !have($effect`Heart of Green`)) {
+    return $skill`Summon Candy Heart`;
+  }
 
   return $skill`Summon Taffy`;
 }
@@ -343,6 +322,14 @@ export function getGarden(): Item {
 
 export function attemptRestoringMpWithFreeRests(mpTarget: number): void {
   if (myMp() >= mpTarget || myMp() === myMaxmp()) return;
+  if (myMaxmp() - myMp() >= 1000 && get("_batWingsRestUsed") < 11) {
+    const currentBack = equippedItem($slot`back`);
+    equip($slot`back`, $item`bat wings`);
+    useSkill($skill`Rest upside down`);
+    if (currentBack !== Item.none) equip($slot`back`, currentBack);
+    else unequip($slot`back`);
+    return attemptRestoringMpWithFreeRests(mpTarget);
+  }
   if (get("timesRested") >= totalFreeRests()) {
     restoreMp(mpTarget);
     return;

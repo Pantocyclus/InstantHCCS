@@ -1,5 +1,5 @@
 import { CombatStrategy } from "grimoire-kolmafia";
-import { cliExecute, effectModifier, useFamiliar } from "kolmafia";
+import { effectModifier, useFamiliar } from "kolmafia";
 import {
   $effect,
   $familiar,
@@ -66,9 +66,8 @@ export const WeaponDamageQuest: Quest = {
       name: "Test",
       prepare: (): void => {
         SongBoom.setSong("These Fists Were Made for Punchin'");
-        for (const it of $items`Fabiotion, resolution: be feistier, imported taffy`)
+        for (const it of $items`imported taffy`)
           if (have(it)) ensureEffect(effectModifier(it, "effect"));
-        if (!have($effect`Spit Upon`)) cliExecute("genie effect outer wolf");
       },
       completed: () => CommunityService.WeaponDamage.isDone(),
       do: () =>

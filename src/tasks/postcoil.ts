@@ -1,6 +1,7 @@
 import { CombatStrategy } from "grimoire-kolmafia";
 import {
   adv1,
+  alliedRadio,
   autosell,
   buy,
   changeMcd,
@@ -249,12 +250,15 @@ export const PostCoilQuest: Quest = {
     },
     {
       name: "Kokomo",
-      completed: () => get("_summonResortPassUsed"),
+      completed: () => get("_summonResortPassesUsed", 0) >= 2,
       do: (): void => {
-        useSkill($skill`Summon Kokomo Resort Pass`);
-        useSkill($skill`Summon Kokomo Resort Pass`);
+        const currentSummons = get("_summonResortPassesUsed", 0);
+        visitUrl(
+          `runskillz.php?action=Skillz&whichskill=135&targetplayer=${myId()}&quantity=1&pwd`,
+        );
+        set("_summonResortPassesUsed", currentSummons + 1);
       },
-      limit: { tries: 1 },
+      limit: { tries: 2 },
     },
     // {
     //   name: "Underground Fireworks Shop",
@@ -400,6 +404,13 @@ export const PostCoilQuest: Quest = {
     //   }),
     //   limit: { tries: 1 },
     // },
+    {
+      name: "Wildsun Boon",
+      // eslint-disable-next-line libram/verify-constants
+      completed: () => have($effect`Wildsun Boon`) || get("_alliedRadioDropsUsed", 0) >= 3,
+      do: () => alliedRadio("Wildsun Boon"),
+      limit: { tries: 1 },
+    },
     {
       name: "Entauntauned",
       completed: () => get("_entauntaunedToday"),
