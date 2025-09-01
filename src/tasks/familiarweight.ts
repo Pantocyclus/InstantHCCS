@@ -12,6 +12,7 @@ import {
   myFamiliar,
   toInt,
   use,
+  useFamiliar,
   useSkill,
   visitUrl,
   weightAdjustment,
@@ -23,6 +24,7 @@ import {
   $location,
   $monster,
   $skill,
+  CombatLoversLocket,
   CommunityService,
   ensureEffect,
   get,
@@ -33,7 +35,7 @@ import {
 import { fillTo } from "libram/dist/resources/2017/AsdonMartin";
 import Macro from "../combat";
 import { Quest } from "../engine/task";
-import { burnLibram, logTestSetup } from "../lib";
+import { burnLibram, logTestSetup, sendAutumnaton } from "../lib";
 import { meteorShowerTask, restoreMpTask } from "./common";
 import { baseOutfit } from "../engine/outfit";
 
@@ -111,6 +113,28 @@ export const FamiliarWeightQuest: Quest = {
         );
         burnLibram(300);
       },
+    },
+    {
+      name: "Reminisce Knight",
+      prepare: (): void => {
+        useFamiliar($familiar`Cooler Yeti`);
+        useFamiliar($familiar`Shorter-Order Cook`);
+      },
+      completed: () =>
+        have($item`short stack of pancakes`) ||
+        have($effect`Shortly Stacked`) ||
+        CombatLoversLocket.monstersReminisced().includes($monster`Witchess Knight`),
+      do: () => CombatLoversLocket.reminisce($monster`Witchess Knight`),
+      combat: new CombatStrategy().macro(Macro.default()),
+      outfit: () => ({
+        ...baseOutfit(),
+        shirt: $item`makeshift garbage shirt`,
+        familiar: $familiar`Shorter-Order Cook`,
+        famequip: $item`blue plate`,
+      }),
+      acquire: [{ item: $item`makeshift garbage shirt` }],
+      post: () => sendAutumnaton(),
+      limit: { tries: 1 },
     },
     {
       name: "Fill Asdon Before Tuning Moon",

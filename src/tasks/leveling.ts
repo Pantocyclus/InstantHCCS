@@ -133,7 +133,6 @@ export const LevelingQuest: Quest = {
     //     $effects`Honeypotted, Null Afternoon, Scarysauce, Jalapeño Saucesphere`.forEach((e) =>
     //       tryAcquiringEffect(e),
     //     );
-    //     // eslint-disable-next-line libram/verify-constants
     //     useFamiliar($familiar`Cooler Yeti`);
     //     useFamiliar($familiar`Shorter-Order Cook`);
     //   },
@@ -158,7 +157,6 @@ export const LevelingQuest: Quest = {
     //     $effects`Honeypotted, Null Afternoon, Scarysauce, Jalapeño Saucesphere`.forEach((e) =>
     //       tryAcquiringEffect(e),
     //     );
-    //     // eslint-disable-next-line libram/verify-constants
     //     useFamiliar($familiar`Cooler Yeti`);
     //     useFamiliar($familiar`Shorter-Order Cook`);
     //   },
@@ -241,7 +239,6 @@ export const LevelingQuest: Quest = {
         ...baseOutfit(),
         weapon: $item`June cleaver`,
         shirt: $item`makeshift garbage shirt`,
-        // eslint-disable-next-line libram/verify-constants
         familiar: $familiar`Cooler Yeti`,
         famequip: $item`toy Cupid bow`,
       }),
@@ -266,7 +263,6 @@ export const LevelingQuest: Quest = {
       name: "Witchess Knight",
       prepare: (): void => {
         if (get("umbrellaState") !== "broken") cliExecute("umbrella ml");
-        // eslint-disable-next-line libram/verify-constants
         useFamiliar($familiar`Cooler Yeti`);
         useFamiliar($familiar`Shorter-Order Cook`);
       },
@@ -287,7 +283,6 @@ export const LevelingQuest: Quest = {
     //   name: "Reminisce Knight",
     //   prepare: (): void => {
     //     if (get("umbrellaState") !== "broken") cliExecute("umbrella ml");
-    //     // eslint-disable-next-line libram/verify-constants
     //     useFamiliar($familiar`Cooler Yeti`);
     //     useFamiliar($familiar`Shorter-Order Cook`);
     //   },
@@ -310,7 +305,6 @@ export const LevelingQuest: Quest = {
       name: "Witchess King",
       prepare: (): void => {
         if (get("umbrellaState") !== "broken") cliExecute("umbrella ml");
-        // eslint-disable-next-line libram/verify-constants
         useFamiliar($familiar`Cooler Yeti`);
         useFamiliar($familiar`Shorter-Order Cook`);
       },
@@ -331,7 +325,6 @@ export const LevelingQuest: Quest = {
     {
       name: "Witchess Witch",
       prepare: () => {
-        // eslint-disable-next-line libram/verify-constants
         useFamiliar($familiar`Cooler Yeti`);
         useFamiliar($familiar`Shorter-Order Cook`);
       },
@@ -379,7 +372,6 @@ export const LevelingQuest: Quest = {
     //   name: "Neverending Party",
     //   prepare: (): void => {
     //     if (get("umbrellaState") !== "broken") cliExecute("umbrella ml");
-    //     // eslint-disable-next-line libram/verify-constants
     //     useFamiliar($familiar`Cooler Yeti`);
     //     useFamiliar($familiar`Shorter-Order Cook`);
     //   },

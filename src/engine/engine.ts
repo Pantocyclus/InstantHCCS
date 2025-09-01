@@ -97,7 +97,7 @@ export const farmingResourceResources: trackedResource[] = [
   new trackedResource("_mimicEggsObtained", "Mimic Eggs", 11),
   new trackedResource("_macrometeoriteUses", "Macrometeorites", 10),
   new trackedResource($item`battery (AAA)`, "Batteries (AAA)", 7),
-  new trackedResource("availableSeptEmbers", "Sept Embers", -7),
+  new trackedResource("availableSeptEmbers", "Sept Embers", 7),
   new trackedResource($item`pocket wish`, "Pocket Wishes (Genie + BofA)", 6),
   new trackedResource("_augSkillsCasts", "August Scepter Charges", 5),
   new trackedResource("_monkeyPawWishesUsed", "Monkey Paw Wishes", 5),
@@ -181,7 +181,6 @@ export class Engine extends BaseEngine {
         set(s, arr.filter((v, i, a) => v.length > 0 && a.indexOf(v) === i).join(","));
       }
     });
-    // eslint-disable-next-line libram/verify-constants
     if (myFamiliar() === $familiar`Cooler Yeti`) {
       print(`Cooler Yeti FamXp: ${myFamiliar().experience}`);
     }

@@ -6,7 +6,7 @@ import {
   myMaxhp,
   myMaxmp,
   myMp,
-  mySoulsauce,
+  totalTurnsPlayed,
   useSkill,
   visitUrl,
 } from "kolmafia";
@@ -58,10 +58,14 @@ export const CoilWireQuest: Quest = {
         ...baseOutfit(),
         back: $item`protonic accelerator pack`,
         offhand: $item`Kramco Sausage-o-Matic™`,
+        acc3: $item`Möbius ring`,
         familiar: $familiar`Crimbo Shrub`,
         famequip: $item`tiny stillsuit`,
       }),
-      post: () => useSkill(Math.floor(mySoulsauce() / 5), $skill`Soul Food`),
+      post: () => {
+        set("_lastMobiusStripTurn", Math.max(get("_lastMobiusStripTurn", 0), totalTurnsPlayed()));
+        // useSkill(Math.floor(mySoulsauce() / 5), $skill`Soul Food`);
+      },
       limit: { tries: 1 },
     },
     {
@@ -83,7 +87,7 @@ export const CoilWireQuest: Quest = {
       },
       combat: new CombatStrategy().macro(
         Macro.trySkill($skill`Blow the Purple Candle!`)
-          .trySkill($skill`Portscan`)
+          .externalIf(get("eldritchTentaclesFought") >= 1, Macro.trySkill($skill`Portscan`))
           .default(),
       ),
       outfit: () => ({
@@ -125,7 +129,14 @@ export const CoilWireQuest: Quest = {
       },
       completed: () => get("_speakeasyFreeFights", 0) >= 2,
       do: $location`An Unusually Quiet Barroom Brawl`,
-      combat: new CombatStrategy().macro(Macro.trySkill($skill`Portscan`).default()),
+      combat: new CombatStrategy().macro(
+        Macro.if_(
+          $monster`Government agent`,
+          Macro.externalIf(!have($item`government cheese`), Macro.trySkill($skill`Feel Envy`)),
+        )
+          .trySkill($skill`Portscan`)
+          .default(),
+      ),
       outfit: () => ({
         ...baseOutfit(),
         familiar: $familiar`Shorter-Order Cook`,
@@ -145,7 +156,12 @@ export const CoilWireQuest: Quest = {
       post: () => {
         sendAutumnaton();
       },
-      combat: new CombatStrategy().macro(Macro.default()),
+      combat: new CombatStrategy().macro(
+        Macro.if_(
+          $monster`Government agent`,
+          Macro.externalIf(!have($item`government cheese`), Macro.trySkill($skill`Feel Envy`)),
+        ).default(),
+      ),
       outfit: () => ({
         ...baseOutfit(),
         familiar: $familiar`Shorter-Order Cook`,

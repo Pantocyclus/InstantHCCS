@@ -406,8 +406,10 @@ export const PostCoilQuest: Quest = {
     // },
     {
       name: "Wildsun Boon",
-      // eslint-disable-next-line libram/verify-constants
-      completed: () => have($effect`Wildsun Boon`) || get("_alliedRadioDropsUsed", 0) >= 3,
+      completed: () =>
+        have($effect`Wildsun Boon`) ||
+        get("_alliedRadioWildsunBoon") ||
+        get("_alliedRadioDropsUsed") >= 3,
       do: () => alliedRadio("Wildsun Boon"),
       limit: { tries: 1 },
     },
@@ -551,7 +553,6 @@ export const PostCoilQuest: Quest = {
       limit: { tries: 3 },
       outfit: {
         modifier: "cold res",
-        // eslint-disable-next-line libram/verify-constants
         familiar: $familiar`Cooler Yeti`,
       },
       post: (): void => {
