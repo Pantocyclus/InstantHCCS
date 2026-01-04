@@ -1,6 +1,6 @@
 # InstantHCCS
 
-`InstantHCCS` is a hardcore Community Service script for looping in Kingdom of Loathing designed to work if you are me, [WARriorer (#1634187)](https://api.aventuristo.net/av-snapshot?u=WARriorer). It most probably (read: definitely) won't work for you.
+`InstantHCCS` is a hardcore 1/70 Community Service script for looping in Kingdom of Loathing designed to work if you are me, [WARriorer (#1634187)](https://api.aventuristo.net/av-snapshot?u=WARriorer). It most probably (read: definitely) won't work for you. The script has been optimized to use as few farming-relevant resources as possible.
 
 ## Installation
 
@@ -17,23 +17,22 @@ For those who are interested in using `InstantHCCS` as is, the following section
 
 ### Before Ascending
 
-- [Mother Slime](https://wiki.kingdomofloathing.com/Showdown) ready in the side clan Slimetube, and an [Ungulith](https://wiki.kingdomofloathing.com/Ungulith) prepared in the fax machine
-- Access to a fully stocked clan [VIP Lounge](https://wiki.kingdomofloathing.com/VIP_Lounge)
+- [Mother Slime](https://wiki.kingdomofloathing.com/Showdown) ready in the side clan Slimetube
+- Access to a clan [VIP Lounge](https://wiki.kingdomofloathing.com/VIP_Lounge) with the [looking glass](https://wiki.kingdomofloathing.com/A_Looking_Glass), [april shower](https://wiki.kingdomofloathing.com/April_Shower), [pool table](<https://wiki.kingdomofloathing.com/A_Pool_Table_(VIP_Lounge)>), [swimming pool](https://wiki.kingdomofloathing.com/An_Olympic-Sized_Swimming_Pool) and (fully upgraded) [photobooth](https://wiki.kingdomofloathing.com/Clan_Photo_Booth) installed
 - All 11 beach heads unlocked for the [Beach Comb](https://wiki.kingdomofloathing.com/Beach_Comb)
-- [Chateau Mantegna](https://wiki.kingdomofloathing.com/Chateau_Mantegna) containing:
-  - ceiling fan
-  - the stat-relevant nightstand
-  - continental juice bar
-- [Source Terminal](https://wiki.kingdomofloathing.com/Source_Terminal) fully upgraded
+- [Source Terminal](https://wiki.kingdomofloathing.com/Source_Terminal) with [Portscan](https://wiki.kingdomofloathing.com/Portscan) unlocked
 - [Spacegate Vaccination Machine](https://wiki.kingdomofloathing.com/Spacegate_Vaccination_Machine) with the [Broad-Spectrum Vaccine](https://wiki.kingdomofloathing.com/Broad-Spectrum_Vaccine) unlocked
 - All 150 [Witchess puzzles](https://wiki.kingdomofloathing.com/Witchess_Puzzles) completed
 - Eudora set to [Our Daily Candles™ order form](https://wiki.kingdomofloathing.com/Our_Daily_Candles%E2%84%A2_order_form)
-- A [Witchess Knight](https://wiki.kingdomofloathing.com/Witchess_Knight) in your [combat lover's locket](https://wiki.kingdomofloathing.com/Combat_lover%27s_locket).
 - A fully maxed-out [Guzzlr tablet](https://wiki.kingdomofloathing.com/Guzzlr_tablet)
 - Unlock the [Gingerbread Sewers](https://wiki.kingdomofloathing.com/Gingerbread_Sewers) and relocate both the Gingerbread rat and pigeon there
 - Have used 9 [pile of useless robot parts](https://wiki.kingdomofloathing.com/Pile_of_useless_robot_parts) on your [Homemade Robot](https://wiki.kingdomofloathing.com/Homemade_Robot)
 - Have 5 [eyes of the Tiger-lily](https://wiki.kingdomofloathing.com/Eye_of_the_Tiger-lily) embeded in your [Eternity Codpiece](https://wiki.kingdomofloathing.com/The_Eternity_Codpiece)
 - Have literally every possible [mus](https://wiki.kingdomofloathing.com/Muscle_Modifiers), [myst](https://wiki.kingdomofloathing.com/Mysticality_Modifiers), [mox](https://wiki.kingdomofloathing.com/Moxie_Modifiers), [hp](https://wiki.kingdomofloathing.com/HP_Modifiers), [exp](https://wiki.kingdomofloathing.com/Stat_gain_multipliers), [hot resist](https://wiki.kingdomofloathing.com/Elemental_Resistance), [-combat rate](https://wiki.kingdomofloathing.com/Combat_Frequency), [weapon dmg](https://wiki.kingdomofloathing.com/Bonus_Weapon_Damage), [spell damage](https://wiki.kingdomofloathing.com/Bonus_Spell_Damage), [familiar weight](https://wiki.kingdomofloathing.com/Familiar_Weight), [item and booze drop](https://wiki.kingdomofloathing.com/Items_from_Monsters) skill HC-permed (tests are extremely marginal to achieve maximal profits)
+- (Optional) [Chateau Mantegna](https://wiki.kingdomofloathing.com/Chateau_Mantegna) containing:
+  - ceiling fan
+  - the stat-relevant nightstand
+  - continental juice bar
 - (Optional) [Your cowboy boots](https://wiki.kingdomofloathing.com/Your_cowboy_boots) modified with [nicksilver spurs](https://wiki.kingdomofloathing.com/Nicksilver_spurs) and [grizzled bearskin](https://wiki.kingdomofloathing.com/Grizzled_bearskin) (item drops and muscle)
 
 ### In Valhalla
@@ -138,7 +137,7 @@ IoTMs used are listed sequentially by age. Skills listed at the end of the table
 
 ### Not-Required Resources but used anyway
 
-These hardcoded resources do not affect the run in any significant way as they are mostly used for farming profit.
+These hardcoded resources do not affect the run in any significant way as they are mostly used for farming profit. These may be safely removed when modifying the script (but would otherwise cause issues if the user attempts to naively run the script as is while lacking any of these resources).
 
 | Resource                                                                                                                | Type           |
 | ----------------------------------------------------------------------------------------------------------------------- | -------------- |
@@ -157,12 +156,14 @@ These hardcoded resources do not affect the run in any significant way as they a
 | [Leprecondo](https://wiki.kingdomofloathing.com/Leprecondo)                                                             | Item           |
 | [wardrobe-o-matic](https://wiki.kingdomofloathing.com/Wardrobe-o-matic)                                                 | Item           |
 
+<sub><sup>Note: These requirements are correct as of Jan 2026. As this is largely a personal script, the README will not be regularly updated even as new resources get added and/or old resources get replaced. The user should only use this README as a guide for their own modifications. </sup></sub> <br />
+
 ### Summary of Farming Resource/Skill Usage
 
 A summary of key farming resources used is listed below. The same summary is generated at the end of each run, with a list of unique tasks that utilized each resource. <br />
-<sub><sup>Note 1: Some of these are subject to variance, including but not limited to Free Banishes (due to Holiday Wanderers) and Peppermint Sprouts (depending on our luck in Summoning Candy Hearts).</sup></sub> <br />
-<sub><sup>Note 2: The script should be able to achieve a 1/70 HCCS if you have all the necessary items and skills. Organ usage is always fixed at 0/1/0.</sup></sub><br/>
-<sub><sup>Note 3: The following shows a typical resource usage summary for a Seal Clubber.</sup></sub><br/>
+
+<sub><sup>Note 1: The script should be able to achieve a 1/70 HCCS if you have all the necessary items and skills, and it will throw an error in the tests if any of them take more than 1 turn (to allow for manually remedying any hiccups). Organ usage is always fixed at 0/1/0.</sup></sub><br/>
+<sub><sup>Note 2: The following shows a typical resource usage summary for a Seal Clubber, correct as of Jan 2026.</sup></sub><br/>
 
 | Free Banishes Used | Usage |
 | ------------------ | ----- |
@@ -231,6 +232,7 @@ A summary of key farming resources used is listed below. The same summary is gen
 | Peppermint Sprouts           | 0/3    |
 | Monster Habitats             | 0/3    |
 | Allied Radio                 | 1/3    |
+| Sweat Out Some Booze         | 0/3    |
 | April Band Instruments       | 0/2    |
 | Tea Tree                     | 0/1    |
 | Favorite Bird                | 0/1    |
