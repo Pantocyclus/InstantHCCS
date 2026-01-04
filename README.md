@@ -123,20 +123,16 @@ IoTMs used are listed sequentially by age. Skills listed at the end of the table
 | [Oliver's Place](https://wiki.kingdomofloathing.com/Deed_to_Oliver%27s_Place)                                     | Zone        |
 | [Allied Radio Backpack](https://wiki.kingdomofloathing.com/Allied_Radio_Backpack)                                 | Item        |
 | [Grim Brother](https://wiki.kingdomofloathing.com/Grim_Brother)                                                   | Familiar    |
-|                                                                                                                   |             |
+| [The Eternity Codpiece](https://wiki.kingdomofloathing.com/The_Eternity_Codpiece)                                 | Item        |
 
 | Important Skills                                                                                |
 | ----------------------------------------------------------------------------------------------- |
-| [Summon Crimbo Candy](https://wiki.kingdomofloathing.com/Summon_Crimbo_Candy)                   |
 | [Always Never Not Guzzling](https://wiki.kingdomofloathing.com/Always_Never_Not_Guzzling)       |
 | [Bow-Legged Swagger](<https://wiki.kingdomofloathing.com/Bow-Legged_Swagger_(skill)>)           |
 | [Steely-Eyed Squint](<https://wiki.kingdomofloathing.com/Steely-Eyed_Squint_(skill)>)           |
-| [Kung Fu Hustler](https://wiki.kingdomofloathing.com/Kung_Fu_Hustler)                           |
 | [Evoke Eldritch Horror](https://wiki.kingdomofloathing.com/Evoke_Eldritch_Horror)               |
 | [Ancestral Recall](https://wiki.kingdomofloathing.com/Ancestral_Recall)                         |
 | [Giant Growth](<https://wiki.kingdomofloathing.com/Giant_Growth_(skill)>)                       |
-| [Shattering Punch](https://wiki.kingdomofloathing.com/Shattering_Punch)                         |
-| [Gingerbread Mob Hit](https://wiki.kingdomofloathing.com/Gingerbread_Mob_Hit)                   |
 | [Torso Awareness](https://wiki.kingdomofloathing.com/Torso_Awareness)                           |
 | [Double-Fisted Skull Smashing](https://wiki.kingdomofloathing.com/Double-Fisted_Skull_Smashing) |
 
