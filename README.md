@@ -161,8 +161,8 @@ These hardcoded resources do not affect the run in any significant way as they a
 
 A summary of key farming resources used is listed below. The same summary is generated at the end of each run, with a list of unique tasks that utilized each resource. <br />
 <sub><sup>Note 1: Some of these are subject to variance, including but not limited to Free Banishes (due to Holiday Wanderers) and Peppermint Sprouts (depending on our luck in Summoning Candy Hearts).</sup></sub> <br />
-<sub><sup>Note 2: The script should be able to achieve a 1/70 HCCS if you have all the necessary items and skills. Organ usage is always fixed at 0/1/0.</sup></sub>
-<sub><sup>Note 3: The following shows a typical resource usage summary for a Seal Clubber.</sup></sub>
+<sub><sup>Note 2: The script should be able to achieve a 1/70 HCCS if you have all the necessary items and skills. Organ usage is always fixed at 0/1/0.</sup></sub><br/>
+<sub><sup>Note 3: The following shows a typical resource usage summary for a Seal Clubber.</sup></sub><br/>
 
 | Free Banishes Used | Usage |
 | ------------------ | ----- |
