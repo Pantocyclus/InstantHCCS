@@ -1,5 +1,5 @@
 import { CombatStrategy } from "grimoire-kolmafia";
-import { effectModifier, useFamiliar } from "kolmafia";
+import { effectModifier, useFamiliar, useSkill } from "kolmafia";
 import {
   $effect,
   $familiar,
@@ -8,6 +8,7 @@ import {
   $location,
   $monster,
   $skill,
+  BloodCubicZirconia,
   CombatLoversLocket,
   CommunityService,
   ensureEffect,
@@ -26,6 +27,17 @@ export const WeaponDamageQuest: Quest = {
   completed: () => CommunityService.WeaponDamage.isDone(),
   tasks: [
     { ...restoreMpTask },
+    {
+      name: "BCZ Blood Bath",
+      completed: () => BloodCubicZirconia.timesCast($skill`BCZ: Blood Bath`) > 0,
+      do: () => {
+        useSkill($skill`BCZ: Blood Bath`);
+      },
+      outfit: {
+        acc1: $item`blood cubic zirconia`,
+      },
+      limit: { tries: 1 },
+    },
     {
       name: "Carol Ghost Buff",
       ready: () => crimboCarols.every((ef) => !have(ef)) && get("_reflexHammerUsed") < 3,

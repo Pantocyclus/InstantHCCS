@@ -50,14 +50,20 @@ function printResourceUsage(tResource: trackedResource): void {
     typeof resourceValue === "string" &&
     (isNaN(parseInt(resourceValue)) ||
       resourceValue.includes(",") ||
-      parseInt(resourceValue) > (n ?? 1))
+      parseInt(resourceValue) > Math.abs(n ?? 1))
   )
     print(
       `${name}: ${resourceValueLength > (n ?? 1) ? n ?? 1 : resourceValueLength}/${
         n ?? "?"
       } ${localResourceValue}`,
     );
-  else print(`${name}: ${resourceValue}/${n ?? "?"} ${localResourceValue}`);
+  else {
+    if (n && !isNaN(parseInt(resourceValue)) && n < 0) {
+      print(`${name}: ${-n - parseInt(resourceValue)}/${-n} ${localResourceValue}`);
+    } else {
+      print(`${name}: ${resourceValue}/${n ?? "?"} ${localResourceValue}`);
+    }
+  }
 }
 
 function logResourceUsage(): void {

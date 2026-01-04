@@ -46,6 +46,7 @@ import {
   $skills,
   $slot,
   $stat,
+  BloodCubicZirconia,
   CombatLoversLocket,
   get,
   have,
@@ -127,6 +128,8 @@ const famwtBuffs = [
   $effect`Empathy`,
   $effect`Thoughtful Empathy`,
   $effect`Leash of Linguini`,
+  // eslint-disable-next-line libram/verify-constants
+  $effect`Only Dogs Love a Drunken Sailor`,
   $effect`Puzzle Champ`,
   // $effect`You Can Really Taste the Dormouse`,
 
@@ -186,6 +189,8 @@ const levelingBuffs = [
   // Items
   generalStorePotion,
   barrelBuff,
+  // eslint-disable-next-line libram/verify-constants
+  $effect`Who's Going to Pay This Drunken Sailor?`,
   // Other
   $effect`Broad-Spectrum Vaccine`,
   $effect`Favored by Lyle`,
@@ -640,12 +645,25 @@ export const PostCoilQuest: Quest = {
       limit: { tries: 1 },
     },
     {
+      name: "BCZ Dial it up to 11",
+      completed: () =>
+        have($effect`Up To 11`) || BloodCubicZirconia.timesCast($skill`BCZ: Dial it up to 11`) > 0,
+      do: () => {
+        useSkill($skill`BCZ: Dial it up to 11`);
+      },
+      outfit: {
+        acc1: $item`blood cubic zirconia`,
+      },
+      limit: { tries: 1 },
+    },
+    {
       name: "Nanobrainy",
       ready: () => get("ghostLocation") !== $location`none` && get("_nanorhinoCharge") >= 100,
-      completed: () => have($effect`Nanobrainy`),
+      completed: () => get("_nanorhinoCharge") < 100 || have($effect`Nanobrainy`),
       do: () => adv1(get("ghostLocation", $location`none`), 0, ""),
       prepare: (): void => {
         if (get("parkaMode") !== "spikolodon") cliExecute("parka spikolodon");
+        attemptRestoringMpWithFreeRests(50);
       },
       combat: new CombatStrategy().macro(
         Macro.skill($skill`Entangling Noodles`) // Myst skill to trigger nanorhino buff
@@ -684,7 +702,8 @@ export const PostCoilQuest: Quest = {
         have($effect`Expert Oiliness`),
       do: $location`The Skeleton Store`,
       combat: new CombatStrategy().macro(
-        Macro.trySkill($skill`Spit jurassic acid`)
+        Macro.trySkill($skill`Giant Growth`)
+          .trySkill($skill`Spit jurassic acid`)
           .skill($skill`Feel Envy`)
           .skill($skill`Chest X-Ray`),
       ),

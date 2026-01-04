@@ -17,6 +17,7 @@ import {
   $item,
   $items,
   $skill,
+  BloodCubicZirconia,
   CommunityService,
   ensureEffect,
   get,
@@ -38,6 +39,18 @@ export const SpellDamageQuest: Quest = {
       completed: () => have($item`Abracandalabra`) || have($item`obsidian nutcracker`),
       do: () => retrieveItem($item`obsidian nutcracker`),
       outfit: { pants: $item`designer sweatpants` },
+      limit: { tries: 1 },
+    },
+    {
+      name: "BCZ Dial it up to 11",
+      completed: () =>
+        have($effect`Up To 11`) || BloodCubicZirconia.timesCast($skill`BCZ: Dial it up to 11`) > 0,
+      do: () => {
+        useSkill($skill`BCZ: Dial it up to 11`);
+      },
+      outfit: {
+        acc1: $item`blood cubic zirconia`,
+      },
       limit: { tries: 1 },
     },
     {

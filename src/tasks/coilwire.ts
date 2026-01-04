@@ -46,10 +46,10 @@ export const CoilWireQuest: Quest = {
         if (get("umbrellaState") !== "broken") cliExecute("umbrella ml");
         cliExecute("terminal educate portscan");
       },
-      completed: () => get("_sausageFights") > 0 || have($effect`Everything Looks Red`),
+      completed: () => get("_sausageFights") > 0 && have($effect`Everything Looks Red`),
       do: $location`Noob Cave`,
       combat: new CombatStrategy().macro(
-        Macro.skill($skill`Open a Big Red Present`)
+        Macro.trySkill($skill`Open a Big Red Present`)
           .skill($skill`Micrometeorite`)
           .attack()
           .repeat(),

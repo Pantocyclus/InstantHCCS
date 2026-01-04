@@ -116,6 +116,8 @@ export const BoozeDropQuest: Quest = {
         $effect`Singer's Faithful Ocelot`,
         $effect`Steely-Eyed Squint`,
         $effect`Uncucumbered`,
+        // eslint-disable-next-line libram/verify-constants
+        $effect`Who's Going to Pay This Drunken Sailor?`,
       ],
       acquire: [{ item: $item`wad of used tape` }],
       limit: { tries: 1 },
