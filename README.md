@@ -92,6 +92,7 @@ IoTMs used are listed sequentially by age. Skills listed at the end of the table
 | [Guzzlr tablet](https://wiki.kingdomofloathing.com/Guzzlr_tablet)                                                 | Accessory   |
 | [Melodramedary](https://wiki.kingdomofloathing.com/Melodramedary)                                                 | Familiar    |
 | [SpinMaster™ lathe](https://wiki.kingdomofloathing.com/SpinMaster%E2%84%A2_lathe)                                | Item        |
+| [Cargo Cultist Shorts](https://wiki.kingdomofloathing.com/Cargo_Cultist_Shorts)                                   | Item        |
 | [Ghost of Crimbo Carols](https://wiki.kingdomofloathing.com/Ghost_of_Crimbo_Carols)                               | Familiar    |
 | [Emotionally Chipped](https://wiki.kingdomofloathing.com/Emotionally_Chipped)                                     | Skill       |
 | [Shorter-Order Cook](https://wiki.kingdomofloathing.com/Shorter-Order_Cook)                                       | Familiar    |

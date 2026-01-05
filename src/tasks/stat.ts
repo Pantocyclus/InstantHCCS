@@ -118,7 +118,7 @@ export const MoxieQuest: Quest = {
         $effect`Disco Fever`,
         $effect`Disco State of Mind`,
         $effect`The Moxious Madrigal`,
-        $effect`Pomp & Circumsands`,
+        // $effect`Pomp & Circumsands`,
         $effect`Quiet Desperation`,
       ],
       post: () => burnLibram(300),

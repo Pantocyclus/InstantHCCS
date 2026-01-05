@@ -189,10 +189,8 @@ const levelingBuffs = [
   // Items
   generalStorePotion,
   barrelBuff,
-  // eslint-disable-next-line libram/verify-constants
-  $effect`Who's Going to Pay This Drunken Sailor?`,
   // Other
-  $effect`Broad-Spectrum Vaccine`,
+  // $effect`Broad-Spectrum Vaccine`,
   $effect`Favored by Lyle`,
   $effect`Grumpy and Ornery`,
   $effect`Starry-Eyed`,
@@ -332,7 +330,7 @@ export const PostCoilQuest: Quest = {
     //       CombatLoversLocket.reminisce($monster`Hobelf`);
     //     }
     //   },
-    //   combat: new CombatStrategy().macro(
+    //   combat: new CombatStrategy().macro(() =>
     //     Macro.if_($monster`Hobelf`, Macro.skill($skill`Use the Force`))
     //       .trySkill($skill`Reflex Hammer`)
     //       .trySkill($skill`Feel Hatred`)
@@ -401,7 +399,7 @@ export const PostCoilQuest: Quest = {
     //     get("_saberForceUses") >= 1 ||
     //     PeridotOfPeril.periledToday($location`The Outskirts of Cobb's Knob`),
     //   do: $location`The Outskirts of Cobb's Knob`,
-    //   combat: new CombatStrategy().macro(Macro.skill($skill`Use the Force`)),
+    //   combat: new CombatStrategy().macro(() =>Macro.skill($skill`Use the Force`)),
     //   choices: { 1387: 3 },
     //   outfit: () => ({
     //     ...baseOutfit(),
@@ -542,6 +540,7 @@ export const PostCoilQuest: Quest = {
       prepare: (): void => {
         const usefulEffects: Effect[] = [
           $effect`Cold as Nice`, // +3 cold res from Beach Comb
+          $effect`Rainbow Vaccine`, // +3 cold res from Spacegate
           $effect`Scarysauce`, // +2 cold res
           $effect`Elemental Saucesphere`, // +2 cold res
           $effect`Feeling Peaceful`, // +2 cold res from Emotion Chip
@@ -631,7 +630,7 @@ export const PostCoilQuest: Quest = {
       completed: () => have($item`li'l ninja costume`),
       do: $location`The Haiku Dungeon`,
       post: () => visitUrl("questlog.php?which=1"), // Check quest log for protonic ghost location
-      combat: new CombatStrategy().macro(
+      combat: new CombatStrategy().macro(() =>
         Macro.ifHolidayWanderer(Macro.skill($skill`Feel Hatred`).abort())
           .if_($monster`amateur ninja`, Macro.skill($skill`Chest X-Ray`))
           .abort(),
@@ -665,7 +664,7 @@ export const PostCoilQuest: Quest = {
         if (get("parkaMode") !== "spikolodon") cliExecute("parka spikolodon");
         attemptRestoringMpWithFreeRests(50);
       },
-      combat: new CombatStrategy().macro(
+      combat: new CombatStrategy().macro(() =>
         Macro.skill($skill`Entangling Noodles`) // Myst skill to trigger nanorhino buff
           .trySkill($skill`Giant Growth`)
           .if_($item`blue rocket`, Macro.item($item`blue rocket`))
@@ -701,7 +700,7 @@ export const PostCoilQuest: Quest = {
         have($item`oil of expertise`) ||
         have($effect`Expert Oiliness`),
       do: $location`The Skeleton Store`,
-      combat: new CombatStrategy().macro(
+      combat: new CombatStrategy().macro(() =>
         Macro.trySkill($skill`Giant Growth`)
           .trySkill($skill`Spit jurassic acid`)
           .skill($skill`Feel Envy`)
@@ -723,7 +722,7 @@ export const PostCoilQuest: Quest = {
         mainStat !== $stat`Moxie` ||
         CombatLoversLocket.monstersReminisced().includes($monster`Evil Olive`),
       do: () => CombatLoversLocket.reminisce($monster`Evil Olive`),
-      combat: new CombatStrategy().macro(
+      combat: new CombatStrategy().macro(() =>
         Macro.trySkill($skill`Spit jurassic acid`)
           .skill($skill`Feel Envy`)
           .skill($skill`Chest X-Ray`),
@@ -795,7 +794,7 @@ export const PostCoilQuest: Quest = {
         familiar: $familiar`Mini-Adventurer`,
         famequip: $item`tiny stillsuit`,
       }),
-      combat: new CombatStrategy().macro(
+      combat: new CombatStrategy().macro(() =>
         Macro.trySkill($skill`Reflex Hammer`)
           .trySkill($skill`Feel Hatred`)
           .trySkill($skill`Snokebomb`)

@@ -17,7 +17,7 @@ export const HotResQuest: Quest = {
       ready: () => get("_fireExtinguisherCharge") >= 10 && get("_saberForceUses") < 5,
       completed: () => have($effect`Fireproof Foam Suit`),
       do: $location`The Dire Warren`,
-      combat: new CombatStrategy().macro(
+      combat: new CombatStrategy().macro(() =>
         Macro.skill($skill`Become a Cloud of Mist`)
           .skill($skill`Fire Extinguisher: Foam Yourself`)
           .trySkill($skill`%fn, spit on me!`)

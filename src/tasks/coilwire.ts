@@ -38,17 +38,44 @@ export const CoilWireQuest: Quest = {
   tasks: [
     { ...holidayRunawayTask },
     {
+      name: "Shrub Red Present",
+      ready: () => !have($effect`Everything Looks Green`),
+      prepare: (): void => {
+        if (get("parkaMode") !== "spikolodon") cliExecute("parka spikolodon");
+        CrimboShrub.decorate(`${mainStat.toString()}`, "Spooky Damage", "PvP Fights", "Red Ray"); // Deal only 1 damage to skeletons
+      },
+      completed: () => have($effect`Everything Looks Red`),
+      do: $location`The Skeleton Store`,
+      combat: new CombatStrategy().macro(() =>
+        Macro.trySkill($skill`Open a Big Red Present`)
+          .trySkill($skill`Blow the Green Candle!`)
+          .trySkill($skill`Spring Away`)
+          .abort(),
+      ),
+      outfit: () => ({
+        ...baseOutfit(),
+        shirt: $item`Jurassic Parka`, // Increase HP of skeletons
+        pants: $item`Cargo Cultist Shorts`, // Increase HP of skeletons
+        offhand: $item`Roman Candelabra`,
+        acc2: $item`Eight Days a Week Pill Keeper`, // Prevent first hit
+        acc3: $item`spring shoes`,
+        familiar: $familiar`Crimbo Shrub`,
+        famequip: $item`tiny stillsuit`,
+      }),
+      post: () => sendAutumnaton(),
+      limit: { tries: 2 },
+    },
+    {
       name: "Kramco with Shrub",
       ready: () => getKramcoWandererChance() >= 1.0,
       prepare: (): void => {
-        CrimboShrub.decorate(`${mainStat.toString()}`, "Spooky Damage", "Blocking", "Red Ray");
         if (myHp() < myMaxhp()) cliExecute("hottub");
         if (get("umbrellaState") !== "broken") cliExecute("umbrella ml");
         cliExecute("terminal educate portscan");
       },
-      completed: () => get("_sausageFights") > 0 && have($effect`Everything Looks Red`),
+      completed: () => get("_sausageFights") > 0,
       do: $location`Noob Cave`,
-      combat: new CombatStrategy().macro(
+      combat: new CombatStrategy().macro(() =>
         Macro.trySkill($skill`Open a Big Red Present`)
           .skill($skill`Micrometeorite`)
           .attack()
@@ -59,8 +86,12 @@ export const CoilWireQuest: Quest = {
         back: $item`protonic accelerator pack`,
         offhand: $item`Kramco Sausage-o-Matic™`,
         acc3: $item`Möbius ring`,
-        familiar: $familiar`Crimbo Shrub`,
-        famequip: $item`tiny stillsuit`,
+        familiar: have($effect`Everything Looks Red`)
+          ? $familiar`Shorter-Order Cook`
+          : $familiar`Crimbo Shrub`,
+        famequip: have($effect`Everything Looks Red`)
+          ? $item`toy Cupid bow`
+          : $item`tiny stillsuit`,
       }),
       post: () => {
         set("_lastMobiusStripTurn", Math.max(get("_lastMobiusStripTurn", 0), totalTurnsPlayed()));
@@ -85,7 +116,7 @@ export const CoilWireQuest: Quest = {
         if (have($effect`Beaten Up`)) cliExecute("hottub");
         sendAutumnaton();
       },
-      combat: new CombatStrategy().macro(
+      combat: new CombatStrategy().macro(() =>
         Macro.trySkill($skill`Blow the Purple Candle!`)
           .externalIf(get("eldritchTentaclesFought") >= 1, Macro.trySkill($skill`Portscan`))
           .default(),
@@ -108,7 +139,7 @@ export const CoilWireQuest: Quest = {
       },
       completed: () => get("_speakeasyFreeFights", 0) >= 1,
       do: $location`An Unusually Quiet Barroom Brawl`,
-      combat: new CombatStrategy().macro(
+      combat: new CombatStrategy().macro(() =>
         Macro.if_($monster`Government agent`, Macro.trySkill($skill`Feel Envy`))
           .trySkill($skill`Portscan`)
           .default(),
@@ -129,7 +160,7 @@ export const CoilWireQuest: Quest = {
       },
       completed: () => get("_speakeasyFreeFights", 0) >= 2,
       do: $location`An Unusually Quiet Barroom Brawl`,
-      combat: new CombatStrategy().macro(
+      combat: new CombatStrategy().macro(() =>
         Macro.if_(
           $monster`Government agent`,
           Macro.externalIf(!have($item`government cheese`), Macro.trySkill($skill`Feel Envy`)),
@@ -156,7 +187,7 @@ export const CoilWireQuest: Quest = {
       post: () => {
         sendAutumnaton();
       },
-      combat: new CombatStrategy().macro(
+      combat: new CombatStrategy().macro(() =>
         Macro.if_(
           $monster`Government agent`,
           Macro.externalIf(!have($item`government cheese`), Macro.trySkill($skill`Feel Envy`)),
@@ -183,7 +214,7 @@ export const CoilWireQuest: Quest = {
         equip($slot`familiar`, $item`blue plate`);
       },
       do: $location`An Unusually Quiet Barroom Brawl`,
-      combat: new CombatStrategy().macro(Macro.skill($skill`Spit jurassic acid`).abort()),
+      combat: new CombatStrategy().macro(() => Macro.skill($skill`Spit jurassic acid`).abort()),
       outfit: () => ({
         ...baseOutfit(),
         shirt: $item`Jurassic Parka`,

@@ -28,7 +28,7 @@ export const holidayRunawayTask: Task = {
     (Counter.get("Holiday Monster window begin") ??
       (getTodaysHolidayWanderers().length > 0 ? 0 : Infinity)) > 0,
   do: $location`Noob Cave`,
-  combat: new CombatStrategy().macro(Macro.runaway().abort()),
+  combat: new CombatStrategy().macro(() => Macro.runaway().abort()),
   outfit: { familiar: $familiar`Pair of Stomping Boots` },
   limit: { tries: 1 },
 };
@@ -43,7 +43,7 @@ export const innerElfTask: Task = {
   completed: () => have($effect`Inner Elf`),
   do: $location`The Slime Tube`,
   post: () => Clan.join(VIP_CLAN),
-  combat: new CombatStrategy().macro(Macro.skill($skill`KGB tranquilizer dart`)),
+  combat: new CombatStrategy().macro(() => Macro.skill($skill`KGB tranquilizer dart`)),
   choices: { 326: 1 },
   effects: [$effect`Blood Bubble`],
   outfit: () => ({
@@ -62,7 +62,7 @@ export const meteorShowerTask: Task = {
   ready: () => get("_meteorShowerUses") < 5 && get("_saberForceUses") < 5,
   completed: () => have($effect`Meteor Showered`),
   do: $location`The Dire Warren`,
-  combat: new CombatStrategy().macro(
+  combat: new CombatStrategy().macro(() =>
     Macro.skill($skill`Meteor Shower`).skill($skill`Use the Force`),
   ),
   choices: { 1387: 3 },

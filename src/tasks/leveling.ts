@@ -5,10 +5,12 @@ import {
   eat,
   familiarWeight,
   itemAmount,
+  myBasestat,
   myDaycount,
   myFamiliar,
   myInebriety,
   myLevel,
+  print,
   totalFreeRests,
   use,
   useFamiliar,
@@ -113,7 +115,7 @@ export const LevelingQuest: Quest = {
     //     have($item`Rufus's shadow lodestone`) ||
     //     (!have($effect`Shadow Affinity`) && get("encountersUntilSRChoice") !== 0),
     //   do: bestShadowRift(),
-    //   combat: new CombatStrategy().macro(Macro.trySkill($skill`Giant Growth`).default()),
+    //   combat: new CombatStrategy().macro(() => Macro.trySkill($skill`Giant Growth`).default()),
     //   outfit: () => ({
     //     ...baseOutfit(),
     //   }),
@@ -138,7 +140,7 @@ export const LevelingQuest: Quest = {
     //   },
     //   completed: () => get("_cyberZone1Turns") >= 9,
     //   do: $location`Cyberzone 1`,
-    //   combat: new CombatStrategy().macro(
+    //   combat: new CombatStrategy().macro(() =>
     //     Macro.if_("monstername hacker", Macro.default()).trySkillRepeat($skill`Throw Cyber Rock`),
     //   ),
     //   outfit: () => ({
@@ -162,7 +164,7 @@ export const LevelingQuest: Quest = {
     //   },
     //   completed: () => get("_cyberZone2Turns") >= 1,
     //   do: $location`Cyberzone 2`,
-    //   combat: new CombatStrategy().macro(
+    //   combat: new CombatStrategy().macro(() =>
     //     Macro.if_("monstername hacker", Macro.default()).trySkillRepeat($skill`Throw Cyber Rock`),
     //   ),
     //   outfit: () => ({
@@ -190,7 +192,7 @@ export const LevelingQuest: Quest = {
     //   completed: () => get("_snojoFreeFights") >= 9,
     //   do: $location`The X-32-F Combat Training Snowman`,
     //   post: () => sendAutumnaton(),
-    //   combat: new CombatStrategy().macro(Macro.default()),
+    //   combat: new CombatStrategy().macro(() => Macro.default()),
     //   outfit: () => ({
     //     ...baseOutfit(),
     //   }),
@@ -212,7 +214,7 @@ export const LevelingQuest: Quest = {
     //     if (get("_snojoFreeFights") >= 9) cliExecute("hottub"); // Clean -stat effects
     //     sendAutumnaton();
     //   },
-    //   combat: new CombatStrategy().macro(
+    //   combat: new CombatStrategy().macro(() =>
     //     Macro.trySkill($skill`%fn\, Release the Patriotic Screech!`).default(),
     //   ),
     //   outfit: () => ({
@@ -230,7 +232,7 @@ export const LevelingQuest: Quest = {
       completed: () => get("_loveTunnelUsed"),
       do: () =>
         TunnelOfLove.fightAll(lovEquipment, "Open Heart Surgery", "LOV Extraterrestrial Chocolate"),
-      combat: new CombatStrategy().macro(
+      combat: new CombatStrategy().macro(() =>
         Macro.if_($monster`LOV Enforcer`, Macro.attack().repeat())
           .if_($monster`LOV Engineer`, Macro.skill($skill`Toynado`).repeat())
           .if_($monster`LOV Equivocator`, Macro.default()),
@@ -253,7 +255,7 @@ export const LevelingQuest: Quest = {
     //   name: "Inflammable Leaf",
     //   completed: () => get("_leafMonstersFought") >= 5 || itemAmount($item`inflammable leaf`) < 11,
     //   do: () => BurningLeaves.burnSpecialLeaves($monster`flaming leaflet`),
-    //   combat: new CombatStrategy().macro(Macro.default()),
+    //   combat: new CombatStrategy().macro(() => Macro.default()),
     //   outfit: () => ({
     //     ...baseOutfit(),
     //   }),
@@ -266,9 +268,13 @@ export const LevelingQuest: Quest = {
         useFamiliar($familiar`Cooler Yeti`);
         useFamiliar($familiar`Shorter-Order Cook`);
       },
-      completed: () => get("_witchessFights") >= 3,
+      completed: () =>
+        get("_witchessFights") >= 3 ||
+        get("_shortOrderCookCharge") >= 9 ||
+        have($item`short stack of pancakes`) ||
+        have($effect`Shortly Stacked`),
       do: () => Witchess.fightPiece($monster`Witchess Knight`),
-      combat: new CombatStrategy().macro(Macro.default()),
+      combat: new CombatStrategy().macro(() => Macro.default()),
       outfit: () => ({
         ...baseOutfit(),
         shirt: $item`makeshift garbage shirt`,
@@ -290,7 +296,7 @@ export const LevelingQuest: Quest = {
     //     mainStat === $stat`Moxie` ||
     //     CombatLoversLocket.monstersReminisced().includes($monster`Witchess Knight`),
     //   do: () => CombatLoversLocket.reminisce($monster`Witchess Knight`),
-    //   combat: new CombatStrategy().macro(Macro.default()),
+    //   combat: new CombatStrategy().macro(() => Macro.default()),
     //   outfit: () => ({
     //     ...baseOutfit(),
     //     shirt: $item`makeshift garbage shirt`,
@@ -310,7 +316,7 @@ export const LevelingQuest: Quest = {
       },
       completed: () => have($item`dented scepter`),
       do: () => Witchess.fightPiece($monster`Witchess King`),
-      combat: new CombatStrategy().macro(Macro.delevel().attack().repeat()),
+      combat: new CombatStrategy().macro(() => Macro.delevel().attack().repeat()),
       outfit: () => ({
         ...baseOutfit(),
         weapon: $item`Fourth of May Cosplay Saber`,
@@ -330,7 +336,7 @@ export const LevelingQuest: Quest = {
       },
       completed: () => have($item`battle broom`),
       do: () => Witchess.fightPiece($monster`Witchess Witch`),
-      combat: new CombatStrategy().macro(
+      combat: new CombatStrategy().macro(() =>
         Macro.trySkill($skill`Curse of Weaksauce`)
           .attack()
           .repeat(),
@@ -356,7 +362,7 @@ export const LevelingQuest: Quest = {
       },
       completed: () => get("_godLobsterFights") >= 3,
       do: () => visitUrl("main.php?fightgodlobster=1"),
-      combat: new CombatStrategy().macro(Macro.default()),
+      combat: new CombatStrategy().macro(() => Macro.default()),
       choices: { 1310: have($item`God Lobster's Ring`) ? 2 : 3 }, // Get -combat on last fight
       outfit: () => ({
         ...baseOutfit(),
@@ -381,7 +387,7 @@ export const LevelingQuest: Quest = {
     //     1322: 2,
     //     1324: 5,
     //   },
-    //   combat: new CombatStrategy().macro(Macro.trySkill($skill`Bowl Sideways`).default()),
+    //   combat: new CombatStrategy().macro(() => Macro.trySkill($skill`Bowl Sideways`).default()),
     //   outfit: () => ({
     //     ...baseOutfit(),
     //     shirt: $item`makeshift garbage shirt`,
@@ -399,7 +405,7 @@ export const LevelingQuest: Quest = {
         get("_banderRunaways") >= (familiarWeight(myFamiliar()) + weightAdjustment()) / 5 ||
         get("_feelPrideUsed") > 0,
       do: $location`The Dire Warren`,
-      combat: new CombatStrategy().macro(Macro.runaway()),
+      combat: new CombatStrategy().macro(() => Macro.runaway()),
       outfit: () => ({
         ...baseOutfit(),
         offhand: $item`latte lovers member's mug`,
@@ -421,7 +427,7 @@ export const LevelingQuest: Quest = {
     //     ...baseOutfit(),
     //     shirt: $item`makeshift garbage shirt`,
     //   }),
-    //   combat: new CombatStrategy().macro(
+    //   combat: new CombatStrategy().macro(() =>
     //     Macro.trySkill($skill`Feel Pride`)
     //       .trySkill($skill`Cincho: Confetti Extravaganza`)
     //       .trySkill($skill`Bowl Sideways`)
@@ -444,7 +450,7 @@ export const LevelingQuest: Quest = {
       ready: () => getKramcoWandererChance() >= 1.0,
       do: $location`Noob Cave`,
       choices: { 1322: 2 },
-      combat: new CombatStrategy().macro(
+      combat: new CombatStrategy().macro(() =>
         Macro.if_($monster`sausage goblin`, Macro.default()).abort(),
       ),
       outfit: () => ({
@@ -472,7 +478,7 @@ export const LevelingQuest: Quest = {
       },
       completed: () => get("_machineTunnelsAdv") >= 5,
       do: $location`The Deep Machine Tunnels`,
-      combat: new CombatStrategy().macro(
+      combat: new CombatStrategy().macro(() =>
         Macro.trySkill($skill`Gulp Latte`)
           .if_($monster`Government agent`, Macro.trySkill($skill`Feel Envy`).default())
           .default(),
@@ -493,6 +499,12 @@ export const LevelingQuest: Quest = {
         // while (itemAmount($item`BRICKO brick`) >= 8 && have($item`BRICKO eye brick`))
         //   create($item`BRICKO oyster`);
         sendAutumnaton();
+        if (get("_machineTunnelsAdv") >= 5) {
+          print(`Ended leveling at Level ${myLevel()}`, "blue");
+          print(`Mus: ${myBasestat($stat`Muscle`)}`, "blue");
+          print(`Mys: ${myBasestat($stat`Mysticality`)}`, "blue");
+          print(`Mox: ${myBasestat($stat`Moxie`)}`, "blue");
+        }
       },
     },
     // {
@@ -500,7 +512,7 @@ export const LevelingQuest: Quest = {
     //   completed: () =>
     //     have($effect`Spit Upon`) || get("camelSpit") >= 100 || !have($item`BRICKO oyster`),
     //   do: () => $item`BRICKO oyster`,
-    //   combat: new CombatStrategy().macro(Macro.default()),
+    //   combat: new CombatStrategy().macro(() => Macro.default()),
     //   post: () => sendAutumnaton(),
     //   limit: { tries: 2 },
     //   outfit: baseOutfit,

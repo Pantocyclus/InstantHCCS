@@ -53,7 +53,7 @@ export const BoozeDropQuest: Quest = {
         familiar: $familiar`Mini-Adventurer`,
         famequip: $item`tiny stillsuit`,
       }),
-      combat: new CombatStrategy().macro(
+      combat: new CombatStrategy().macro(() =>
         Macro.skill($skill`Become a Bat`)
           .skill($skill`Bowl Straight Up`)
           .trySkill($skill`Asdon Martin: Spring-Loaded Front Bumper`)
@@ -69,7 +69,7 @@ export const BoozeDropQuest: Quest = {
       name: "Vampyric Cape + Bowling Ball",
       completed: () => have($effect`Bat-Adjacent Form`),
       do: $location`The Dire Warren`,
-      combat: new CombatStrategy().macro(
+      combat: new CombatStrategy().macro(() =>
         Macro.skill($skill`Become a Bat`)
           .skill($skill`Bowl Straight Up`)
           .trySkill($skill`Asdon Martin: Spring-Loaded Front Bumper`)

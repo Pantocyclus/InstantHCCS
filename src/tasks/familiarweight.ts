@@ -94,7 +94,7 @@ export const FamiliarWeightQuest: Quest = {
       ready: () => getKramcoWandererChance() >= 1.0,
       do: $location`The Neverending Party`,
       choices: { 1322: 2 },
-      combat: new CombatStrategy().macro(
+      combat: new CombatStrategy().macro(() =>
         Macro.ifHolidayWanderer(Macro.skill($skill`Reflex Hammer`).abort())
           .if_($monster`sausage goblin`, Macro.default())
           .abort(),
@@ -127,7 +127,7 @@ export const FamiliarWeightQuest: Quest = {
         have($effect`Shortly Stacked`) ||
         CombatLoversLocket.monstersReminisced().includes($monster`Witchess Knight`),
       do: () => CombatLoversLocket.reminisce($monster`Witchess Knight`),
-      combat: new CombatStrategy().macro(Macro.default()),
+      combat: new CombatStrategy().macro(() => Macro.default()),
       outfit: () => ({
         ...baseOutfit(),
         shirt: $item`makeshift garbage shirt`,
@@ -219,7 +219,7 @@ export const FamiliarWeightQuest: Quest = {
         familiar: $familiar`Chocolate Lab`,
         modifier: "familiar weight",
       }),
-      combat: new CombatStrategy().macro(
+      combat: new CombatStrategy().macro(() =>
         Macro
           // .externalIf(
           //   itemAmount($item`sprinkles`) < 50 && !get("_missileLauncherUsed"),
@@ -248,7 +248,7 @@ export const FamiliarWeightQuest: Quest = {
         familiar: $familiar`Pair of Stomping Boots`,
         modifier: "familiar weight",
       }),
-      combat: new CombatStrategy().macro(Macro.runaway()),
+      combat: new CombatStrategy().macro(() => Macro.runaway()),
       choices: {
         1208: 3,
       },
@@ -265,7 +265,7 @@ export const FamiliarWeightQuest: Quest = {
     //   name: "Get Shaving Buff",
     //   completed: () => get("_chestXRayUsed") >= 3 || have($effect`Toiletbrush Moustache`),
     //   do: $location`The Dire Warren`,
-    //   combat: new CombatStrategy().macro(Macro.trySkill($skill`Chest X-Ray`).abort()),
+    //   combat: new CombatStrategy().macro(() =>Macro.trySkill($skill`Chest X-Ray`).abort()),
     //   outfit: () => ({
     //     ...baseOutfit(),
     //     offhand: $item`familiar scrapbook`,
