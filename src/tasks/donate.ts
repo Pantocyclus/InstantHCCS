@@ -131,7 +131,7 @@ export const DonateQuest: Quest = {
       completed: () => pvpAttacksLeft() === 0,
       prepare: () => set("PVP_MAB_use_meteoriteade", false),
       do: (): void => {
-        cliExecute("PVP_MAB strategy=bernoulliThompson debug");
+        cliExecute("PVP_MAB strategy=bernoulliThompson");
       },
       post: () => set("PVP_MAB_use_meteoriteade", true),
       limit: { tries: 1 },

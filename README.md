@@ -68,6 +68,7 @@ IoTMs used are listed sequentially by age. Skills listed at the end of the table
 | [Machine Elf](https://wiki.kingdomofloathing.com/Machine_Elf)                                                     | Familiar    |
 | [Your Witchess Set](https://wiki.kingdomofloathing.com/Your_Witchess_Set)                                         | Zone        |
 | [Source Terminal](https://wiki.kingdomofloathing.com/Source_Terminal)                                             | Zone        |
+| [The Precinct](https://kol.coldfront.net/thekolwiki/index.php/The_Precinct)                                       | Zone        |
 | [Protonic accelerator pack](https://wiki.kingdomofloathing.com/Protonic_accelerator_pack)                         | Back        |
 | [Trick-or-Treating Tot](https://wiki.kingdomofloathing.com/Trick-or-Treating_Tot)                                 | Familiar    |
 | [Gingerbread City](https://wiki.kingdomofloathing.com/Gingerbread_City)                                           | Zone        |
@@ -146,7 +147,6 @@ These hardcoded resources do not affect the run in any significant way as they a
 | [Summon Taffy](https://wiki.kingdomofloathing.com/Summon_Taffy)                                                         | Skill          |
 | [Summon Confiscated Things](https://wiki.kingdomofloathing.com/Summon_Confiscated_Things)                               | Skill          |
 | [LT&T Office](https://wiki.kingdomofloathing.com/LT%26T_Office)                                                         | Zone           |
-| [The Precinct](https://kol.coldfront.net/thekolwiki/index.php/The_Precinct)                                             | Zone           |
 | [Voting Booth](https://wiki.kingdomofloathing.com/Voting_Booth)                                                         | Zone           |
 | [Unwrapped knock-off retro superhero cape](https://wiki.kingdomofloathing.com/Unwrapped_knock-off_retro_superhero_cape) | Back           |
 | [Meteor Lore](https://wiki.kingdomofloathing.com/Meteor_Lore)                                                           | Skill          |
@@ -186,7 +186,7 @@ A summary of key farming resources used is listed below. The same summary is gen
 | ------------------- | ----- |
 | Saber Forces        | 4/5   |
 | Monsters Mapped     | 0/3   |
-| Feel Envy           | 3/3   |
+| Feel Envy           | 2/3   |
 | Digitize            | 0/3   |
 | Portscan            | 2/3   |
 | Enhance             | 0/3   |
@@ -197,7 +197,7 @@ A summary of key farming resources used is listed below. The same summary is gen
 | Shadow Rift            | 0/11  |
 | Snojo                  | 0/10  |
 | NEP                    | 0/10  |
-| Witchess               | 5/5   |
+| Witchess               | 4/5   |
 | DMT                    | 5/5   |
 | LOV Tunnel             | 3/3   |
 | Voters                 | 0/3   |
