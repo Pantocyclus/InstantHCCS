@@ -66,7 +66,7 @@ export const CoilWireQuest: Quest = {
       limit: { tries: 2 },
     },
     {
-      name: "Kramco with Shrub",
+      name: "Kramco",
       ready: () => getKramcoWandererChance() >= 1.0,
       prepare: (): void => {
         if (myHp() < myMaxhp()) cliExecute("hottub");

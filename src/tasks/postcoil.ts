@@ -72,12 +72,12 @@ const statGainBuffs =
 export const bloodSugarSauceMagic = $effect`[${
   myClass() === $class`Sauceror` ? "1458" : "1457"
 }]Blood Sugar Sauce Magic`;
-const combStatBuff =
-  mainStat === $stat`Muscle`
-    ? $effect`Lack of Body-Building`
-    : mainStat === $stat`Mysticality`
-      ? $effect`We're All Made of Starfish`
-      : $effect`Pomp & Circumsands`;
+// const combStatBuff =
+//   mainStat === $stat`Muscle`
+//     ? $effect`Lack of Body-Building`
+//     : mainStat === $stat`Mysticality`
+//       ? $effect`We're All Made of Starfish`
+//       : $effect`Pomp & Circumsands`;
 const generalStorePotion =
   mainStat === $stat`Muscle`
     ? $effect`Go Get 'Em, Tiger!`
@@ -180,10 +180,10 @@ const levelingBuffs = [
   // $effect`Ur-Kel's Aria of Annoyance`,
   $effect`Pride of the Puffin`,
   // Beach Comb
-  $effect`Lack of Body-Building`,
-  $effect`Resting Beach Face`,
-  combStatBuff,
-  $effect`You Learned Something Maybe!`,
+  // $effect`Lack of Body-Building`,
+  // $effect`Resting Beach Face`,
+  // combStatBuff,
+  // $effect`You Learned Something Maybe!`,
   // Fam Weight
   ...famwtBuffs,
   // Items
@@ -311,11 +311,11 @@ export const PostCoilQuest: Quest = {
       do: () => visitUrl("place.php?whichplace=campaway&action=campaway_sky"),
       limit: { tries: 3 },
     },
-    {
-      name: "Crimbo Candy",
-      completed: () => get("_candySummons", 0) > 0,
-      do: () => useSkill($skill`Summon Crimbo Candy`),
-    },
+    // {
+    //   name: "Crimbo Candy",
+    //   completed: () => get("_candySummons", 0) > 0,
+    //   do: () => useSkill($skill`Summon Crimbo Candy`),
+    // },
     // {
     //   name: "Get Moxie Complex Candies",
     //   completed: () =>

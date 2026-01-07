@@ -195,7 +195,7 @@ export function getSynthExpBuff(): void {
 }
 
 export function sendAutumnaton(): void {
-  cliExecute("autumnaton send The Sleazy Back Alley");
+  if (have($item`autumn-aton`)) cliExecute("autumnaton send The Sleazy Back Alley");
 }
 
 const improvedShowerSkills = new Map([

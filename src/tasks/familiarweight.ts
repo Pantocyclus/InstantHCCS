@@ -4,18 +4,15 @@ import {
   buy,
   cliExecute,
   eat,
-  familiarWeight,
   getFuel,
   haveEffect,
   itemAmount,
   myDaycount,
-  myFamiliar,
   toInt,
   use,
   useFamiliar,
   useSkill,
   visitUrl,
-  weightAdjustment,
 } from "kolmafia";
 import {
   $effect,
@@ -30,7 +27,6 @@ import {
   get,
   getKramcoWandererChance,
   have,
-  set,
 } from "libram";
 import { fillTo } from "libram/dist/resources/2017/AsdonMartin";
 import Macro from "../combat";
@@ -183,84 +179,84 @@ export const FamiliarWeightQuest: Quest = {
       effects: famWtEffects,
       limit: { tries: 1 },
     },
-    {
-      name: "Set Gingerbread Clock",
-      completed: () => get("_gingerbreadCityTurns") > 0,
-      do: $location`Gingerbread Civic Center`,
-      outfit: () => ({
-        ...baseOutfit(),
-        offhand: $item`familiar scrapbook`,
-        acc1: $item`Kremlin's Greatest Briefcase`,
-        acc3: $item`Lil' Doctor™ bag`,
-        familiar:
-          itemAmount($item`sprinkles`) >= 50
-            ? $familiar`Pair of Stomping Boots`
-            : $familiar`Chocolate Lab`,
-        famequip: $item`tiny stillsuit`,
-      }),
-      choices: { 1215: 1 },
-      limit: { tries: 1 },
-    },
-    {
-      name: "Gingerbread Earn Sprinkles",
-      // prepare: () => {
-      //   if (getFuel() < 187 && !get("_missileLauncherUsed")) fillTo(187);
-      // },
-      completed: () =>
-        itemAmount($item`sprinkles`) >= 50 ||
-        get("_gingerbreadCityTurns") >= 4 ||
-        have($item`gingerbread spice latte`) ||
-        have($effect`Whole Latte Love`) ||
-        // get("_missileLauncherUsed") ||
-        get("_banderRunaways") >= (familiarWeight(myFamiliar()) + weightAdjustment()) / 5,
-      do: $location`Gingerbread Upscale Retail District`,
-      outfit: () => ({
-        acc1: $item`Lil' Doctor™ bag`,
-        familiar: $familiar`Chocolate Lab`,
-        modifier: "familiar weight",
-      }),
-      combat: new CombatStrategy().macro(() =>
-        Macro
-          // .externalIf(
-          //   itemAmount($item`sprinkles`) < 50 && !get("_missileLauncherUsed"),
-          //   Macro.trySkill($skill`Asdon Martin: Missile Launcher`),
-          // )
-          .trySkill($skill`Chest X-Ray`)
-          .trySkill($skill`Gingerbread Mob Hit`)
-          .abort(),
-      ),
-      limit: { tries: 3 },
-    },
-    {
-      name: "Gingerbread Get Latte",
-      // prepare: () => {
-      //   if (getFuel() < 87 && !get("_missileLauncherUsed")) fillTo(87);
-      // },
-      ready: () =>
-        itemAmount($item`sprinkles`) >= 50 &&
-        get("_banderRunaways") < (familiarWeight(myFamiliar()) + weightAdjustment()) / 5,
-      completed: () =>
-        get("_gingerbreadCityTurns") >= 5 ||
-        have($item`gingerbread spice latte`) ||
-        have($effect`Whole Latte Love`),
-      do: $location`Gingerbread Upscale Retail District`,
-      outfit: () => ({
-        familiar: $familiar`Pair of Stomping Boots`,
-        modifier: "familiar weight",
-      }),
-      combat: new CombatStrategy().macro(() => Macro.runaway()),
-      choices: {
-        1208: 3,
-      },
-      post: (): void => {
-        if (have($item`gingerbread spice latte`)) {
-          ensureEffect($effect`Whole Latte Love`);
-          set("_gingerbreadCityNoonCompleted", true);
-          cliExecute("spoon platypus");
-        }
-      },
-      limit: { tries: 3 },
-    },
+    // {
+    //   name: "Set Gingerbread Clock",
+    //   completed: () => get("_gingerbreadCityTurns") > 0,
+    //   do: $location`Gingerbread Civic Center`,
+    //   outfit: () => ({
+    //     ...baseOutfit(),
+    //     offhand: $item`familiar scrapbook`,
+    //     acc1: $item`Kremlin's Greatest Briefcase`,
+    //     acc3: $item`Lil' Doctor™ bag`,
+    //     familiar:
+    //       itemAmount($item`sprinkles`) >= 50
+    //         ? $familiar`Pair of Stomping Boots`
+    //         : $familiar`Chocolate Lab`,
+    //     famequip: $item`tiny stillsuit`,
+    //   }),
+    //   choices: { 1215: 1 },
+    //   limit: { tries: 1 },
+    // },
+    // {
+    //   name: "Gingerbread Earn Sprinkles",
+    //   // prepare: () => {
+    //   //   if (getFuel() < 187 && !get("_missileLauncherUsed")) fillTo(187);
+    //   // },
+    //   completed: () =>
+    //     itemAmount($item`sprinkles`) >= 50 ||
+    //     get("_gingerbreadCityTurns") >= 4 ||
+    //     have($item`gingerbread spice latte`) ||
+    //     have($effect`Whole Latte Love`) ||
+    //     // get("_missileLauncherUsed") ||
+    //     get("_banderRunaways") >= (familiarWeight(myFamiliar()) + weightAdjustment()) / 5,
+    //   do: $location`Gingerbread Upscale Retail District`,
+    //   outfit: () => ({
+    //     acc1: $item`Lil' Doctor™ bag`,
+    //     familiar: $familiar`Chocolate Lab`,
+    //     modifier: "familiar weight",
+    //   }),
+    //   combat: new CombatStrategy().macro(() =>
+    //     Macro
+    //       // .externalIf(
+    //       //   itemAmount($item`sprinkles`) < 50 && !get("_missileLauncherUsed"),
+    //       //   Macro.trySkill($skill`Asdon Martin: Missile Launcher`),
+    //       // )
+    //       .trySkill($skill`Chest X-Ray`)
+    //       .trySkill($skill`Gingerbread Mob Hit`)
+    //       .abort(),
+    //   ),
+    //   limit: { tries: 3 },
+    // },
+    // {
+    //   name: "Gingerbread Get Latte",
+    //   // prepare: () => {
+    //   //   if (getFuel() < 87 && !get("_missileLauncherUsed")) fillTo(87);
+    //   // },
+    //   ready: () =>
+    //     itemAmount($item`sprinkles`) >= 50 &&
+    //     get("_banderRunaways") < (familiarWeight(myFamiliar()) + weightAdjustment()) / 5,
+    //   completed: () =>
+    //     get("_gingerbreadCityTurns") >= 5 ||
+    //     have($item`gingerbread spice latte`) ||
+    //     have($effect`Whole Latte Love`),
+    //   do: $location`Gingerbread Upscale Retail District`,
+    //   outfit: () => ({
+    //     familiar: $familiar`Pair of Stomping Boots`,
+    //     modifier: "familiar weight",
+    //   }),
+    //   combat: new CombatStrategy().macro(() => Macro.runaway()),
+    //   choices: {
+    //     1208: 3,
+    //   },
+    //   post: (): void => {
+    //     if (have($item`gingerbread spice latte`)) {
+    //       ensureEffect($effect`Whole Latte Love`);
+    //       set("_gingerbreadCityNoonCompleted", true);
+    //       cliExecute("spoon platypus");
+    //     }
+    //   },
+    //   limit: { tries: 3 },
+    // },
     // {
     //   name: "Get Shaving Buff",
     //   completed: () => get("_chestXRayUsed") >= 3 || have($effect`Toiletbrush Moustache`),
@@ -288,6 +284,9 @@ export const FamiliarWeightQuest: Quest = {
     },
     {
       name: "Test",
+      prepare: () => {
+        if (!get("moonTuned")) cliExecute("spoon platypus");
+      },
       completed: () => CommunityService.FamiliarWeight.isDone(),
       do: () =>
         CommunityService.FamiliarWeight.run(() => logTestSetup(CommunityService.FamiliarWeight), 1),

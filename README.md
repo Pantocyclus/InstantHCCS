@@ -1,6 +1,6 @@
 # InstantHCCS
 
-`InstantHCCS` is a hardcore 1/70 Community Service script for looping in Kingdom of Loathing designed to work if you are me, [WARriorer (#1634187)](https://api.aventuristo.net/av-snapshot?u=WARriorer). It most probably (read: definitely) won't work for you. The script has been optimized to use as few farming-relevant resources as possible.
+`InstantHCCS` is a hardcore 1/70 Community Service script for looping in Kingdom of Loathing designed to work if you are me, [WARriorer (#1634187)](https://api.aventuristo.net/av-snapshot?u=WARriorer). It most probably (read: definitely) won't work for you - the script has been optimized to use as few farming-relevant resources as possible with no redundancy (e.g. it is designed to not use all the Witchess fights as part of getting the Short-Order Cook's drop, and it will not dynamically fight more Witchess monsters in a situation where the user failed to increase the counter one of more times due to the lack of certain resources).
 
 ## Installation
 
@@ -71,7 +71,6 @@ IoTMs used are listed sequentially by age. Skills listed at the end of the table
 | [The Precinct](https://kol.coldfront.net/thekolwiki/index.php/The_Precinct)                                       | Zone        |
 | [Protonic accelerator pack](https://wiki.kingdomofloathing.com/Protonic_accelerator_pack)                         | Back        |
 | [Trick-or-Treating Tot](https://wiki.kingdomofloathing.com/Trick-or-Treating_Tot)                                 | Familiar    |
-| [Gingerbread City](https://wiki.kingdomofloathing.com/Gingerbread_City)                                           | Zone        |
 | [The Tunnel of L.O.V.E.](https://wiki.kingdomofloathing.com/The_Tunnel_of_L.O.V.E.)                               | Zone        |
 | [Secret Underground Spacegate Facility](https://wiki.kingdomofloathing.com/Secret_Underground_Spacegate_Facility) | Zone        |
 | [Kremlin's Greatest Briefcase](https://wiki.kingdomofloathing.com/Kremlin%27s_Greatest_Briefcase)                 | Accessory   |
@@ -115,6 +114,7 @@ IoTMs used are listed sequentially by age. Skills listed at the end of the table
 | [bat wings](https://wiki.kingdomofloathing.com/Bat_wings)                                                         | Item        |
 | [Peace Turkey](https://wiki.kingdomofloathing.com/Peace_Turkey)                                                   | Familiar    |
 | [McHugeLarge duffel bag](https://wiki.kingdomofloathing.com/McHugeLarge_duffel_bag)                               | Item        |
+| [toy Cupid bow](https://wiki.kingdomofloathing.com/Toy_Cupid_bow)                                                 | Item        |
 | [April Shower Thoughts shield](https://wiki.kingdomofloathing.com/April_Shower_Thoughts_shield)                   | Item        |
 | [Peridot of Peril](https://wiki.kingdomofloathing.com/Unpeeled_Peridot_of_Peril)                                  | Item        |
 | [prismatic beret](https://wiki.kingdomofloathing.com/Prismatic_beret)                                             | Item        |
@@ -153,9 +153,9 @@ These hardcoded resources do not affect the run in any significant way as they a
 | [Designer sweatpants](https://wiki.kingdomofloathing.com/Designer_sweatpants)                                           | Pants          |
 | [Tiny stillsuit](https://wiki.kingdomofloathing.com/Tiny_stillsuit)                                                     | Familiar Equip |
 | [autumn-aton](https://wiki.kingdomofloathing.com/Autumn-aton)                                                           | Item           |
-| [toy Cupid bow](https://wiki.kingdomofloathing.com/Toy_Cupid_bow)                                                       | Item           |
 | [Leprecondo](https://wiki.kingdomofloathing.com/Leprecondo)                                                             | Item           |
 | [wardrobe-o-matic](https://wiki.kingdomofloathing.com/Wardrobe-o-matic)                                                 | Item           |
+| [legendary seal-clubbing club](https://wiki.kingdomofloathing.com/Legendary_seal-clubbing_club)                         | Item           |
 
 <sub><sup>Note: These requirements are correct as of Jan 2026. As this is largely a personal script, the README will not be regularly updated even as new resources get added and/or old resources get replaced. The user should only use this README as a guide for their own modifications. </sup></sub> <br />
 
@@ -174,13 +174,14 @@ A summary of key farming resources used is listed below. The same summary is gen
 | KGB Tranquilizers  | 3/3   |
 | Snokebomb          | 0/3   |
 
-| Free Kills Used     | Usage |
-| ------------------- | ----- |
-| Chest X-Ray         | 3/3   |
-| Shattering Punch    | 0/3   |
-| Gingerbread Mob Hit | 0/1   |
-| Missile Launcher    | 0/1   |
-| Parka YR            | 1/?   |
+| Free Kills Used       | Usage |
+| --------------------- | ----- |
+| Club 'Em Back in Time | 0/5   |
+| Chest X-Ray           | 2/3   |
+| Shattering Punch      | 0/3   |
+| Gingerbread Mob Hit   | 0/1   |
+| Missile Launcher      | 0/1   |
+| Parka YR              | 1/?   |
 
 | Notable Skills Used | Usage |
 | ------------------- | ----- |
@@ -197,7 +198,7 @@ A summary of key farming resources used is listed below. The same summary is gen
 | Shadow Rift            | 0/11  |
 | Snojo                  | 0/10  |
 | NEP                    | 0/10  |
-| Witchess               | 4/5   |
+| Witchess               | 1/5   |
 | DMT                    | 5/5   |
 | LOV Tunnel             | 3/3   |
 | Voters                 | 0/3   |
@@ -219,9 +220,10 @@ A summary of key farming resources used is listed below. The same summary is gen
 | ---------------------------- | ------ |
 | Powerful Glove Charges       | 0/100  |
 | Cinch                        | 20/100 |
-| Free Rests                   | 2/29   |
 | KGB Clicks                   | 0/22   |
 | Deck Draws                   | 15/15  |
+| Mimic Eggs                   | 0/11   |
+| Beach Walks                  | 2/11   |
 | Macrometeorites              | 0/10   |
 | Batteries (AAA)              | 0/7    |
 | Sept Embers                  | 7/7    |
@@ -229,6 +231,7 @@ A summary of key farming resources used is listed below. The same summary is gen
 | August Scepter Charges       | 0/5    |
 | Monkey Paw Wishes            | 0/5    |
 | Beret Busks                  | 5/5    |
+| Club 'Em Into Next Week      | 0/5    |
 | Tome Summons                 | 3/3    |
 | Peppermint Sprouts           | 0/3    |
 | Monster Habitats             | 0/3    |

@@ -6,6 +6,7 @@ import {
   familiarWeight,
   itemAmount,
   myBasestat,
+  myClass,
   myDaycount,
   myFamiliar,
   myInebriety,
@@ -18,6 +19,7 @@ import {
   weightAdjustment,
 } from "kolmafia";
 import {
+  $class,
   $effect,
   $effects,
   $familiar,
@@ -241,13 +243,15 @@ export const LevelingQuest: Quest = {
         ...baseOutfit(),
         weapon: $item`June cleaver`,
         shirt: $item`makeshift garbage shirt`,
-        familiar: $familiar`Cooler Yeti`,
+        familiar: have($effect`The Magic of LOV`)
+          ? $familiar`Shorter-Order Cook`
+          : $familiar`Cooler Yeti`,
         famequip: $item`toy Cupid bow`,
       }),
       acquire: [{ item: $item`makeshift garbage shirt` }],
       limit: { tries: 1 },
       post: (): void => {
-        use(1, $item`LOV Elixir #3`);
+        if (have($item`LOV Elixir #3`)) use(1, $item`LOV Elixir #3`);
         sendAutumnaton();
       },
     },
@@ -270,7 +274,7 @@ export const LevelingQuest: Quest = {
       },
       completed: () =>
         get("_witchessFights") >= 3 ||
-        get("_shortOrderCookCharge") >= 9 ||
+        get("_shortOrderCookCharge") >= 10 - (getKramcoWandererChance() >= 1 ? 1 : 0) ||
         have($item`short stack of pancakes`) ||
         have($effect`Shortly Stacked`),
       do: () => Witchess.fightPiece($monster`Witchess Knight`),
@@ -307,27 +311,27 @@ export const LevelingQuest: Quest = {
     //   post: () => sendAutumnaton(),
     //   limit: { tries: 1 },
     // },
-    {
-      name: "Witchess King",
-      prepare: (): void => {
-        if (get("umbrellaState") !== "broken") cliExecute("umbrella ml");
-        useFamiliar($familiar`Cooler Yeti`);
-        useFamiliar($familiar`Shorter-Order Cook`);
-      },
-      completed: () => have($item`dented scepter`),
-      do: () => Witchess.fightPiece($monster`Witchess King`),
-      combat: new CombatStrategy().macro(() => Macro.delevel().attack().repeat()),
-      outfit: () => ({
-        ...baseOutfit(),
-        weapon: $item`Fourth of May Cosplay Saber`,
-        shirt: $item`makeshift garbage shirt`,
-        familiar: $familiar`Shorter-Order Cook`,
-        famequip: $item`blue plate`,
-      }),
-      acquire: [{ item: $item`makeshift garbage shirt` }],
-      post: () => sendAutumnaton(),
-      limit: { tries: 1 },
-    },
+    // {
+    //   name: "Witchess King",
+    //   prepare: (): void => {
+    //     if (get("umbrellaState") !== "broken") cliExecute("umbrella ml");
+    //     useFamiliar($familiar`Cooler Yeti`);
+    //     useFamiliar($familiar`Shorter-Order Cook`);
+    //   },
+    //   completed: () => have($item`dented scepter`),
+    //   do: () => Witchess.fightPiece($monster`Witchess King`),
+    //   combat: new CombatStrategy().macro(() => Macro.delevel().attack().repeat()),
+    //   outfit: () => ({
+    //     ...baseOutfit(),
+    //     weapon: $item`Fourth of May Cosplay Saber`,
+    //     shirt: $item`makeshift garbage shirt`,
+    //     familiar: $familiar`Shorter-Order Cook`,
+    //     famequip: $item`blue plate`,
+    //   }),
+    //   acquire: [{ item: $item`makeshift garbage shirt` }],
+    //   post: () => sendAutumnaton(),
+    //   limit: { tries: 1 },
+    // },
     {
       name: "Witchess Witch",
       prepare: () => {
@@ -338,13 +342,18 @@ export const LevelingQuest: Quest = {
       do: () => Witchess.fightPiece($monster`Witchess Witch`),
       combat: new CombatStrategy().macro(() =>
         Macro.trySkill($skill`Curse of Weaksauce`)
+          .externalIf(
+            myClass() === $class`Seal Clubber`,
+            Macro.skill($skill`Lunging Thrust-Smack`).repeat(),
+          )
           .attack()
           .repeat(),
       ),
       outfit: () => ({
         ...baseOutfit(),
-        weapon: $item`Fourth of May Cosplay Saber`,
-        offhand: $item`dented scepter`,
+        // eslint-disable-next-line libram/verify-constants
+        weapon: $item`legendary seal-clubbing club`,
+        offhand: $item`Fourth of May Cosplay Saber`,
         shirt: $item`makeshift garbage shirt`,
         familiar: $familiar`Shorter-Order Cook`,
         famequip: $item`blue plate`,
@@ -398,12 +407,10 @@ export const LevelingQuest: Quest = {
     //   limit: { tries: 11 },
     // },
     {
-      name: "Retrieve Bowling Ball",
+      name: "Grab Latte Carrot",
       completed: () =>
-        (have($item`cosmic bowling ball`) && get("latteUnlocks").includes("carrot")) ||
-        get("_banderRunaways") >= 10 ||
-        get("_banderRunaways") >= (familiarWeight(myFamiliar()) + weightAdjustment()) / 5 ||
-        get("_feelPrideUsed") > 0,
+        get("latteUnlocks").includes("carrot") ||
+        get("_banderRunaways") >= (familiarWeight(myFamiliar()) + weightAdjustment()) / 5,
       do: $location`The Dire Warren`,
       combat: new CombatStrategy().macro(() => Macro.runaway()),
       outfit: () => ({

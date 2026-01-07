@@ -49,6 +49,7 @@ export const freeBanishResources: trackedResource[] = [
 ];
 
 export const freeKillResources: trackedResource[] = [
+  new trackedResource("_clubEmTimeUsed", "Club 'Em Back in Time", 5),
   new trackedResource("_chestXRayUsed", "Chest X-Ray", 3),
   new trackedResource("_shatteringPunchUsed", "Shattering Punch", 3),
   new trackedResource("_gingerbreadMobHitUsed", "Gingerbread Mob Hit", 1),
@@ -95,6 +96,7 @@ export const farmingResourceResources: trackedResource[] = [
   new trackedResource("_kgbClicksUsed", "KGB Clicks", 22),
   new trackedResource("_deckCardsDrawn", "Deck Draws", 15),
   new trackedResource("_mimicEggsObtained", "Mimic Eggs", 11),
+  new trackedResource("_freeBeachWalksUsed", "Beach Walks", 11),
   new trackedResource("_macrometeoriteUses", "Macrometeorites", 10),
   new trackedResource($item`battery (AAA)`, "Batteries (AAA)", 7),
   new trackedResource("availableSeptEmbers", "Sept Embers", -7),
@@ -102,6 +104,7 @@ export const farmingResourceResources: trackedResource[] = [
   new trackedResource("_augSkillsCasts", "August Scepter Charges", 5),
   new trackedResource("_monkeyPawWishesUsed", "Monkey Paw Wishes", 5),
   new trackedResource("_beretBuskingUses", "Beret Busks", 5),
+  new trackedResource("_clubEmNextWeekUsed", "Club 'Em Into Next Week", 5),
   new trackedResource("tomeSummons", "Tome Summons", 3),
   new trackedResource($item`peppermint sprout`, "Peppermint Sprout", 3),
   new trackedResource("_monsterHabitatsRecalled", "Monster Habitats", 3),
