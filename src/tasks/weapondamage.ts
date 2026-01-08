@@ -93,7 +93,7 @@ export const WeaponDamageQuest: Quest = {
         $effect`Disdain of the War Snapper`,
         $effect`Frenzied, Bloody`,
         $effect`Jackasses' Symphony of Destruction`,
-        $effect`Lack of Body-Building`,
+        //$effect`Lack of Body-Building`,
         $effect`Rage of the Reindeer`,
         $effect`Scowl of the Auk`,
         $effect`Song of the North`,

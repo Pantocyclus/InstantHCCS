@@ -223,7 +223,7 @@ A summary of key farming resources used is listed below. The same summary is gen
 | KGB Clicks                   | 0/22   |
 | Deck Draws                   | 15/15  |
 | Mimic Eggs                   | 0/11   |
-| Beach Walks                  | 2/11   |
+| Beach Walks                  | 3/11   |
 | Macrometeorites              | 0/10   |
 | Batteries (AAA)              | 0/7    |
 | Sept Embers                  | 7/7    |
@@ -242,7 +242,7 @@ A summary of key farming resources used is listed below. The same summary is gen
 | Favorite Bird                | 0/1    |
 | Zatara Consult               | 0/1    |
 | Clan Floundry                | 0/1    |
-| Gingerbread City Noon        | 1/1    |
+| Gingerbread City Noon        | 0/1    |
 | Gingerbread City Midnight    | 0/1    |
 | Pantogram                    | 0/1    |
 | Cargo Shorts                 | 0/1    |
