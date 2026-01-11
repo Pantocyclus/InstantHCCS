@@ -5,6 +5,7 @@ import {
   create,
   Effect,
   getCampground,
+  getWorkshed,
   Item,
   myPrimestat,
   numericModifier,
@@ -422,6 +423,14 @@ export const RunStartQuest: Quest = {
           availableFurnitures.at(2) ?? FURNITURE_PIECES[0],
           availableFurnitures.at(3) ?? FURNITURE_PIECES[0],
         );
+      },
+      limit: { tries: 1 },
+    },
+    {
+      name: "Install Workshed",
+      completed: () => getWorkshed() === $item`Asdon Martin keyfob (on ring)`,
+      do: (): void => {
+        use($item`Asdon Martin keyfob (on ring)`);
       },
       limit: { tries: 1 },
     },

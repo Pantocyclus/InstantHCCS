@@ -12,7 +12,6 @@ import {
   equip,
   equippedItem,
   getPower,
-  getWorkshed,
   Item,
   myBasestat,
   myClass,
@@ -47,7 +46,6 @@ import {
   $slot,
   $stat,
   BloodCubicZirconia,
-  CombatLoversLocket,
   get,
   have,
   PeridotOfPeril,
@@ -564,14 +562,6 @@ export const PostCoilQuest: Quest = {
       },
     },
     {
-      name: "Install Workshed",
-      completed: () => getWorkshed() === $item`Asdon Martin keyfob (on ring)`,
-      do: (): void => {
-        use($item`Asdon Martin keyfob (on ring)`);
-      },
-      limit: { tries: 1 },
-    },
-    {
       name: "Buffs",
       prepare: () => fillTo(37),
       completed: () =>
@@ -640,6 +630,8 @@ export const PostCoilQuest: Quest = {
         back: $item`protonic accelerator pack`,
         acc1: $item`Lil' Doctor™ bag`,
         acc3: $item`Peridot of Peril`,
+        familiar: $familiar`Shorter-Order Cook`,
+        famequip: $item`toy Cupid bow`,
       }),
       limit: { tries: 1 },
     },
@@ -686,52 +678,6 @@ export const PostCoilQuest: Quest = {
       completed: () => get("_preventScurvy"),
       prepare: () => attemptRestoringMpWithFreeRests(50),
       do: () => useSkill($skill`Prevent Scurvy and Sobriety`),
-    },
-    {
-      name: "Skeleton Fruits",
-      ready: () => get("_chestXRayUsed") < 3,
-      prepare: (): void => {
-        if (get("parkaMode") !== "spikolodon") cliExecute("parka spikolodon");
-        PeridotOfPeril.setChoice($monster`novelty tropical skeleton`);
-      },
-      completed: () =>
-        mainStat === $stat`Moxie` ||
-        have($item`cherry`) ||
-        have($item`oil of expertise`) ||
-        have($effect`Expert Oiliness`),
-      do: $location`The Skeleton Store`,
-      combat: new CombatStrategy().macro(() =>
-        Macro.trySkill($skill`Giant Growth`)
-          .trySkill($skill`Spit jurassic acid`)
-          .skill($skill`Feel Envy`)
-          .skill($skill`Chest X-Ray`),
-      ),
-      outfit: () => ({
-        ...baseOutfit(),
-        acc1: $item`Peridot of Peril`,
-        acc3: $item`Lil' Doctor™ bag`,
-      }),
-      limit: { tries: 2 },
-    },
-    {
-      name: "Reminisce Evil Olive",
-      prepare: (): void => {
-        if (get("umbrellaState") !== "broken") cliExecute("umbrella ml");
-      },
-      completed: () =>
-        mainStat !== $stat`Moxie` ||
-        CombatLoversLocket.monstersReminisced().includes($monster`Evil Olive`),
-      do: () => CombatLoversLocket.reminisce($monster`Evil Olive`),
-      combat: new CombatStrategy().macro(() =>
-        Macro.trySkill($skill`Spit jurassic acid`)
-          .skill($skill`Feel Envy`)
-          .skill($skill`Chest X-Ray`),
-      ),
-      outfit: () => ({
-        ...baseOutfit(),
-        acc3: $item`Lil' Doctor™ bag`,
-      }),
-      limit: { tries: 1 },
     },
     {
       name: "Saucecraft",

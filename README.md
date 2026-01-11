@@ -20,7 +20,6 @@ For those who are interested in using `InstantHCCS` as is, the following section
 - [Mother Slime](https://wiki.kingdomofloathing.com/Showdown) ready in the side clan Slimetube
 - Access to a clan [VIP Lounge](https://wiki.kingdomofloathing.com/VIP_Lounge) with the [looking glass](https://wiki.kingdomofloathing.com/A_Looking_Glass), [april shower](https://wiki.kingdomofloathing.com/April_Shower), [pool table](<https://wiki.kingdomofloathing.com/A_Pool_Table_(VIP_Lounge)>), [swimming pool](https://wiki.kingdomofloathing.com/An_Olympic-Sized_Swimming_Pool) and (fully upgraded) [photobooth](https://wiki.kingdomofloathing.com/Clan_Photo_Booth) installed
 - All 11 beach heads unlocked for the [Beach Comb](https://wiki.kingdomofloathing.com/Beach_Comb)
-- [Source Terminal](https://wiki.kingdomofloathing.com/Source_Terminal) with [Portscan](https://wiki.kingdomofloathing.com/Portscan) unlocked
 - [Spacegate Vaccination Machine](https://wiki.kingdomofloathing.com/Spacegate_Vaccination_Machine) with the [Broad-Spectrum Vaccine](https://wiki.kingdomofloathing.com/Broad-Spectrum_Vaccine) unlocked
 - All 150 [Witchess puzzles](https://wiki.kingdomofloathing.com/Witchess_Puzzles) completed
 - Eudora set to [Our Daily Candles™ order form](https://wiki.kingdomofloathing.com/Our_Daily_Candles%E2%84%A2_order_form)
@@ -67,7 +66,6 @@ IoTMs used are listed sequentially by age. Skills listed at the end of the table
 | [Shrine to the Barrel god](https://wiki.kingdomofloathing.com/Shrine_to_the_Barrel_god)                           | Zone        |
 | [Machine Elf](https://wiki.kingdomofloathing.com/Machine_Elf)                                                     | Familiar    |
 | [Your Witchess Set](https://wiki.kingdomofloathing.com/Your_Witchess_Set)                                         | Zone        |
-| [Source Terminal](https://wiki.kingdomofloathing.com/Source_Terminal)                                             | Zone        |
 | [The Precinct](https://kol.coldfront.net/thekolwiki/index.php/The_Precinct)                                       | Zone        |
 | [Protonic accelerator pack](https://wiki.kingdomofloathing.com/Protonic_accelerator_pack)                         | Back        |
 | [Trick-or-Treating Tot](https://wiki.kingdomofloathing.com/Trick-or-Treating_Tot)                                 | Familiar    |
@@ -171,13 +169,13 @@ A summary of key farming resources used is listed below. The same summary is gen
 | Feel Hatred        | 0/3   |
 | Reflex Hammer      | 2/3   |
 | Latte Refills      | 3/3   |
-| KGB Tranquilizers  | 3/3   |
+| KGB Tranquilizers  | 2/3   |
 | Snokebomb          | 0/3   |
 
 | Free Kills Used       | Usage |
 | --------------------- | ----- |
 | Club 'Em Back in Time | 0/5   |
-| Chest X-Ray           | 2/3   |
+| Chest X-Ray           | 1/3   |
 | Shattering Punch      | 0/3   |
 | Gingerbread Mob Hit   | 0/1   |
 | Missile Launcher      | 0/1   |
@@ -187,9 +185,9 @@ A summary of key farming resources used is listed below. The same summary is gen
 | ------------------- | ----- |
 | Saber Forces        | 4/5   |
 | Monsters Mapped     | 0/3   |
-| Feel Envy           | 2/3   |
+| Feel Envy           | 1/3   |
 | Digitize            | 0/3   |
-| Portscan            | 2/3   |
+| Portscan            | 0/3   |
 | Enhance             | 0/3   |
 | Duplicate           | 0/1   |
 
@@ -204,7 +202,7 @@ A summary of key farming resources used is listed below. The same summary is gen
 | Voters                 | 0/3   |
 | God Lobster            | 3/3   |
 | Oliver's Place         | 3/3   |
-| Apriling Band Quad Tom | 0/0   |
+| Apriling Band Quad Tom | 0/3   |
 | Eldritch Tentacle      | 1/1   |
 | Sausage Goblins        | 2/?   |
 

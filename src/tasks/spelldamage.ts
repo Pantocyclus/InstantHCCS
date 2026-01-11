@@ -2,10 +2,8 @@ import {
   effectModifier,
   elementalResistance,
   equip,
-  equippedItem,
   myHp,
   myMaxhp,
-  numericModifier,
   retrieveItem,
   use,
   useSkill,
@@ -19,7 +17,6 @@ import {
   $item,
   $items,
   $skill,
-  $slot,
   BloodCubicZirconia,
   CommunityService,
   ensureEffect,
@@ -91,14 +88,6 @@ export const SpellDamageQuest: Quest = {
       prepare: (): void => {
         for (const it of $items`confiscated cell phone, Bettie page, resolution: be luckier, resolution: be feistier, cordial of concentration`)
           if (have(it)) ensureEffect(effectModifier(it, "effect"));
-        if (
-          Math.floor(numericModifier(equippedItem($slot`Acc3`), "Spell Damage") / 50) +
-            Math.floor(numericModifier(equippedItem($slot`Acc3`), "Spell Damage Percent") / 50) <
-          1
-        ) {
-          // eslint-disable-next-line libram/verify-constants
-          equip($slot`Acc3`, $item`The Eternity Codpiece`);
-        }
         if (CommunityService.SpellDamage.actualCost() > 1) {
           if (!get("_cargoPocketEmptied")) {
             visitUrl("inventory.php?action=pocket");

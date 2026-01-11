@@ -18,7 +18,7 @@ import {
 } from "libram";
 import { Quest } from "../engine/task";
 import { burnLibram, crimboCarols, logTestSetup } from "../lib";
-import { innerElfTask, restoreMpTask } from "./common";
+import { restoreMpTask } from "./common";
 import Macro from "../combat";
 import { baseOutfit } from "../engine/outfit";
 
@@ -52,7 +52,7 @@ export const WeaponDamageQuest: Quest = {
       }),
       limit: { tries: 1 },
     },
-    { ...innerElfTask },
+    // { ...innerElfTask },
     {
       name: "Ungulith",
       ready: () => get("_meteorShowerUses") < 5 && get("_saberForceUses") < 5,

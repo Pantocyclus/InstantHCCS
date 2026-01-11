@@ -18,6 +18,8 @@ import {
   $monster,
   $skill,
   $slot,
+  $stat,
+  CombatLoversLocket,
   CommunityService,
   CrimboShrub,
   get,
@@ -71,7 +73,6 @@ export const CoilWireQuest: Quest = {
       prepare: (): void => {
         if (myHp() < myMaxhp()) cliExecute("hottub");
         if (get("umbrellaState") !== "broken") cliExecute("umbrella ml");
-        cliExecute("terminal educate portscan");
       },
       completed: () => get("_sausageFights") > 0,
       do: $location`Noob Cave`,
@@ -117,9 +118,7 @@ export const CoilWireQuest: Quest = {
         sendAutumnaton();
       },
       combat: new CombatStrategy().macro(() =>
-        Macro.trySkill($skill`Blow the Purple Candle!`)
-          .externalIf(get("eldritchTentaclesFought") >= 1, Macro.trySkill($skill`Portscan`))
-          .default(),
+        Macro.trySkill($skill`Blow the Purple Candle!`).default(),
       ),
       outfit: () => ({
         ...baseOutfit(),
@@ -131,98 +130,144 @@ export const CoilWireQuest: Quest = {
       acquire: [{ item: $item`makeshift garbage shirt` }],
       limit: { tries: 1 },
     },
-    {
-      name: "Oliver's Place Agent with Portscan and Envy",
-      prepare: (): void => {
-        if (get("umbrellaState") !== "broken") cliExecute("umbrella ml");
-        cliExecute("terminal educate portscan");
-      },
-      completed: () => get("_speakeasyFreeFights", 0) >= 1,
-      do: $location`An Unusually Quiet Barroom Brawl`,
-      combat: new CombatStrategy().macro(() =>
-        Macro.if_($monster`Government agent`, Macro.trySkill($skill`Feel Envy`))
-          .trySkill($skill`Portscan`)
-          .default(),
-      ),
-      outfit: () => ({
-        ...baseOutfit(),
-        familiar: $familiar`Shorter-Order Cook`,
-        famequip: $item`toy Cupid bow`,
-      }),
-      post: () => sendAutumnaton(),
-      limit: { tries: 1 },
-    },
-    {
-      name: "Oliver's Place Agent with Portscan",
-      prepare: (): void => {
-        if (get("umbrellaState") !== "broken") cliExecute("umbrella ml");
-        cliExecute("terminal educate portscan");
-      },
-      completed: () => get("_speakeasyFreeFights", 0) >= 2,
-      do: $location`An Unusually Quiet Barroom Brawl`,
-      combat: new CombatStrategy().macro(() =>
-        Macro.if_(
-          $monster`Government agent`,
-          Macro.externalIf(!have($item`government cheese`), Macro.trySkill($skill`Feel Envy`)),
-        )
-          .trySkill($skill`Portscan`)
-          .default(),
-      ),
-      outfit: () => ({
-        ...baseOutfit(),
-        familiar: $familiar`Shorter-Order Cook`,
-        famequip: $item`toy Cupid bow`,
-      }),
-      post: () => sendAutumnaton(),
-      limit: { tries: 1 },
-    },
-    {
-      name: "Oliver's Place Agent",
-      prepare: (): void => {
-        if (get("umbrellaState") !== "broken") cliExecute("umbrella ml");
-        cliExecute("terminal educate portscan");
-      },
-      completed: () => get("_speakeasyFreeFights", 0) >= 3,
-      do: $location`An Unusually Quiet Barroom Brawl`,
-      post: () => {
-        sendAutumnaton();
-      },
-      combat: new CombatStrategy().macro(() =>
-        Macro.if_(
-          $monster`Government agent`,
-          Macro.externalIf(!have($item`government cheese`), Macro.trySkill($skill`Feel Envy`)),
-        ).default(),
-      ),
-      outfit: () => ({
-        ...baseOutfit(),
-        familiar: $familiar`Shorter-Order Cook`,
-        famequip: $item`toy Cupid bow`,
-      }),
-      limit: { tries: 1 },
-    },
+    // {
+    //   name: "Oliver's Place Agent with Portscan and Envy",
+    //   prepare: (): void => {
+    //     if (get("umbrellaState") !== "broken") cliExecute("umbrella ml");
+    //     cliExecute("terminal educate portscan");
+    //   },
+    //   completed: () => get("_speakeasyFreeFights", 0) >= 1,
+    //   do: $location`An Unusually Quiet Barroom Brawl`,
+    //   combat: new CombatStrategy().macro(() =>
+    //     Macro.if_($monster`Government agent`, Macro.trySkill($skill`Feel Envy`))
+    //       .trySkill($skill`Portscan`)
+    //       .default(),
+    //   ),
+    //   outfit: () => ({
+    //     ...baseOutfit(),
+    //     familiar: $familiar`Shorter-Order Cook`,
+    //     famequip: $item`toy Cupid bow`,
+    //   }),
+    //   post: () => sendAutumnaton(),
+    //   limit: { tries: 1 },
+    // },
+    // {
+    //   name: "Oliver's Place Agent with Portscan",
+    //   prepare: (): void => {
+    //     if (get("umbrellaState") !== "broken") cliExecute("umbrella ml");
+    //     cliExecute("terminal educate portscan");
+    //   },
+    //   completed: () => get("_speakeasyFreeFights", 0) >= 2,
+    //   do: $location`An Unusually Quiet Barroom Brawl`,
+    //   combat: new CombatStrategy().macro(() =>
+    //     Macro.if_(
+    //       $monster`Government agent`,
+    //       Macro.externalIf(!have($item`government cheese`), Macro.trySkill($skill`Feel Envy`)),
+    //     )
+    //       .trySkill($skill`Portscan`)
+    //       .default(),
+    //   ),
+    //   outfit: () => ({
+    //     ...baseOutfit(),
+    //     familiar: $familiar`Shorter-Order Cook`,
+    //     famequip: $item`toy Cupid bow`,
+    //   }),
+    //   post: () => sendAutumnaton(),
+    //   limit: { tries: 1 },
+    // },
+    // {
+    //   name: "Oliver's Place Agent",
+    //   prepare: (): void => {
+    //     if (get("umbrellaState") !== "broken") cliExecute("umbrella ml");
+    //     cliExecute("terminal educate portscan");
+    //   },
+    //   completed: () => get("_speakeasyFreeFights", 0) >= 3,
+    //   do: $location`An Unusually Quiet Barroom Brawl`,
+    //   post: () => {
+    //     sendAutumnaton();
+    //   },
+    //   combat: new CombatStrategy().macro(() =>
+    //     Macro.if_(
+    //       $monster`Government agent`,
+    //       Macro.externalIf(!have($item`government cheese`), Macro.trySkill($skill`Feel Envy`)),
+    //     ).default(),
+    //   ),
+    //   outfit: () => ({
+    //     ...baseOutfit(),
+    //     familiar: $familiar`Shorter-Order Cook`,
+    //     famequip: $item`toy Cupid bow`,
+    //   }),
+    //   limit: { tries: 1 },
+    // },
     {
       name: "Oliver's Place Peridot",
       prepare: (): void => {
         if (get("umbrellaState") !== "broken") cliExecute("umbrella ml");
-        if (get("parkaMode") !== "dilophosaur") cliExecute("parka dilophosaur");
         PeridotOfPeril.setChoice($monster`goblin flapper`);
       },
-      completed: () => have($effect`Everything Looks Yellow`),
+      completed: () => have($item`imported taffy`),
       post: (): void => {
-        set("_CSParkaYRUsed", true);
         sendAutumnaton();
-        equip($slot`familiar`, $item`blue plate`);
       },
       do: $location`An Unusually Quiet Barroom Brawl`,
-      combat: new CombatStrategy().macro(() => Macro.skill($skill`Spit jurassic acid`).abort()),
+      combat: new CombatStrategy().macro(() => Macro.skill($skill`Feel Envy`).default()),
       outfit: () => ({
         ...baseOutfit(),
-        shirt: $item`Jurassic Parka`,
         offhand: $item`latte lovers member's mug`,
         acc3: $item`Peridot of Peril`,
         familiar: $familiar`Shorter-Order Cook`,
         famequip: $item`toy Cupid bow`,
       }),
+      limit: { tries: 1 },
+    },
+    {
+      name: "Skeleton Fruits",
+      prepare: (): void => {
+        if (get("parkaMode") !== "dilophosaur") cliExecute("parka dilophosaur");
+        PeridotOfPeril.setChoice($monster`novelty tropical skeleton`);
+      },
+      completed: () =>
+        mainStat === $stat`Moxie` || (have($item`cherry`) && have($item`blue plate`)),
+      do: $location`The Skeleton Store`,
+      combat: new CombatStrategy().macro(() => Macro.skill($skill`Spit jurassic acid`).abort()),
+      outfit: () => ({
+        ...baseOutfit(),
+        shirt: $item`Jurassic Parka`,
+        acc1: $item`Peridot of Peril`,
+        acc3: $item`Lil' Doctor™ bag`,
+        familiar: $familiar`Shorter-Order Cook`,
+        famequip: $item`toy Cupid bow`,
+      }),
+      post: () => {
+        set("_CSParkaYRUsed", true);
+        equip($slot`familiar`, $item`blue plate`);
+      },
+      limit: { tries: 2 },
+    },
+    {
+      name: "Reminisce Evil Olive",
+      prepare: (): void => {
+        if (get("parkaMode") !== "dilophosaur") cliExecute("parka dilophosaur");
+        if (get("umbrellaState") !== "broken") cliExecute("umbrella ml");
+      },
+      completed: () =>
+        mainStat !== $stat`Moxie` ||
+        (CombatLoversLocket.monstersReminisced().includes($monster`Evil Olive`) &&
+          have($item`blue plate`)),
+      do: () => CombatLoversLocket.reminisce($monster`Evil Olive`),
+      combat: new CombatStrategy().macro(() => Macro.skill($skill`Spit jurassic acid`).abort()),
+      outfit: () => ({
+        ...baseOutfit(),
+        shirt: $item`Jurassic Parka`,
+        acc3: $item`Lil' Doctor™ bag`,
+        familiar: $familiar`Shorter-Order Cook`,
+        famequip: $item`blue plate`,
+      }),
+      post: () => {
+        set("_CSParkaYRUsed", true);
+        equip($slot`familiar`, $item`blue plate`);
+      },
+      limit: { tries: 1 },
     },
     {
       name: "Test",

@@ -246,7 +246,7 @@ export const LevelingQuest: Quest = {
         familiar: have($effect`The Magic of LOV`)
           ? $familiar`Shorter-Order Cook`
           : $familiar`Cooler Yeti`,
-        famequip: $item`toy Cupid bow`,
+        famequip: have($effect`The Magic of LOV`) ? $item`blue plate` : $item`toy Cupid bow`,
       }),
       acquire: [{ item: $item`makeshift garbage shirt` }],
       limit: { tries: 1 },
@@ -450,7 +450,6 @@ export const LevelingQuest: Quest = {
       name: "Sausage Goblin",
       prepare: (): void => {
         if (get("umbrellaState") !== "broken") cliExecute("umbrella ml");
-        cliExecute("terminal educate portscan");
       },
       completed: () =>
         get("_sausageFights") > 1 || (myDaycount() > 1 && getKramcoWandererChance() < 1.0),
@@ -485,11 +484,7 @@ export const LevelingQuest: Quest = {
       },
       completed: () => get("_machineTunnelsAdv") >= 5,
       do: $location`The Deep Machine Tunnels`,
-      combat: new CombatStrategy().macro(() =>
-        Macro.trySkill($skill`Gulp Latte`)
-          .if_($monster`Government agent`, Macro.trySkill($skill`Feel Envy`).default())
-          .default(),
-      ),
+      combat: new CombatStrategy().macro(() => Macro.trySkill($skill`Gulp Latte`).default()),
       outfit: () => ({
         ...baseOutfit(),
         shirt: $item`makeshift garbage shirt`,
