@@ -152,7 +152,7 @@ export const RunStartQuest: Quest = {
       do: (): void => {
         cliExecute("cheat island");
         cliExecute("cheat ancestral recall");
-        cliExecute("cheat forest");
+        cliExecute("cheat 1952 mickey mantle");
       },
       limit: { tries: 1 },
       post: (): void => {

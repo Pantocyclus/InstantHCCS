@@ -11,7 +11,6 @@ import {
   get,
   getTodaysHolidayWanderers,
   have,
-  StompingBoots,
 } from "libram";
 import Macro from "../combat";
 import { Task } from "../engine/task";
@@ -23,14 +22,14 @@ const VIP_CLAN = "Bonus Adventures from Hell";
 
 export const holidayRunawayTask: Task = {
   name: "Holiday Runaway",
-  ready: () => StompingBoots.couldRunaway(),
+  // ready: () => StompingBoots.couldRunaway(),
   completed: () =>
     (Counter.get("Holiday Monster window begin") ??
       (getTodaysHolidayWanderers().length > 0 ? 0 : Infinity)) > 0,
   do: $location`Noob Cave`,
   combat: new CombatStrategy().macro(() => Macro.runaway().abort()),
-  outfit: { familiar: $familiar`Pair of Stomping Boots` },
-  limit: { tries: 1 },
+  outfit: { modifier: "familiar weight", familiar: $familiar`Pair of Stomping Boots` },
+  limit: { tries: 2 },
 };
 
 export const innerElfTask: Task = {

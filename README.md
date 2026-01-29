@@ -201,7 +201,7 @@ A summary of key farming resources used is listed below. The same summary is gen
 | LOV Tunnel             | 3/3   |
 | Voters                 | 0/3   |
 | God Lobster            | 3/3   |
-| Oliver's Place         | 3/3   |
+| Oliver's Place         | 1/3   |
 | Apriling Band Quad Tom | 0/3   |
 | Eldritch Tentacle      | 1/1   |
 | Sausage Goblins        | 2/?   |
