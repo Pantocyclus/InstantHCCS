@@ -37,10 +37,10 @@ import {
   Witchess,
 } from "libram";
 import Macro, { mainStat } from "../combat";
+import { baseOutfit } from "../engine/outfit";
 import { Quest } from "../engine/task";
 import { burnLibram, sendAutumnaton } from "../lib";
 import { innerElfTask } from "./common";
-import { baseOutfit } from "../engine/outfit";
 
 // let _bestShadowRift: Location | null = null;
 // export function bestShadowRift(): Location {

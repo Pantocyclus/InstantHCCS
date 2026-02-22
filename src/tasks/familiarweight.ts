@@ -30,14 +30,16 @@ import {
 } from "libram";
 import { fillTo } from "libram/dist/resources/2017/AsdonMartin";
 import Macro from "../combat";
+import { baseOutfit } from "../engine/outfit";
 import { Quest } from "../engine/task";
 import { burnLibram, logTestSetup, sendAutumnaton } from "../lib";
 import { meteorShowerTask, restoreMpTask } from "./common";
-import { baseOutfit } from "../engine/outfit";
 
 const famWtEffects = [
   $effect`Billiards Belligerence`,
   $effect`Blood Bond`,
+  // eslint-disable-next-line libram/verify-constants
+  $effect`Best Pals`,
   $effect`Do I Know You From Somewhere?`,
   $effect`Empathy`,
   $effect`Leash of Linguini`,

@@ -11,8 +11,8 @@ import {
 } from "libram";
 import { Quest } from "../engine/task";
 import { burnLibram, logTestSetup } from "../lib";
-import { bloodSugarSauceMagic } from "./postcoil";
 import { restoreMpTask } from "./common";
+import { bloodSugarSauceMagic } from "./postcoil";
 
 export const HPQuest: Quest = {
   name: "HP",

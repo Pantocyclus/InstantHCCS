@@ -74,12 +74,12 @@ IoTMs used are listed sequentially by age. Skills listed at the end of the table
 | [Kremlin's Greatest Briefcase](https://wiki.kingdomofloathing.com/Kremlin%27s_Greatest_Briefcase)                 | Accessory   |
 | [Asdon Martin Keyfob](https://wiki.kingdomofloathing.com/Asdon_Martin_keyfob)                                     | Workshed    |
 | [January's Garbage Tote](https://wiki.kingdomofloathing.com/January%27s_Garbage_Tote)                             | Item        |
-| [SongBoom™ BoomBox](https://wiki.kingdomofloathing.com/SongBoom%E2%84%A2_BoomBox)                                | Item        |
+| [SongBoom™ BoomBox](https://wiki.kingdomofloathing.com/SongBoom%E2%84%A2_BoomBox)                                 | Item        |
 | [Bastille Battalion](https://wiki.kingdomofloathing.com/Bastille_Battalion)                                       | Zone        |
 | [Latte lovers member's mug](https://wiki.kingdomofloathing.com/Latte_lovers_member%27s_mug)                       | Off-hand    |
 | [Boxing Daycare](<https://wiki.kingdomofloathing.com/Boxing_Daycare_(Lobby)>)                                     | Zone        |
-| [Kramco Sausage-o-Matic™](https://wiki.kingdomofloathing.com/Kramco_Sausage-o-Matic%E2%84%A2)                    | Off-hand    |
-| [Lil' Doctor™ bag](https://wiki.kingdomofloathing.com/Lil%27_Doctor%E2%84%A2_bag)                                | Accessory   |
+| [Kramco Sausage-o-Matic™](https://wiki.kingdomofloathing.com/Kramco_Sausage-o-Matic%E2%84%A2)                     | Off-hand    |
+| [Lil' Doctor™ bag](https://wiki.kingdomofloathing.com/Lil%27_Doctor%E2%84%A2_bag)                                 | Accessory   |
 | [Vampyric cloake](https://wiki.kingdomofloathing.com/Vampyric_cloake)                                             | Back        |
 | [Fourth of May Cosplay Saber](https://wiki.kingdomofloathing.com/Fourth_of_May_Cosplay_Saber)                     | Weapon      |
 | [Hewn moon-rune spoon](https://wiki.kingdomofloathing.com/Hewn_moon-rune_spoon)                                   | Accessory   |
@@ -89,19 +89,19 @@ IoTMs used are listed sequentially by age. Skills listed at the end of the table
 | [Powerful Glove](https://wiki.kingdomofloathing.com/Powerful_Glove)                                               | Accessory   |
 | [Guzzlr tablet](https://wiki.kingdomofloathing.com/Guzzlr_tablet)                                                 | Accessory   |
 | [Melodramedary](https://wiki.kingdomofloathing.com/Melodramedary)                                                 | Familiar    |
-| [SpinMaster™ lathe](https://wiki.kingdomofloathing.com/SpinMaster%E2%84%A2_lathe)                                | Item        |
+| [SpinMaster™ lathe](https://wiki.kingdomofloathing.com/SpinMaster%E2%84%A2_lathe)                                 | Item        |
 | [Cargo Cultist Shorts](https://wiki.kingdomofloathing.com/Cargo_Cultist_Shorts)                                   | Item        |
 | [Ghost of Crimbo Carols](https://wiki.kingdomofloathing.com/Ghost_of_Crimbo_Carols)                               | Familiar    |
 | [Emotionally Chipped](https://wiki.kingdomofloathing.com/Emotionally_Chipped)                                     | Skill       |
 | [Shorter-Order Cook](https://wiki.kingdomofloathing.com/Shorter-Order_Cook)                                       | Familiar    |
 | [Familiar scrapbook](https://wiki.kingdomofloathing.com/Familiar_scrapbook)                                       | Off-hand    |
-| [Our Daily Candles™ order form](https://wiki.kingdomofloathing.com/Our_Daily_Candles%E2%84%A2_order_form)        | Eudora      |
+| [Our Daily Candles™ order form](https://wiki.kingdomofloathing.com/Our_Daily_Candles%E2%84%A2_order_form)         | Eudora      |
 | [Industrial fire extinguisher](https://wiki.kingdomofloathing.com/Industrial_fire_extinguisher)                   | Weapon      |
 | [Daylight Shavings Helmet](https://wiki.kingdomofloathing.com/Daylight_Shavings_Helmet)                           | Hat         |
 | [Cosmic bowling ball](https://wiki.kingdomofloathing.com/Cosmic_bowling_ball)                                     | Combat Item |
 | [Combat lover's locket](https://wiki.kingdomofloathing.com/Combat_lover%27s_locket)                               | Accessory   |
 | [Unbreakable umbrella](https://wiki.kingdomofloathing.com/Unbreakable_umbrella)                                   | Off-hand    |
-| [MayDay™ supply package](https://wiki.kingdomofloathing.com/MayDay%E2%84%A2_supply_package)                      | Item        |
+| [MayDay™ supply package](https://wiki.kingdomofloathing.com/MayDay%E2%84%A2_supply_package)                       | Item        |
 | [Jurassic Parka](https://wiki.kingdomofloathing.com/Jurassic_Parka)                                               | Shirt       |
 | [Cincho de Mayo](https://wiki.kingdomofloathing.com/Cincho_de_Mayo)                                               | Item        |
 | [august scepter](https://wiki.kingdomofloathing.com/August_scepter)                                               | Item        |
@@ -154,6 +154,7 @@ These hardcoded resources do not affect the run in any significant way as they a
 | [Leprecondo](https://wiki.kingdomofloathing.com/Leprecondo)                                                             | Item           |
 | [wardrobe-o-matic](https://wiki.kingdomofloathing.com/Wardrobe-o-matic)                                                 | Item           |
 | [legendary seal-clubbing club](https://wiki.kingdomofloathing.com/Legendary_seal-clubbing_club)                         | Item           |
+| [Heartstone](https://wiki.kingdomofloathing.com/Heartstone)                                                             | Item           |
 
 <sub><sup>Note: These requirements are correct as of Jan 2026. As this is largely a personal script, the README will not be regularly updated even as new resources get added and/or old resources get replaced. The user should only use this README as a guide for their own modifications. </sup></sub> <br />
 

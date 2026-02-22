@@ -1,17 +1,4 @@
-import { Task } from "./task";
 import { Engine as BaseEngine, Outfit, outfitSlots } from "grimoire-kolmafia";
-import {
-  $effect,
-  $familiar,
-  $item,
-  $skill,
-  get,
-  have,
-  PropertiesManager,
-  set,
-  undelay,
-  uneffect,
-} from "libram";
 import {
   Item,
   itemAmount,
@@ -27,6 +14,19 @@ import {
   totalFreeRests,
   useSkill,
 } from "kolmafia";
+import {
+  $effect,
+  $familiar,
+  $item,
+  $skill,
+  get,
+  have,
+  PropertiesManager,
+  set,
+  undelay,
+  uneffect,
+} from "libram";
+import { Task } from "./task";
 
 export class trackedResource {
   resource: string | Item;

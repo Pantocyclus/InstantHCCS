@@ -52,13 +52,13 @@ import {
   set,
   unequip,
 } from "libram";
+import { printModtrace } from "libram/dist/modifier";
 import { fillTo } from "libram/dist/resources/2017/AsdonMartin";
 import Macro, { mainStat } from "../combat";
+import { baseOutfit } from "../engine/outfit";
 import { Quest } from "../engine/task";
 import { attemptRestoringMpWithFreeRests, canAcquireEffect, tryAcquiringEffect } from "../lib";
 import { holidayRunawayTask } from "./common";
-import { baseOutfit } from "../engine/outfit";
-import { printModtrace } from "libram/dist/modifier";
 
 const statGainBuffs =
   mainStat === $stat`Muscle`
@@ -122,6 +122,8 @@ const showerGlobBuff =
 const famwtBuffs = [
   $effect`Billiards Belligerence`,
   $effect`Blood Bond`,
+  // eslint-disable-next-line libram/verify-constants
+  $effect`Best Pals`,
   $effect`Do I Know You From Somewhere?`,
   $effect`Empathy`,
   $effect`Thoughtful Empathy`,
@@ -150,6 +152,9 @@ const levelingBuffs = [
   $effect`Ruthlessly Efficient`,
   $effect`Song of Bravado`,
   // $effect`Triple-Sized`,
+  // eslint-disable-next-line libram/verify-constants
+  $effect`Ultraheart`,
+
   // Class Skill
   $effect`Astral Shell`,
   // $effect`Aloysius' Antiphon of Aptitude`,

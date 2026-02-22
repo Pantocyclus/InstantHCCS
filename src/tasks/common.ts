@@ -13,8 +13,8 @@ import {
   have,
 } from "libram";
 import Macro from "../combat";
-import { Task } from "../engine/task";
 import { baseOutfit } from "../engine/outfit";
+import { Task } from "../engine/task";
 import { attemptRestoringMpWithFreeRests } from "../lib";
 
 const MOTHERSLIME_CLAN = "The Genius Clan";

@@ -1,3 +1,4 @@
+import { CombatStrategy } from "grimoire-kolmafia";
 import { cliExecute, effectModifier, myClass } from "kolmafia";
 import {
   $class,
@@ -14,10 +15,9 @@ import {
   uneffect,
 } from "libram";
 import Macro from "../combat";
-import { Quest } from "../engine/task";
-import { CombatStrategy } from "grimoire-kolmafia";
-import { logTestSetup } from "../lib";
 import { baseOutfit } from "../engine/outfit";
+import { Quest } from "../engine/task";
+import { logTestSetup } from "../lib";
 import { restoreMpTask } from "./common";
 
 export const BoozeDropQuest: Quest = {

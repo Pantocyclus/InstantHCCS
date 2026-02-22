@@ -16,11 +16,11 @@ import {
   have,
   SongBoom,
 } from "libram";
+import Macro from "../combat";
+import { baseOutfit } from "../engine/outfit";
 import { Quest } from "../engine/task";
 import { burnLibram, crimboCarols, logTestSetup } from "../lib";
 import { restoreMpTask } from "./common";
-import Macro from "../combat";
-import { baseOutfit } from "../engine/outfit";
 
 export const WeaponDamageQuest: Quest = {
   name: "Weapon Damage",

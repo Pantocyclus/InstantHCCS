@@ -2,9 +2,9 @@ import { CombatStrategy } from "grimoire-kolmafia";
 import { cliExecute } from "kolmafia";
 import { $effect, $familiar, $item, $location, $skill, CommunityService, get, have } from "libram";
 import Macro from "../combat";
+import { baseOutfit } from "../engine/outfit";
 import { Quest } from "../engine/task";
 import { logTestSetup } from "../lib";
-import { baseOutfit } from "../engine/outfit";
 import { restoreMpTask } from "./common";
 
 export const HotResQuest: Quest = {

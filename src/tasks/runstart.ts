@@ -31,7 +31,6 @@ import {
   have,
   SongBoom,
 } from "libram";
-import { Quest } from "../engine/task";
 import {
   discoveredFurniture,
   FURNITURE_PIECES,
@@ -43,6 +42,7 @@ import {
   Result,
   setFurniture,
 } from "libram/dist/resources/2025/Leprecondo";
+import { Quest } from "../engine/task";
 import { getGarden } from "../lib";
 
 export const RunStartQuest: Quest = {

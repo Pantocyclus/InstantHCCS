@@ -29,10 +29,10 @@ import {
   set,
 } from "libram";
 import Macro, { mainStat } from "../combat";
+import { baseOutfit } from "../engine/outfit";
 import { Quest } from "../engine/task";
 import { logTestSetup, sendAutumnaton } from "../lib";
 import { holidayRunawayTask } from "./common";
-import { baseOutfit } from "../engine/outfit";
 
 export const CoilWireQuest: Quest = {
   name: "Coil Wire",
