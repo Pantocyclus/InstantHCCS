@@ -161,7 +161,7 @@ These hardcoded resources do not affect the run in any significant way as they a
 
 ### Summary of Farming Resource/Skill Usage
 
-A summary of key farming resources used is listed below. The same summary is generated at the end of each run, with a list of unique tasks that utilized each resource. Relevant modtraces may be found [here](https://github.com/Pantocyclus/InstantHCCS/blob/main/modtraces.md) <br />
+A summary of key farming resources used is listed below. The same summary is generated at the end of each run, with a list of unique tasks that utilized each resource. Relevant modtraces may be found [here](https://github.com/Pantocyclus/InstantHCCS/blob/main/MODTRACES.md) <br />
 
 <sub><sup>Note 1: The script should be able to achieve a 1/70 HCCS if you have all the necessary items and skills, and it will throw an error in the tests if any of them take more than 1 turn (to allow for manually remedying any hiccups). Organ usage is always fixed at 0/1/0.</sup></sub><br/>
 <sub><sup>Note 2: The following shows a typical resource usage summary for a Seal Clubber, correct as of Jan 2026.</sup></sub><br/>
