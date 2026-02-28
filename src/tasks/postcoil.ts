@@ -463,7 +463,7 @@ export const PostCoilQuest: Quest = {
         tryBuying($item`yellow plastic hard hat`);
         tryBuying($item`pentacorn hat`);
         // tryBuying($item`frilly skirt`);
-        // tryBuying($item`Kentucky-style derby`);
+        tryBuying($item`Kentucky-style derby`);
 
         unequip($slot`back`);
         unequip($slot`weapon`);
@@ -481,9 +481,9 @@ export const PostCoilQuest: Quest = {
           equip($slot`shirt`, $item`Jurassic Parka`); // 100DA
           equip($slot`pants`, $item`alpha-mail pants`); // 700DA
         } else if (
-          get("_beretBuskingUses", 0) === 1 // Cast 2: 860DA
+          get("_beretBuskingUses", 0) === 1 // Cast 2: 840DA
         ) {
-          equip($slot`hat`, $item`astronaut helmet`); // 60DA
+          equip($slot`hat`, $item`Kentucky-style derby`); // 40DA
           equip($slot`shirt`, $item`Jurassic Parka`); // 100DA
           equip($slot`pants`, $item`alpha-mail pants`); // 700DA
         } else if (
@@ -517,7 +517,7 @@ export const PostCoilQuest: Quest = {
         print(`Total: ${totalDA} - Hat: ${hatDA}, Shirt: ${shirtDA}, Pants: ${pantsDA}`);
 
         const currentBusks = get("_beretBuskingUses", 0);
-        const buskDAs = [800, 860, 860, 830, 980];
+        const buskDAs = [800, 840, 860, 830, 980];
         if (totalDA !== buskDAs[currentBusks])
           throw new Error(`Failed to get ${buskDAs[currentBusks]} (got ${totalDA})`);
         visitUrl(`runskillz.php?action=Skillz&whichskill=7565&targetplayer=${myId()}&pwd`);

@@ -2,9 +2,11 @@ import {
   effectModifier,
   elementalResistance,
   equip,
+  getDwelling,
   myHp,
   myMaxhp,
   retrieveItem,
+  totalFreeRests,
   use,
   useSkill,
   visitUrl,
@@ -51,6 +53,16 @@ export const SpellDamageQuest: Quest = {
       outfit: {
         acc1: $item`blood cubic zirconia`,
       },
+      limit: { tries: 1 },
+    },
+    {
+      name: "Pyramid Power",
+      completed: () =>
+        getDwelling() !== $item`BRICKO pyramid` ||
+        have($effect`Pyramid Power`) ||
+        get("timesRested") >= totalFreeRests() ||
+        get("_pyramidRestEffectsGained", 0) >= 3,
+      do: () => visitUrl("campground.php?action=rest"),
       limit: { tries: 1 },
     },
     {

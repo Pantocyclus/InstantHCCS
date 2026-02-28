@@ -1,5 +1,12 @@
 import { CombatStrategy } from "grimoire-kolmafia";
-import { effectModifier, useFamiliar, useSkill } from "kolmafia";
+import {
+  effectModifier,
+  getDwelling,
+  totalFreeRests,
+  useFamiliar,
+  useSkill,
+  visitUrl,
+} from "kolmafia";
 import {
   $effect,
   $familiar,
@@ -53,6 +60,16 @@ export const WeaponDamageQuest: Quest = {
       limit: { tries: 1 },
     },
     // { ...innerElfTask },
+    {
+      name: "Pyramid Power",
+      completed: () =>
+        getDwelling() !== $item`BRICKO pyramid` ||
+        have($effect`Pyramid Power`) ||
+        get("timesRested") >= totalFreeRests() ||
+        get("_pyramidRestEffectsGained", 0) >= 3,
+      do: () => visitUrl("campground.php?action=rest"),
+      limit: { tries: 1 },
+    },
     {
       name: "Ungulith",
       ready: () => get("_meteorShowerUses") < 5 && get("_saberForceUses") < 5,
